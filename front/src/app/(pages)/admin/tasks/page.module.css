@@ -1,0 +1,33 @@
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+
+.material-icons {
+	font-family: 'Material Icons';
+	font-weight: normal;
+	font-style: normal;
+	font-size: 24px;
+	line-height: 1;
+	letter-spacing: normal;
+	text-transform: none;
+	display: inline-block;
+	white-space: nowrap;
+	word-wrap: normal;
+	direction: ltr;
+	-webkit-font-feature-settings: 'liga';
+	-webkit-font-smoothing: antialiased;
+}
+
+ul.buttons>a {
+	text-align: center;
+	border: 1px solid #283848;
+	border-radius: 10px;
+	background: #708090;
+	display: inline-block;
+	padding: 1rem;
+	margin: 0.5rem;
+}
+
+ul.buttons>a>li>span {
+	font-size: 1.5rem;
+	display: block;
+}

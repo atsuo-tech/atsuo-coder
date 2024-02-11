@@ -1,0 +1,20 @@
+div.permissions {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	width: 800px;
+	border: 1px solid #ccc;
+	font-size: 15pt;
+	padding: 1em;
+}
+
+div.permissions input[type="checkbox"] {
+	width: 1em;
+	height: 1em;
+	margin: 0;
+	padding: 0;
+	margin-right: 0.2em;
+}
+
+div.permissions p {
+	font-size: 10pt;
+}

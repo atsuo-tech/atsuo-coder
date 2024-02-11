@@ -1,0 +1,24 @@
+div.submit {
+	width: 100%;
+}
+
+div.submit iframe {
+	width: 100%;
+	height: 40em;
+	border: none;
+}
+
+button.submit-button {
+	width: 100%;
+	height: 3rem;
+	background-color: blue;
+	border: none;
+	color: white;
+	font-size: 20pt;
+	font-weight: 500;
+	border-radius: 1rem;
+}
+
+div.task {
+	width: 100%;
+}

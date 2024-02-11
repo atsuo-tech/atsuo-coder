@@ -1,0 +1,99 @@
+.root {
+	--var-width: 950px;
+}
+
+.reader {
+	border: none;
+	width: var(--var-width);
+	height: 32rem;
+}
+
+div.onlyme {
+	font-size: 20pt;
+	display: flex;
+	align-items: center;
+}
+
+div.onlyme input {
+	height: 1em;
+	width: 1em;
+}
+
+div.onlyme label {
+	padding-right: 0.5em;
+}
+
+.c-wj {
+	background-color: darkgray;
+}
+
+.c-ac {
+	background-color: #5cb85c;
+}
+
+.c-wa {
+	background-color: #f0ad4e;
+}
+
+.c-tle {
+	background-color: hotpink;
+}
+
+.c-ce {
+	background-color: dodgerblue;
+}
+
+.c-re {
+	background-color: darkviolet;
+}
+
+.c-mle {
+	background-color: maroon;
+}
+
+.c-qle {
+	background-color: maroon;
+}
+
+.c-ole {
+	background-color: salmon;
+}
+
+.c-ie {
+	background-color: darkslategray;
+}
+
+.c-wj,
+.c-ac,
+.c-wa,
+.c-ce,
+.c-tle,
+.c-re,
+.c-mle,
+.c-ole,
+.c-qle,
+.c-ie {
+	border: none;
+	border-radius: 0.2rem;
+	height: 1.5rem;
+	width: 4rem;
+	display: inline-flex;
+	align-items: center;
+	place-content: center;
+}
+
+.detailResult {
+	margin: 0 0.4rem;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	width: var(--var-width);
+}
+
+.grid>div {
+	padding: 0.5rem;
+	text-align: center;
+	border: 1px solid white;
+}

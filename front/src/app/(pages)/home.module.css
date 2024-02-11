@@ -1,0 +1,39 @@
+div.image {
+	text-align: left;
+	background: url(/typing.jpg);
+	width: 100vw;
+	height: 423px;
+	background-size: cover;
+	background-position: top;
+	position: absolute;
+	top: 80px;
+	display: flex;
+	align-items: center;
+}
+
+div.image-effect {
+	position: absolute;
+	background: rgb(0, 0, 0, 0.7);
+	width: 100vw;
+	height: 423px;
+	z-index: 0;
+}
+
+h1.image-text {
+	padding-left: 2rem;
+	font-size: 50pt;
+	color: darkturquoise;
+	z-index: 1;
+}
+
+h2.information {
+	padding: 1rem 3rem;
+	font-size: 20pt;
+	text-align: left;
+	width: 100vw;
+	background: linear-gradient(to right, #1f2e55 10%, #115275 50%, #1f2e55 90%);
+	color: darkturquoise;
+	display: flex;
+	margin-top: 20px;
+	align-items: center;
+}

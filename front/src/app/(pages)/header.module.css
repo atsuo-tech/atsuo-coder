@@ -1,0 +1,55 @@
+header.title {
+	padding: 0.5rem 0;
+	position: fixed;
+	display: flex;
+	width: 100%;
+	z-index: 100;
+	text-indent: 15px;
+	background-color: #102030;
+	color: white;
+	height: 3.5rem;
+}
+
+div.headers {
+	z-index: 100;
+}
+
+.head {
+	padding: 5px;
+	display: flex;
+	width: 100%;
+	background-color: #102030;
+}
+
+.head .titleText {
+	width: 70%;
+	text-align: left;
+	background-color: #102030;
+}
+
+.head .login {
+	width: 30%;
+	display: flex;
+	justify-content: right;
+}
+
+.menu {
+	margin: 0 auto;
+	padding: 0px;
+	display: flex;
+	justify-content: left;
+	list-style: none;
+	background-color: #405060;
+	top: 3.5rem;
+	width: 100%;
+	position: fixed;
+	height: 2rem;
+	z-index: 100;
+}
+
+.headers li,
+.menu li {
+	padding: 5px;
+	margin: 0 20px;
+	font-size: 16px;
+}

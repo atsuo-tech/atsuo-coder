@@ -1,0 +1,47 @@
+{
+	"name": "atsuo-judge",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint"
+	},
+	"dependencies": {
+		"@w-yama-can/judge-systems": "^4.0.1",
+		"ace-builds": "^1.31.1",
+		"autoprefixer": "10.4.15",
+		"brace": "^0.11.1",
+		"dom-parser-react": "^0.3.0",
+		"dotenv": "^16.3.1",
+		"eslint": "8.49.0",
+		"eslint-config-next": "13.4.19",
+		"html-react-parser": "^5.0.6",
+		"marked": "^9.1.5",
+		"mathjax": "^3.2.2",
+		"mysql2": "^3.6.3",
+		"next": "^14.1.0",
+		"postcss": "^8.4.33",
+		"react": "18.2.0",
+		"react-ace": "^10.1.0",
+		"react-dom": "18.2.0",
+		"react-katex": "^3.0.1",
+		"redis": "^4.6.12",
+		"sass": "^1.69.5",
+		"sqlstring": "^2.3.3",
+		"tailwindcss": "3.3.3",
+		"typescript": "5.2.2",
+		"zenn-content-css": "^0.1.148",
+		"zenn-embed-elements": "^0.1.148",
+		"zenn-markdown-html": "^0.1.148"
+	},
+	"devDependencies": {
+		"@types/mathjax": "^0.0.40",
+		"@types/node": "20.6.2",
+		"@types/react": "18.2.21",
+		"@types/react-dom": "18.2.7",
+		"@types/react-katex": "^3.0.3",
+		"@types/sqlstring": "^2.3.2"
+	}
+}

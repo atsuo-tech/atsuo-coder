@@ -1,0 +1,19 @@
+{
+	"name": "atsuo-judge",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "cd api && npm run test",
+		"dev": "cd api && npm run dev",
+		"start": "cd api && npm start",
+		"build": "cd api && npm run build",
+		"install:mysql": "apt update && apt install -y mysql-server",
+		"install:redis": "apt update && apt install -y redis-server",
+		"install:typescript": "npm i -g typescript",
+		"install:develop": "npm run install:typescript && npm run install:mysql && npm run install:redis",
+		"init:mysql": "chmod 777 ./sql/init.sh && ./sql/init.sh"
+	},
+	"author": "Yama.can<yama.can95@gmail.com>",
+	"license": "ISC"
+}

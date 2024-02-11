@@ -1,0 +1,11 @@
+.znc td,
+.znc th {
+	padding: .5rem;
+	border: 1px solid #cfdce6;
+	background: none;
+}
+
+.znc table {
+	width: 100%;
+	display: table;
+}
