@@ -46,7 +46,7 @@ export default async function Page(p: { params: { contest: string, task: string 
 			<title>{taskInfo[0].name}</title>
 			<h1>{taskInfo[0].name}</h1>
 			<p>
-				Editor: {taskInfo[0].editor} Tester: {taskInfo[0].tester.length == 0 ? "なし" : taskInfo[0].tester}<br />
+				Editors: {taskInfo[0].editors} Testers: {taskInfo[0].testers.length == 0 ? "なし" : taskInfo[0].testers}<br />
 				Score: {taskInfo[0].score}
 			</p>
 			<div className={submitStyle.task}>

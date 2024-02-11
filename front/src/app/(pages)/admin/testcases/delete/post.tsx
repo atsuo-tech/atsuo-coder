@@ -27,7 +27,7 @@ export default async function PostDeleteTestcase(task_id: string, id: string) {
 	}
 
 
-	if (!await hasProblemAdminPermission() && !task.editor.includes(user.getID()!!)) {
+	if (!await hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
 
 		notFound();
 

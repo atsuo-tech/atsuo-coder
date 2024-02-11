@@ -53,7 +53,7 @@ export default async function PostEditContest(id: string) {
 						</ul>
 					</label>
 					<br />
-					<label htmlFor="editors">Editor</label>
+					<label htmlFor="editors">Editors</label>
 					<br />
 					<input name="editors" id="editors" type="text" required placeholder="yama_can, abn48" defaultValue={(await contest.editors!!.get()).join(', ')} />
 					<br />
@@ -63,7 +63,7 @@ export default async function PostEditContest(id: string) {
 						</ul>
 					</label>
 					<br />
-					<label htmlFor="testers">Tester</label>
+					<label htmlFor="testers">Testers</label>
 					<br />
 					<input name="testers" id="testers" type="text" required placeholder="yama_can, abn48" defaultValue={(await contest.testers!!.get()).join(', ')} />
 					<br />

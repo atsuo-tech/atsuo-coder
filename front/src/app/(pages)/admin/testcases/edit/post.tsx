@@ -32,7 +32,7 @@ export default async function PostEditTestcase(id: string, task_id: string) {
 
 	}
 
-	if (!await hasProblemAdminPermission() && !task.editor.includes(user.getID()!!)) {
+	if (!await hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
 
 		notFound();
 

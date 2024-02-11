@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
 
 	const task = tasks[0];
 
-	if (!await hasProblemAdminPermission() && !task.editor.includes(user.getID()!!)) {
+	if (!await hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
 
 		return Unauthorized();
 

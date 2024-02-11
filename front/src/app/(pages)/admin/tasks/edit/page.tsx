@@ -1,5 +1,5 @@
-import PostEditContest from "../../contests/edit/post";
 import styles from "../form.module.css";
+import PostEditTask from "./post";
 
 export default async function Page({ searchParams }: { searchParams: { id?: string } }) {
 
@@ -10,7 +10,7 @@ export default async function Page({ searchParams }: { searchParams: { id?: stri
 				<h1>Edit Tasks | AtsuoCoder Admin</h1>
 				<div className={styles.body1}>
 					<form action="/admin/tasks/edit" method="get">
-						<label htmlFor="id">ID</label>ssqss
+						<label htmlFor="id">ID</label>
 						<br />
 						<input name="id" id="id" type="text" autoComplete="on" placeholder="aac001" required />
 						<br />
@@ -22,7 +22,7 @@ export default async function Page({ searchParams }: { searchParams: { id?: stri
 
 	} else {
 
-		return await PostEditContest(searchParams.id);
+		return await PostEditTask(searchParams.id);
 
 	}
 

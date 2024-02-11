@@ -21,11 +21,11 @@ export default async function Page() {
 						</ul>
 					</label>
 					<br />
-					<label htmlFor="editors">Editor</label>
+					<label htmlFor="editors">Editors</label>
 					<br />
 					<input name="editors" id="editors" type="text" required placeholder="yama_can" />
 					<br />
-					<label htmlFor="testers">Tester</label>
+					<label htmlFor="testers">Testers</label>
 					<br />
 					<input name="testers" id="testers" type="text" required placeholder="abn48" />
 					<br />

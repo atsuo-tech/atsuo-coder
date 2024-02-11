@@ -34,7 +34,7 @@ export default async function Page(p: { params: { contest: string } }) {
 					<tr>
 						<td>TaskName</td>
 						<td>Perfect Score</td>
-						<td>Editor</td>
+						<td>Editors</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -49,7 +49,7 @@ export default async function Page(p: { params: { contest: string } }) {
 									{task!!.score}
 								</td>
 								<td>
-									{task!!.editor}
+									{task!!.editors}
 								</td>
 							</tr>
 						</>;

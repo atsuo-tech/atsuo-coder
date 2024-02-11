@@ -17,7 +17,7 @@ export default async function PostDeleteTask(id: string) {
 
 	const user = await getUser();
 
-	if (!user || !await hasProblemAdminPermission() && !tasks[0].editor.includes(user.getID()!!)) {
+	if (!user || !await hasProblemAdminPermission() && !tasks[0].editors.includes(user.getID()!!)) {
 
 		notFound();
 

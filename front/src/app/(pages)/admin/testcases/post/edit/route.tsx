@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
 
 	const task = tasks[0];
 
-	if (!Permissions.hasPermission(await user.permission!!.get(), Permissions.BasePermissions.ProblemAdmin) && !task.editor.includes(user.getID()!!)) {
+	if (!Permissions.hasPermission(await user.permission!!.get(), Permissions.BasePermissions.ProblemAdmin) && !task.editors.includes(user.getID()!!)) {
 
 		return new Response("Unauthorized", {
 			status: 401

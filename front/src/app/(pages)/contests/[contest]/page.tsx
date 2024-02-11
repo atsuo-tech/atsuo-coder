@@ -48,7 +48,7 @@ export default async function Page(p: { params: { contest: string } }) {
 				}
 
 				<p>
-					Editor: {editors.join(' ')} | Tester: {testers.length != 0 ? testers.join(' ') : "None"}<br />
+					Editors: {editors.join(' ')} | Testers: {testers.length != 0 ? testers.join(' ') : "None"}<br />
 					Rated: {rated || "無制限"} | Start: {start.toLocaleString("ja")} | End: {new Date(start.getTime() + period).toLocaleString("ja")} | Type: {isPublic ? "Public" : "Private"}
 				</p>
 

@@ -10,8 +10,8 @@ export interface Contest {
 
 	public: boolean;
 
-	editor: string[];
-	tester: string[];
+	editors: string[];
+	testers: string[];
 
 	start: number;
 	period: number;
@@ -24,12 +24,12 @@ export async function getContests(sql: Connection, userId?: string) {
 
 	return new Promise<Contests>(async (resolve) => {
 
-		const data = await sql.query("SELECT * from contests where public = 1 OR LOCATE(?, editor) > 0 OR LOCATE(?, tester) > 0 ORDER BY start ASC;", [`"${userId}"`, `"${userId}"`]);
+		const data = await sql.query("SELECT * from contests where public = 1 OR LOCATE(?, editors) > 0 OR LOCATE(?, testers) > 0 ORDER BY start ASC;", [`"${userId}"`, `"${userId}"`]);
 
 		resolve(
 			(data[0] as any[]).map((data: any) => {
 
-				return { ...data, problems: JSON.parse(data.problems), editor: JSON.parse(data.editor), tester: JSON.parse(data.tester), start: new Date(data.start).getTime() };
+				return { ...data, problems: JSON.parse(data.problems), editors: JSON.parse(data.editors), testers: JSON.parse(data.testers), start: new Date(data.start).getTime() };
 
 			})
 		);
@@ -47,7 +47,7 @@ export async function getContest(sql: Connection, id: string, showPublic = false
 		resolve(
 			(data[0] as any[]).map((data: any) => {
 
-				return { ...data, problems: JSON.parse(data.problems), editor: JSON.parse(data.editor), tester: JSON.parse(data.tester), start: new Date(data.start).getTime() };
+				return { ...data, problems: JSON.parse(data.problems), editors: JSON.parse(data.editors), testers: JSON.parse(data.testers), start: new Date(data.start).getTime() };
 
 			})
 		);
@@ -58,11 +58,11 @@ export async function getContest(sql: Connection, id: string, showPublic = false
 
 export async function getTasks(sql: Connection, ids: string[]) {
 
-	return new Promise<{ id: string, question: string, judge_type: number, editor: string, tester: string, name: string, score: number }[]>(async (resolve) => {
+	return new Promise<{ id: string, question: string, judge_type: number, editors: string, testers: string, name: string, score: number }[]>(async (resolve) => {
 
 		const id = Array.from(ids);
 
-		let res: { id: string, question: string, judge_type: number, editor: string, tester: string, name: string, score: number }[] = [];
+		let res: { id: string, question: string, judge_type: number, editors: string, testers: string, name: string, score: number }[] = [];
 
 		let resolvers: string[] = [];
 
@@ -95,7 +95,7 @@ export async function getTasks(sql: Connection, ids: string[]) {
 
 			if (src.length == 0) continue;
 
-			res[i] = { ...src[0], editor: JSON.parse(src[0].editor), tester: JSON.parse(src[0].tester) };
+			res[i] = { ...src[0], editors: JSON.parse(src[0].editors), testers: JSON.parse(src[0].testers) };
 
 			await redis.set(`task:${id[i]}`, JSON.stringify(res[i]));
 			await redis.expire(`task:${id[i]}`, 60 * 60);

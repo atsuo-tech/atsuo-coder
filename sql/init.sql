@@ -8,8 +8,8 @@ CREATE TABLE `contests` (
 	`problems` TEXT,
 	`public` TINYINT(1) DEFAULT 0,
 	`name` TEXT,
-	`editor` TEXT,
-	`tester` TEXT,
+	`editors` TEXT,
+	`testers` TEXT,
 	`start` DATETIME,
 	`period` BIGINT,
 	`rated` TEXT,
@@ -38,8 +38,8 @@ CREATE TABLE `tasks` (
 	`id` VARCHAR(40) NOT NULL PRIMARY KEY,
 	`question` TEXT,
 	`judge_type` BIGINT,
-	`editor` TEXT,
-	`tester` TEXT,
+	`editors` TEXT,
+	`testers` TEXT,
 	`name` TEXT,
 	`score` BIGINT
 );

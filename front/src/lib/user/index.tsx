@@ -192,7 +192,7 @@ export class User {
 
 	public contests: Cache<string[]> = new Cache<string[]>(async () => {
 
-		const data = await sql.query("SELECT * from contests where public = 1 OR LOCATE(?, editor) > 0 OR LOCATE(?, tester) > 0 ORDER BY start ASC;", [`"${this.id}"`, `"${this.id}"`]);
+		const data = await sql.query("SELECT * from contests where public = 1 OR LOCATE(?, editors) > 0 OR LOCATE(?, testers) > 0 ORDER BY start ASC;", [`"${this.id}"`, `"${this.id}"`]);
 
 		return (data[0] as any[]).map((element) => element.id);
 
