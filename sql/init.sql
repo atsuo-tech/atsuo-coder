@@ -8,6 +8,7 @@ CREATE TABLE `contests` (
 	`problems` TEXT,
 	`public` TINYINT(1) DEFAULT 0,
 	`name` TEXT,
+	`owner` CHAR(20),
 	`editors` TEXT,
 	`testers` TEXT,
 	`start` DATETIME,

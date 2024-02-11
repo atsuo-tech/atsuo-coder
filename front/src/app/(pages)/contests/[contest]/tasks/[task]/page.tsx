@@ -38,20 +38,26 @@ export default async function Page(p: { params: { contest: string, task: string 
 
 	const taskInfo = await getTask(sql, p.params.task);
 
+	if(!taskInfo) {
+
+		notFound();
+
+	}
+
 	const ct_token = crypto.randomUUID();
 	await sql.query("INSERT INTO ct_token (id, use_to, created_at, user_id) VALUES (?, ?, now(), ?);", [ct_token, "SUBMIT", user.getID()]);
 
 	return (
 		<>
-			<title>{taskInfo[0].name}</title>
-			<h1>{taskInfo[0].name}</h1>
+			<title>{taskInfo.name}</title>
+			<h1>{taskInfo.name}</h1>
 			<p>
-				Editors: {taskInfo[0].editors} Testers: {taskInfo[0].testers.length == 0 ? "なし" : taskInfo[0].testers}<br />
-				Score: {taskInfo[0].score}
+				Editors: {taskInfo.editors} Testers: {taskInfo.testers.length == 0 ? "なし" : taskInfo.testers}<br />
+				Score: {taskInfo.score}
 			</p>
 			<div className={submitStyle.task}>
 				<div id="task">
-					<Markdown md={taskInfo[0].question} />
+					<Markdown md={taskInfo.question} />
 				</div>
 			</div >
 

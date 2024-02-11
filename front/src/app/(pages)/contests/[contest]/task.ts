@@ -21,7 +21,7 @@ export async function getTasks(sql: Connection, userId?: string) {
 
 export async function getTask(sql: Connection, id: string) {
 
-	return new Promise<any[]>(async (resolve) => {
+	return new Promise<any>(async (resolve) => {
 
 		const cache = await redis.get(`task:${id}`);
 		if (cache != null) {
@@ -38,12 +38,13 @@ export async function getTask(sql: Connection, id: string) {
 				return { ...data, editors: JSON.parse(data.editors), testers: JSON.parse(data.testers) };
 
 			})
-		);
+		)[0];
 
-		if (res.length != 0) {
+		if (res) {
 			await redis.set(`task:${id}`, JSON.stringify(res));
 			await redis.expire(`task:${id}`, 60 * 60);
 		}
+
 		resolve(res);
 
 	})

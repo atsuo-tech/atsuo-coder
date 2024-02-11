@@ -72,7 +72,7 @@ export async function getTasks(sql: Connection, ids: string[]) {
 
 			if (cache) {
 				id[i] = "";
-				res[i] = JSON.parse(cache)[0];
+				res[i] = JSON.parse(cache);
 			} else {
 				resolvers.push(id[i]);
 			}
@@ -91,11 +91,11 @@ export async function getTasks(sql: Connection, ids: string[]) {
 
 			if (id[i] == "") continue;
 
-			const src = data.filter((task: any) => task.id == id[i]);
+			const src = data.find((task: any) => task.id == id[i]);
 
-			if (src.length == 0) continue;
+			if (!src) continue;
 
-			res[i] = { ...src[0], editors: JSON.parse(src[0].editors), testers: JSON.parse(src[0].testers) };
+			res[i] = { ...src, editors: JSON.parse(src.editors), testers: JSON.parse(src.testers) };
 
 			await redis.set(`task:${id[i]}`, JSON.stringify(res[i]));
 			await redis.expire(`task:${id[i]}`, 60 * 60);
