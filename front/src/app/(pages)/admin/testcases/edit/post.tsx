@@ -44,7 +44,7 @@ export default async function PostEditTestcase(id: string, task_id: string) {
 			<h1>Edit Testcase | AtsuoCoder Admin</h1>
 			<br />
 			<div className={styles.body1}>
-				<form action="/admin/testcases/post" method="post" encType="multipart/form-data">
+				<form action="/admin/testcases/post/edit" method="post" encType="multipart/form-data">
 					<input type="hidden" name="type" defaultValue="edit" />
 					<label htmlFor="task_id">Task ID</label>
 					<br />

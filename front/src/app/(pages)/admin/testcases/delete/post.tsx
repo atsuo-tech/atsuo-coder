@@ -44,7 +44,7 @@ export default async function PostDeleteTestcase(task_id: string, id: string) {
 			<h1>Delete Testcase | AtsuoCoder Admin</h1>
 			<br />
 			<div className={styles.body1}>
-				<form action="/admin/testcases/post" method="post" encType="multipart/form-data">
+				<form action="/admin/testcases/post/delete" method="post" encType="multipart/form-data">
 					<input type="hidden" name="type" defaultValue="delete" />
 					<label htmlFor="task_id">Task ID</label>
 					<br />
