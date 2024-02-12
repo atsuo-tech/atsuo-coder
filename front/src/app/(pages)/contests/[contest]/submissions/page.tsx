@@ -2,8 +2,9 @@ import { sql } from "@/app/sql";
 import styles from "./[id]/submission.module.css";
 import { FieldPacket } from "mysql2";
 import { notFound } from "next/navigation";
-import getUser from "@/lib/user";
+import getUser, { Permissions } from "@/lib/user";
 import getContest, { Contest } from "@/lib/contest";
+import { hasContestAdminPermission } from "@/app/(pages)/admin/permission";
 
 export default async function Page({ params }: { params: { [key: string]: string } }) {
 
@@ -28,7 +29,7 @@ export default async function Page({ params }: { params: { [key: string]: string
 
 	if (start.getTime() + period > Date.now()) {
 
-		if (editors.indexOf(user.getID()!!) == -1 && testers.indexOf(user.getID()!!) == -1 && rated_users.indexOf(user.getID()!!) == -1 && unrated_users.indexOf(user.getID()!!) == -1) {
+		if (await hasContestAdminPermission() || editors.indexOf(user.getID()!!) == -1 && testers.indexOf(user.getID()!!) == -1 && rated_users.indexOf(user.getID()!!) == -1 && unrated_users.indexOf(user.getID()!!) == -1) {
 
 			notFound();
 

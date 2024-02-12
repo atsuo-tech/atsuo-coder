@@ -74,7 +74,7 @@ export default async function Page(params: { params: { [key: string]: string } }
 				<div className={submissionsStyle.grid}>
 					<div>
 						<h2>Task</h2>
-						<a href={`/contests/${params.params.contest}/tasks/${task}`}>{taskInfo[0].name}</a>
+						<a href={`/contests/${params.params.contest}/tasks/${task}`}>{taskInfo.name}</a>
 					</div>
 					<div>
 						<h2>Result</h2>
