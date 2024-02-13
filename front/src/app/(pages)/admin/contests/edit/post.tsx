@@ -35,7 +35,7 @@ export default async function PostEditContest(id: string) {
 					<label htmlFor="period">Period</label>
 					<p>If this contest should be permanent contest, set this field &quot;-1&quot;.</p>
 					<br />
-					<input name="period" id="period" type="number" required className={styles.period} placeholder="100" defaultValue={(await contest.period!!.get()) / 60 * 1000} />
+					<input name="period" id="period" type="number" required className={styles.period} placeholder="100" defaultValue={(await contest.period!!.get()) / 60 / 1000} />
 					<label htmlFor="period">minutes</label>
 					<br />
 					<label htmlFor="penalty">Penalty</label>
