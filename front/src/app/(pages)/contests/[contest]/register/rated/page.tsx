@@ -8,7 +8,7 @@ export default async function Page({ params: { contest } }: { params: { contest:
 	const contestInfo = await getContest(contest);
 
 	const rated_users = await contestInfo!!.rated_users!!.get();
-	const unrated_users = await contestInfo!!.rated_users!!.get();
+	const unrated_users = await contestInfo!!.unrated_users!!.get();
 
 	const user = await getUser();
 
