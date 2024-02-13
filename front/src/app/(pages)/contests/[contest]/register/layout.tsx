@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
 
@@ -14,7 +14,7 @@ export default async function RootLayout({
 
 	if (!user) {
 
-		notFound();
+		redirect("/login");
 
 	}
 
