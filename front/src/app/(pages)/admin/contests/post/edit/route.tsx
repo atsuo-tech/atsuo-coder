@@ -1,5 +1,4 @@
 import redis from "@/app/redis";
-import { sql } from "@/app/sql";
 import { NextRequest } from "next/server";
 import { notFound } from "next/navigation";
 import { hasContestAdminPermission } from "../../../permission";
@@ -34,8 +33,6 @@ export async function POST(req: NextRequest) {
 
 	const data = await req.formData();
 
-	const parseFunc = (str: string) => JSON.stringify(str.split(',').map((value) => value.replace(/[\s\t]/g, "")).filter(Boolean));
-
 	if (typeof data.get("problems") != "string" || typeof data.get("editors") != "string" || typeof data.get("testers") != "string" || typeof data.get("id") != "string") {
 
 		return BadRequest();
@@ -56,20 +53,16 @@ export async function POST(req: NextRequest) {
 
 	}
 
-	await sql.query(
-		"UPDATE contests SET name = ?, start = ?, period = ?, problems = ?, editors = ?, testers = ?, description = ?, penalty = ? WHERE id = ?",
-		[
-			data.get("name"),
-			data.get("start"),
-			Number(data.get("period")) * 1000 * 60,
-			parseFunc(data.get("problems") as string),
-			parseFunc(data.get("editors") as string),
-			parseFunc(data.get("testers") as string),
-			data.get("description"),
-			Number(data.get("penalty")),
-			data.get("id")
-		]
-	);
+	await Promise.all([
+		contest.name!!.set(data.get("name") as string),
+		contest.start!!.set(new Date(data.get("start") as string)),
+		contest.period!!.set(Number(data.get("period")) * 1000 * 60),
+		contest.problems!!.set((data.get("problems") as string).split(',').map((val) => val.replace(/[\s\t]/g, ""))),
+		contest.editors!!.set((data.get("editors") as string).split(',').map((val) => val.replace(/[\s\t]/g, ""))),
+		contest.testers!!.set((data.get("testers") as string).split(',').map((val) => val.replace(/[\s\t]/g, ""))),
+		contest.description!!.set(data.get("description") as string),
+		contest.penalty!!.set(Number(data.get("penalty")))
+	]);
 
 	await redis.del(`contest:${data.get("id")}`);
 

@@ -83,7 +83,7 @@ export class Contest {
 
 				}, async (value, id) => {
 
-					await sql.query("UPDATE contests SET testers = ? WHERE id = ?;", [value, id]);
+					await sql.query("UPDATE contests SET testers = ? WHERE id = ?;", [JSON.stringify(value), id]);
 
 				});
 
@@ -95,7 +95,7 @@ export class Contest {
 
 				}, async (value, id) => {
 
-					await sql.query("UPDATE contests SET problems = ? WHERE id = ?;", [value, id]);
+					await sql.query("UPDATE contests SET problems = ? WHERE id = ?;", [JSON.stringify(value), id]);
 
 				});
 
@@ -142,7 +142,7 @@ export class Contest {
 					return data[0].penalty;
 
 				}, async (value, id) => {
-					
+
 					await sql.query("UPDATE contests SET penalty = ? WHERE id = ?;", [value, id]);
 
 				});
@@ -196,13 +196,13 @@ export class Contest {
 				});
 
 				this.description = new Value(id, row.description, 1000 * 60 * 60, async (id) => {
-					
+
 					const [data] = await sql.query<RowDataPacket[]>("SELECT description FROM contests WHERE id = ?", [id]);
 
 					return data[0].description;
 
 				}, async (value, id) => {
-					
+
 					await sql.query("UPDATE contests SET description = ? WHERE id = ?;", [value, id]);
 
 				});
@@ -285,5 +285,11 @@ export async function getPublicContests() {
 		return (data[0] as RowDataPacket[]).map((row) => row.id);
 
 	});
+
+}
+
+export async function deleteCache(id: string) {
+
+	delete cache[id];
 
 }
