@@ -18,6 +18,9 @@ cd atsuo-coder/api
 npm run build
 ```
 
+実行する前に、 `api/static/testcases/.gitkeep` を削除してください。
+また、 `sample.env` を参考に同じ内容のファイル `.env`、`front/.env` を作成してください。
+
 ### MySQL
 
 ```sh
