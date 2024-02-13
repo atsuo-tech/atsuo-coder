@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
 		[
 			data.get("name"),
 			data.get("start"),
-			data.get("period"),
+			Number(data.get("period")) * 1000 * 60,
 			parseFunc(data.get("problems") as string),
 			parseFunc(data.get("editors") as string),
 			parseFunc(data.get("testers") as string),
