@@ -1,4 +1,4 @@
-FROM judge/base/cpp20
+FROM judge/base/cpp20:1.0.0
 
 COPY . /app
 
