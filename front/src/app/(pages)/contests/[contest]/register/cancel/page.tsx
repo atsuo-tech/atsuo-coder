@@ -14,7 +14,7 @@ export default async function Page({ params: { contest } }: { params: { contest:
 
 	if (!user) {
 
-		return redirect("/login");
+		redirect("/login");
 
 	}
 
@@ -32,6 +32,6 @@ export default async function Page({ params: { contest } }: { params: { contest:
 
 	await redis.del(`contest:${contest}`);
 
-	return redirect(`/contests/${contest}`);
+	redirect(`/contests/${contest}`);
 
 }
