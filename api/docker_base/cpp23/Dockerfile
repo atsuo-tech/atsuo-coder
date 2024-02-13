@@ -1,4 +1,4 @@
-FROM judge/base/cpp23
+FROM localhost/judge/base/cpp23
 
 COPY . /app
 
