@@ -1,5 +1,5 @@
 import redis from "@/app/redis";
-import { redirect } from "next/navigation";
+import { RedirectType, redirect } from "next/navigation";
 import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
 
@@ -14,7 +14,7 @@ export default async function Page({ params: { contest } }: { params: { contest:
 
 	if (!user) {
 
-		redirect("/login");
+		redirect("/login", RedirectType.push);
 
 	}
 
@@ -32,6 +32,6 @@ export default async function Page({ params: { contest } }: { params: { contest:
 
 	await redis.del(`contest:${contest}`);
 
-	redirect(`/contests/${contest}`);
+	redirect(`/contests/${contest}`, RedirectType.push);
 
 }
