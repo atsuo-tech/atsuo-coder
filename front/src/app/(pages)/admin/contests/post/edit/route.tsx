@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
 	await Promise.all([
 		contest.name!!.set(data.get("name") as string),
 		contest.start!!.set(new Date(data.get("start") as string)),
-		contest.period!!.set(Number(data.get("period")) * 1000 * 60),
+		contest.period!!.set(Number(data.get("period")) == -1 ? -1 : Number(data.get("period")) * 1000 * 60),
 		contest.problems!!.set((data.get("problems") as string).split(',').map((val) => val.replace(/[\s\t]/g, ""))),
 		contest.editors!!.set((data.get("editors") as string).split(',').map((val) => val.replace(/[\s\t]/g, ""))),
 		contest.testers!!.set((data.get("testers") as string).split(',').map((val) => val.replace(/[\s\t]/g, ""))),
