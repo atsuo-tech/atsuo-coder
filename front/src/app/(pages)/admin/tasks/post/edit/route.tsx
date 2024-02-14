@@ -43,9 +43,13 @@ export async function POST(req: NextRequest) {
 
 	}
 
-	const tasks = await getTask(sql, data.get("id") as string);
+	const task = await getTask(sql, data.get("id") as string);
 
-	const task = tasks[0];
+	if(!task) {
+
+		notFound();
+
+	}
 
 	if (!await hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
 
