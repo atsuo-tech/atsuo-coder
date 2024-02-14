@@ -49,7 +49,7 @@ export default async function Page(p: { params: { contest: string } }) {
 
 				<p>
 					Editors: {editors.join(' ')} | Testers: {testers.length != 0 ? testers.join(' ') : "None"}<br />
-					Rated: {rated || "無制限"} | Start: {start.toLocaleString("ja")} | End: {new Date(start.getTime() + period).toLocaleString("ja")} | Type: {isPublic ? "Public" : "Private"}
+					Rated: {rated || "無制限"} | Start: {start.toLocaleString("ja")} | End: {period == -1 ? "Infinity" : new Date(start.getTime() + period).toLocaleString("ja")} | Type: {isPublic ? "Public" : "Private"}
 				</p>
 
 			</div>
