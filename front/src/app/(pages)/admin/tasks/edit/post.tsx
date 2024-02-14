@@ -9,15 +9,13 @@ export default async function PostEditTask(id: string) {
 
 	const user = await getUser();
 	
-	const tasks = await getTask(sql, id);
+	const task = await getTask(sql, id);
 
-	if (tasks.length == 0 || !user) {
+	if (!user || !task) {
 
 		notFound();
 
 	}
-
-	const task = tasks[0];
 
 	if(!hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
 
