@@ -17,7 +17,7 @@ export default async function PostNewTestcase(id: string) {
 
 	const task = await getTask(sql, id);
 
-	if (task.length == 0 || !await hasProblemAdminPermission() && !task[0].editors.includes(user.getID()!!)) {
+	if (!task || !await hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
 
 		notFound();
 

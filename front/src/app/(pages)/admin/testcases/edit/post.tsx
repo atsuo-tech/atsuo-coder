@@ -8,9 +8,9 @@ import getUser from "@/lib/user";
 
 export default async function PostEditTestcase(id: string, task_id: string) {
 
-	const tasks = await getTask(sql, task_id);
+	const task = await getTask(sql, task_id);
 
-	if (tasks.length == 0) {
+	if (!task) {
 
 		notFound();
 
@@ -21,8 +21,6 @@ export default async function PostEditTestcase(id: string, task_id: string) {
 		notFound();
 
 	}
-
-	const task = tasks[0];
 
 	const user = await getUser();
 

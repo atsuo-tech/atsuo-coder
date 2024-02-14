@@ -8,15 +8,13 @@ import getUser from "@/lib/user";
 
 export default async function PostDeleteTestcase(task_id: string, id: string) {
 
-	const tasks = await getTask(sql, task_id);
+	const task = await getTask(sql, task_id);
 
-	if (tasks.length == 0) {
+	if (!task) {
 
 		notFound();
 
 	}
-
-	const task = tasks[0];
 
 	const user = await getUser();
 

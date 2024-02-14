@@ -7,9 +7,9 @@ import getUser from "@/lib/user";
 
 export default async function PostDeleteTask(id: string) {
 
-	const tasks = await getTask(sql, id);
+	const task = await getTask(sql, id);
 
-	if (tasks.length == 0) {
+	if (!task) {
 
 		notFound();
 
@@ -17,7 +17,7 @@ export default async function PostDeleteTask(id: string) {
 
 	const user = await getUser();
 
-	if (!user || !await hasProblemAdminPermission() && !tasks[0].editors.includes(user.getID()!!)) {
+	if (!user || !await hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
 
 		notFound();
 
