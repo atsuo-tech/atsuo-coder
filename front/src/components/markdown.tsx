@@ -2,7 +2,6 @@ import markdownHtml from 'zenn-markdown-html';
 import 'zenn-content-css';
 import './updater.css';
 import Head from 'next/head';
-import 'zenn-embed-elements';
 
 export default function Markdown({ md }: { md: string }) {
 
