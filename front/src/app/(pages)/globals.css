@@ -181,3 +181,7 @@ header {
 textarea {
 	height: 300px;
 }
+
+ul {
+	padding: 0;
+}
