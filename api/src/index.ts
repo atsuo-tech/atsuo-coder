@@ -5,11 +5,38 @@ import fs from "fs";
 import path from "path";
 import mysql, { RowDataPacket } from "mysql2/promise";
 import JudgeServer from "./judge/judge";
-import { Testcases } from "@w-yama-can/judge-systems";
 import http from "http";
 import https from "https";
 import getInnerAPI from "./innerAPI";
 config({ path: path.join(__dirname, "./../../.env") });
+
+async function sendDiscord(value: string) {
+
+	if ("discord_webhook_url" in process.env) {
+
+		return new Promise<void>((resolve) => {
+
+			const post = https.request(process.env.discord_webhook_url as string, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				}
+			}, (res) => {
+
+				res.on("data", (res) => console.log(res.toString()));
+				resolve();
+
+			});
+
+			post.write(value);
+
+			post.end();
+
+		});
+
+	}
+
+}
 
 const front = next({ dir: "../front", dev: process.argv.indexOf("--dev") != -1 });
 
@@ -109,6 +136,68 @@ front.prepare().then(async () => {
 	}
 
 	console.log("All files loaded");
+
+	await sendDiscord(JSON.stringify({
+		embeds: [
+			{
+				title: "Server started",
+				description: `Server started at ${new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })}`,
+				color: 65280
+			},
+			{
+				type: "link",
+				title: "AtsuoCoder",
+				description: "The PCP official judge server \"AtsuoCoder\" is now available.",
+				url: "https://judge.w-pcp.net"
+			}
+		]
+	}));
+
+	process.on("SIGINT", async () => {
+
+		console.log("Server get SIGINT");
+
+		await sendDiscord(JSON.stringify({
+			embeds: [
+				{
+					title: "Server stopped",
+					description: `Server stopped at ${new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })} due to SIGINT`,
+					color: 16711680
+				},
+				{
+					type: "link",
+					title: "AtsuoCoder",
+					description: "The PCP official judge server \"AtsuoCoder\" is now unavailable.",
+					url: "https://judge.w-pcp.net"
+				}
+			]
+		}));
+
+		process.exit(2);
+
+	});
+
+	process.on("beforeExit", async (code) => {
+
+		if (code == 2) return;
+
+		await sendDiscord(JSON.stringify({
+			embeds: [
+				{
+					title: "Server stopped",
+					description: `Server stopped at ${new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })} due to unexpected error`,
+					color: 16711680
+				},
+				{
+					type: "link",
+					title: "AtsuoCoder",
+					description: "The PCP official judge server \"AtsuoCoder\" is now unavailable.",
+					url: "https://judge.w-pcp.net"
+				}
+			]
+		}));
+
+	});
 
 	app.all("*", (req, res) => frontHandler(req, res));
 
