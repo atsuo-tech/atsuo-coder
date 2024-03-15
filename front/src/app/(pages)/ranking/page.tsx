@@ -34,7 +34,7 @@ export default async function Page() {
 							<tr key={i}>
 								<td>{i + 1}</td>
 								<td><a href={"/users/" + user.id}>{user.id}</a></td>
-								<td className={!user.rating || user.rating == 0 ? undefined : `rating${Math.floor(user.rating / 400)}`}>{user.rating}</td>
+								<td className={!user.rating || user.rating == 0 ? undefined : `rating${Math.max(7, Math.floor(user.rating / 400))}`}>{user.rating}</td>
 								<td>{user.name?.join(" ")}</td>
 								<td>{user.grade}</td>
 							</tr>
