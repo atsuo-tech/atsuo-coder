@@ -185,3 +185,43 @@ textarea {
 ul {
 	padding: 0;
 }
+
+/* 1-400 */
+.rating0 {
+	color: #5F7E88;
+}
+
+/* 400-800 */
+.rating1 {
+	color: #FFA500;
+}
+
+/* 800-1200 */
+.rating2 {
+	color: #008800;
+}
+
+/* 1200-1600 */
+.rating3 {
+	color: #FF4444;
+}
+
+/* 1600-2000 */
+.rating4 {
+	color: #FFFF00;
+}
+
+/* 2000-2400 */
+.rating5 {
+	color: #8080D0;
+}
+
+/* 2400-2800 */
+.rating6 {
+	color: #559FFF;
+}
+
+/* 3200- */
+.rating7 {
+	color: #00F8F8;
+}
