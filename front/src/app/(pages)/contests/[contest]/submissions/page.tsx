@@ -54,9 +54,6 @@ export default async function Page({ params }: { params: { [key: string]: string
 	return (
 		<>
 			<h1>提出一覧 | AtsuoCoder</h1>
-			<div>
-				<input type="button" value="Reload" id="reload" />
-			</div>
 			<h2>Submissions</h2>
 			<table>
 				<thead>
