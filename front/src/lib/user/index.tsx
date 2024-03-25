@@ -267,3 +267,9 @@ export function cacheSize() {
 	return Object.keys(cache).length;
 
 }
+
+export function deleteCache(id: string) {
+
+	delete cache[id];
+
+}
