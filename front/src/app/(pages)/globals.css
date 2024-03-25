@@ -114,7 +114,8 @@ tr {
 }
 
 input,
-textarea {
+textarea,
+select {
 	width: 440px;
 	margin-bottom: 20px;
 	padding: 8px 10px;

@@ -56,5 +56,6 @@ CREATE TABLE `users` (
 	`rating` BIGINT,
 	`name` TEXT,
 	`grade` BIGINT,
-	`admin` BIGINT
+	`admin` BIGINT,
+	`performances` TEXT DEFAULT "[]",
 );
