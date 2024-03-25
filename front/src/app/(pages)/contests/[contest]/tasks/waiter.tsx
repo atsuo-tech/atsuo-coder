@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-export default async function Waiter({ start }: { start: Date }) {
+export default function Waiter({ start }: { start: Date }) {
 
 	useEffect(() => {
 
