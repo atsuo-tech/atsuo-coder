@@ -1,11 +1,19 @@
 import redis from "@/app/redis";
-import { RedirectType, redirect } from "next/navigation";
+import { RedirectType, notFound, redirect } from "next/navigation";
 import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
 
 export default async function Page({ params: { contest } }: { params: { contest: string } }) {
 
 	const contestInfo = await getContest(contest);
+
+	const start = await contestInfo!!.start!!.get();
+
+	if (start.getTime() < Date.now()) {
+
+		notFound();
+
+	}
 
 	const rated_users = await contestInfo!!.rated_users!!.get();
 	const unrated_users = await contestInfo!!.unrated_users!!.get();
