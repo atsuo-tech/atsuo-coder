@@ -13,13 +13,6 @@ export default async function Page({ params: { contest: contestId } }: { params:
 	const contest = await getContest(contestId);
 	if (!contest) notFound();
 
-	if ((await contest.start!!.get()).getTime() > Date.now()) {
-
-		if (user && !(await contest.editors!!.get()).includes(user.getID()!!) && !(await contest.testers!!.get()).includes(user.getID()!!)) notFound();
-		if (!user) notFound();
-
-	}
-
 	const [submissions, _] = await sql.query("SELECT * FROM submissions WHERE contest = ? ORDER BY created_at", [contestId]) as [{ id: string, sourceCode: string, contest: string, task: string, user: string, created_at: Date, judge: string, language: string }[], FieldPacket[]];
 
 	const scores: { [user: string]: { score: number, problems: { [problem: string]: { score: number, penalty: number, notEffectedPenalty: number, lastSubmitTime: number } } } } = {};
