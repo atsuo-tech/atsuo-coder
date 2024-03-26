@@ -86,6 +86,7 @@ export default async function Page({ params: { contest: contestId } }: { params:
 						<td className={styles.user}>#</td>
 						<td className={styles.user}>User</td>
 						<td className={styles.user}>Penalty</td>
+						<td className={styles.user}>Last Submit</td>
 						<td className={styles.user}>Total</td>
 						{
 							(await contest.problems!!.get()).map((problem, i) => {
@@ -119,12 +120,21 @@ export default async function Page({ params: { contest: contestId } }: { params:
 
 								}
 
+								let lastSubmitTime = 0;
+
+								for(const problem in scores[user.user].problems) {
+
+									lastSubmitTime = Math.max(lastSubmitTime, scores[user.user].problems[problem].lastSubmitTime);
+
+								}
+
 								nodes.push(
 									<tr key={i}>
 										<td>{i + 1}</td>
 										<td className={styles.user}>{user.user}</td>
 										<td className={styles.user}>{penaltySum}</td>
 										<td className={styles.user}>{scores[user.user]?.score || 0}</td>
+										<td className={styles.user}>{new Date(lastSubmitTime - (await contest.start!!.get()).getTime()).toLocaleTimeString("ja-jp")}</td>
 										{
 											(await contest.problems!!.get()).map((problem, j) => {
 												if (!scores[user.user].problems[problem]) {
