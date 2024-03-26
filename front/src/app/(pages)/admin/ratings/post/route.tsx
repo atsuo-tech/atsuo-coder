@@ -131,7 +131,7 @@ export async function POST(req: NextRequest) {
 
 			console.log(user.user, rating, innerRating);
 
-			await sql.query("UPDATE users SET rating = ?, inner_rating = ?, performances = ? WHERE id = ?", [rating, innerRating, JSON.stringify([...JSON.parse(userInfo.find((v) => v.id == user.user)!!.performances), { performance: performances[user.user], contest: contestId }]), user.user]);
+			await sql.query("UPDATE users SET rating = ?, inner_rating = ?, performances = ? WHERE id = ?", [rating, innerRating, JSON.stringify([...JSON.parse(userInfo.find((v) => v.id == user.user)!!.performances), { performance: performances[user.user], contest: contestId, rating, innerPerformance: performances[user.user] }]), user.user]);
 
 		}
 
