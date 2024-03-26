@@ -3,7 +3,7 @@ import { hasAdminPremission } from "../../permission";
 import { notFound } from "next/navigation";
 import { Contest, User } from "@w-yama-can/rating-system";
 import { sql } from "@/app/sql";
-import { RowDataPacket } from "mysql2";
+import { FieldPacket, RowDataPacket } from "mysql2";
 import getContest from "@/lib/contest";
 
 export async function POST(req: NextRequest) {
@@ -16,10 +16,10 @@ export async function POST(req: NextRequest) {
 
 	const data = await req.formData();
 
-	const contest = data.get("id");
+	const contestId = data.get("id") as string;
 	const rated = data.get("rated");
 
-	if (!contest || !rated) {
+	if (!contestId || !rated) {
 
 		return new Response("Bad Request", {
 			status: 400
@@ -29,110 +29,109 @@ export async function POST(req: NextRequest) {
 
 	if (rated == "Rated") {
 
-		const [submissions] = await sql.query<RowDataPacket[]>("SELECT * FROM submissions WHERE contest = ?", [contest]);
+		const [submissions, _] = await sql.query("SELECT * FROM submissions WHERE contest = ? ORDER BY created_at", [contestId]) as [{ id: string, sourceCode: string, contest: string, task: string, user: string, created_at: Date, judge: string, language: string }[], FieldPacket[]];
 
-		const rankings_d: { [key: string]: { [problem: string]: { score: number, penalty: number, notCountedPenalty: number, lastSubmitted: Date } } } = {};
+		const scores: { [user: string]: { score: number, problems: { [problem: string]: { score: number, penalty: number, notEffectedPenalty: number, lastSubmitTime: number } } } } = {};
 
-		let rankings: { id: string, score: number, penalty: number, lastSubmitted: Date }[] = [];
+		const contest = (await getContest(contestId))!!;
 
-		for (const { task, user, created_at, judge } of submissions) {
+		for (let i = 0; i < submissions.length; i++) {
 
-			if (judge.startsWith("[") && judge.endsWith("]")) {
+			if (submissions[i].judge == "WJ" || JSON.parse(submissions[i].judge).status == 3) continue;
+			scores[submissions[i].user] = scores[submissions[i].user] || { score: 0, problems: {} };
 
-				if (rankings_d[user] == undefined) {
+			if (!scores[submissions[i].user].problems[submissions[i].task]) {
 
-					rankings_d[user] = {};
+				scores[submissions[i].user].problems[submissions[i].task] = { lastSubmitTime: 0, notEffectedPenalty: 0, penalty: 0, score: 0 };
 
-				}
+			}
 
-				if (rankings_d[user][task] == undefined) {
+			if (scores[submissions[i].user].problems[submissions[i].task].score < JSON.parse(submissions[i].judge)[0][1]) {
 
-					rankings_d[user][task] = { score: 0, penalty: 0, notCountedPenalty: 0, lastSubmitted: new Date(0) };
+				scores[submissions[i].user].problems[submissions[i].task].penalty += scores[submissions[i].user].problems[submissions[i].task].notEffectedPenalty || 0;
+				scores[submissions[i].user].problems[submissions[i].task].lastSubmitTime = submissions[i].created_at.getTime() - (await contest.start!!.get()).getTime();
+				scores[submissions[i].user].problems[submissions[i].task].score = JSON.parse(submissions[i].judge)[0][1];
+				scores[submissions[i].user].problems[submissions[i].task].notEffectedPenalty = 1;
 
-				}
+			} else {
 
-				if (judge[0][0] != 0) {
-
-					rankings_d[user][task].notCountedPenalty++;
-
-				}
-
-				if (rankings_d[user][task].score < judge[0][1]) {
-
-					rankings_d[user][task].score = judge[0][1];
-					rankings_d[user][task].penalty += rankings_d[user][task].notCountedPenalty;
-					rankings_d[user][task].lastSubmitted = created_at;
-					rankings_d[user][task].notCountedPenalty = 0;
-
-				} else {
-
-					rankings_d[user][task].notCountedPenalty++;
-
-				}
-
-			} else if (judge != "WJ" && JSON.parse(judge).status != 3) {
-
-				rankings_d[user][task].notCountedPenalty++;
+				scores[submissions[i].user].problems[submissions[i].task].notEffectedPenalty = (scores[submissions[i].user].problems[submissions[i].task].notEffectedPenalty || 0) + 1;
 
 			}
 
 		}
 
-		for (const user in rankings_d) {
+		let users: { user: string, score: number, contestTime: number }[] = [];
 
-			let score = 0, penalty = 0, lastSubmitted = new Date(0);
+		for (const user in scores) {
 
-			for (const task in rankings_d[user]) {
+			let lastSubmitTime = 0;
+			let penalty = 0;
 
-				score += rankings_d[user][task].score;
-				penalty += rankings_d[user][task].penalty;
-				lastSubmitted = new Date(Math.max(lastSubmitted.getTime(), rankings_d[user][task].lastSubmitted.getTime()));
+			for (const problem in scores[user].problems) {
+
+				scores[user].score += scores[user].problems[problem].score;
+				penalty += scores[user].problems[problem].penalty;
+				lastSubmitTime = Math.max(lastSubmitTime, scores[user].problems[problem].lastSubmitTime);
 
 			}
 
-			rankings.push({ score, penalty, lastSubmitted, id: user });
+			users.push({ user, score: scores[user].score, contestTime: lastSubmitTime + (await contest.penalty!!.get()) * penalty });
 
 		}
 
-		const contestData = await getContest(contest as string);
-		const
-			startTime = (await contestData!!.start!!.get()).getTime(),
-			penalty = (await contestData!!.penalty!!.get());
+		const rated_users = await contest.rated_users!!.get();
+		const unrated_users = await contest.unrated_users!!.get();
 
-		rankings = rankings.sort((a, b) => (a.score == b.score ? a.lastSubmitted.getTime() - startTime + a.penalty * (60 * 1000 * penalty) - b.lastSubmitted.getTime() + b.penalty * (60 * 1000 * penalty) : b.score - a.score));
+		const registerd_users = rated_users.concat(unrated_users);
 
-		const [[{ rated_users, unrated_users }]] = await sql.query<RowDataPacket[]>("SELECT rated_users, unrated_users FROM contests where id = ?", [contest]);
+		users = users.filter((user) => registerd_users.includes(user.user));
 
-		const userIDs = [...JSON.parse(rated_users), ...JSON.parse(unrated_users)];
+		registerd_users.filter((user) => !users.find((value) => value.user == user)).map((user) => {
 
-		const [cUsers] = await sql.query<RowDataPacket[]>("SELECT id, rating, performances FROM users WHERE id in ?", [userIDs]);
+			users.push({ user, score: 0, contestTime: 0 });
 
-		const users: { [key: string]: User } = {};
+		});
 
-		cUsers.forEach(({ id, rating, performances }) => users[id] = new User(id, rating, JSON.parse(performances)));
+		users.sort((a, b) => (b.score - a.score == 0 ? a.contestTime - b.contestTime : b.score - a.score));
 
 		const dContest = new Contest();
 
-		for (const userId in users) {
+		const [userInfo] = await sql.query<RowDataPacket[]>("SELECT * from users where id in (?)", [users.map((v) => v.user)]);
 
-			const dUser = users[userId];
+		const dUsers: { [user: string]: User } = {};
+		const performances: { [user: string]: number } = {};
 
-			dContest.addUser(dUser);
+		users.forEach((user, index) => {
 
-		}
+			const performance = Array.from<any>(JSON.parse(userInfo.find((v) => v.id == user.user)!!.performances)).map((val) => val.performance);
+			dUsers[user.user] = new User(user.user, userInfo.find((v) => v.id == user.user)!!.inner_rating, performance);
+			dContest.addUser(dUsers[user.user]);
 
-		let i = 1;
+		});
 
-		for (const user of rankings) {
+		users.forEach((user, index) => {
 
-			const dUser = users[user.id];
+			const dUser = dUsers[user.user];
 
-			const perf = dUser.calcPerformance(dContest, i, Infinity);
+			const perf = dUser.calcPerformance(dContest, index + 1, Infinity);
+
+			performances[user.user] = perf;
+
+			console.log(user.user, perf, userInfo.find((v) => v.id == user.user)!!.inner_rating);
+
+		});
+
+		for (const user of users) {
+
+			const dUser = dUsers[user.user];
+
 			const rating = dUser.calcRating();
+			const innerRating = dUser.calcInnerRating();
 
-			await sql.query("UPDATE users SET rating = ?, performances = ? WHERE id = ?", [rating, JSON.stringify([...JSON.parse(cUsers.find((v) => v.id == user)!!.performances), perf]), user.id]);
+			console.log(user.user, rating, innerRating);
 
-			i++;
+			await sql.query("UPDATE users SET rating = ?, inner_rating = ?, performances = ? WHERE id = ?", [rating, innerRating, JSON.stringify([...JSON.parse(userInfo.find((v) => v.id == user.user)!!.performances), { performance: performances[user.user], contest: contestId }]), user.user]);
 
 		}
 
