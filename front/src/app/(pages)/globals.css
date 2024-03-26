@@ -35,6 +35,8 @@
 	--callout-border-rgb: 172, 175, 176;
 	--card-rgb: 180, 185, 188;
 	--card-border-rgb: 131, 134, 135;
+
+	line-height: 2;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -188,8 +190,10 @@ textarea {
 	height: 300px;
 }
 
-ul {
-	padding: 0;
+ol li {
+
+	list-style-type: decimal;
+
 }
 
 /* 1-400 */
