@@ -109,8 +109,6 @@ export default async function User({ params: { id } }: { params: { id: string } 
 
 						return (
 							<>
-								<Link href={`#history${index}`}><circle cx={(index + 1) * 900 / (performances.length + 1) + 50} cy={25 + 450 - performance.rating / (maxShow - minShow) * 450} r={5} fill={getRatingColor(performance.rating)} stroke="black" strokeWidth={1} key={index * 2}></circle></Link>
-								<Link href={`#history${index}`}><circle cx={(index + 1) * 900 / (performances.length + 1) + 50} cy={25 + 450 - performance.innerPerformance / (maxShow - minShow) * 450} r={5} fill={getRatingColor(performance.innerPerformance)} stroke="black" strokeWidth={1} key={index * 2 + 1}></circle></Link>
 								{index == 0 ?
 									<></> :
 									<>
@@ -118,6 +116,8 @@ export default async function User({ params: { id } }: { params: { id: string } 
 										<line x1={(index) * 900 / (performances.length + 1) + 50} x2={(index + 1) * 900 / (performances.length + 1) + 50} y1={25 + 450 - performances[index - 1].innerPerformance / (maxShow - minShow) * 450} y2={25 + 450 - performance.innerPerformance / (maxShow - minShow) * 450} stroke="white" strokeWidth={1}></line>
 									</>
 								}
+								<Link href={`#history${index}`}><circle cx={(index + 1) * 900 / (performances.length + 1) + 50} cy={25 + 450 - performance.rating / (maxShow - minShow) * 450} r={5} fill={getRatingColor(performance.rating)} stroke="black" strokeWidth={1} key={index * 2}></circle></Link>
+								<Link href={`#history${index}`}><circle cx={(index + 1) * 900 / (performances.length + 1) + 50} cy={25 + 450 - performance.innerPerformance / (maxShow - minShow) * 450} r={5} fill={getRatingColor(performance.innerPerformance)} stroke="black" strokeWidth={1} key={index * 2 + 1}></circle></Link>
 							</>
 						);
 
