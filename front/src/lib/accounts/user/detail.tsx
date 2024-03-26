@@ -61,7 +61,7 @@ export namespace Detail {
 
 		return new Promise<User>((resolve, reject) => {
 
-			sql.query("INSERT INTO users (id, password, rating, name, grade, admin) VALUES (?, ?, 0, ?, ?, 0)", [id, crypto.createHash("sha256").update(password).digest("hex"), JSON.stringify(name), grade]).then(([result]) => {
+			sql.query("INSERT INTO users (id, password, rating, name, grade, admin, performances) VALUES (?, ?, 0, ?, ?, 0, '[]')", [id, crypto.createHash("sha256").update(password).digest("hex"), JSON.stringify(name), grade]).then(([result]) => {
 
 				resolve(getUser(id) as Promise<User>);
 
