@@ -134,7 +134,7 @@ export default async function Page({ params: { contest: contestId } }: { params:
 										<td className={styles.user}>{user.user}</td>
 										<td className={styles.user}>{penaltySum}</td>
 										<td className={styles.user}>{scores[user.user]?.score || 0}</td>
-										<td className={styles.user}>{new Date(lastSubmitTime - (await contest.start!!.get()).getTime()).toLocaleTimeString("ja-jp")}</td>
+										<td className={styles.user}>{new Date(lastSubmitTime - 9 * 3600 * 1000).toLocaleTimeString("ja-jp")}</td>
 										{
 											(await contest.problems!!.get()).map((problem, j) => {
 												if (!scores[user.user].problems[problem]) {
