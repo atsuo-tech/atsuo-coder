@@ -61,7 +61,7 @@ export default async function Page() {
 									<td>{task.name}</td>
 									<td>{task.editors.join(", ")}</td>
 									<td>{task.testers.join(", ")}</td>
-									<td><Link href={`/admin/tasks/delete/${task.id}`}><input type="button" value="Delete" style={{ background: "red", width: "-fit-content" }} /></Link></td>
+									<td><Link href={`/admin/tasks/delete/${task.id}`}><input type="button" value="Delete" style={{ background: "red", width: "fit-content" }} /></Link></td>
 								</tr>
 							)
 
