@@ -57,9 +57,7 @@ export default async function Page(p: { params: { contest: string } }) {
 			<br />
 
 			<div id="description" className={styles.description}>
-				<div id="description">
-					<Markdown md={description} />
-				</div>
+				<Markdown md={description} />
 			</div>
 		</>
 	)

@@ -52,179 +52,223 @@ export default async function Page(params: { searchParams: { [key: string]: stri
 
 			<h2>Permanent Contests</h2>
 
-			<div>
-				<table id="inf-con">
-					<thead>
-						<tr>
-							<td width="20%">Start</td>
-							<td width="10%">Type</td>
-							<td width="50%">Contest Name</td>
-							<td width="10%">Rated</td>
-							<td width="10%">Period</td>
-						</tr>
-					</thead>
-					<tbody>
-						{
-							await (async () => {
+			<table id="inf-con">
+				<thead>
+					<tr>
+						<td width="20%">Start</td>
+						<td width="10%">Type</td>
+						<td width="50%">Contest Name</td>
+						<td width="10%">Rated</td>
+						<td width="10%">Period</td>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						await (async () => {
 
-								const data: ReactNode[] = [];
+							const data: ReactNode[] = [];
 
-								for (const contest of permanent_contests) {
+							for (const contest of permanent_contests) {
 
-									const period = await contest.period!!.get();
-									const start = await contest.start!!.get();
+								const period = await contest.period!!.get();
+								const start = await contest.start!!.get();
 
-									data.push(
-										<tr key={contest.id}>
-											<td>{start.toLocaleString("ja")}</td>
-											<td>{(await contest.public?.get()) ? "公開" : "非公開"}</td>
-											<td><a href={`/contests/${contest.id}`}>{await contest.name?.get()}</a></td>
-											<td>{await contest.rated?.get()}</td>
-											<td>Infinity</td>
-										</tr>
-									);
+								data.push(
+									<tr key={contest.id}>
+										<td>{start.toLocaleString("ja")}</td>
+										<td>{(await contest.public?.get()) ? "公開" : "非公開"}</td>
+										<td><a href={`/contests/${contest.id}`}>{await contest.name?.get()}</a></td>
+										<td>{await contest.rated?.get()}</td>
+										<td>Infinity</td>
+									</tr>
+								);
 
-								}
+							}
 
+							if(permanent_contests.length == 0)
+							{
+								return (
+									<tr>
+										<td colSpan={5}>
+											現在常設中のコンテストはありません。
+										</td>
+									</tr>
+								);
+							}
+
+							else 
+							{
 								return data;
-
-							})()
-						}
-					</tbody>
-				</table>
-			</div>
+							}
+						})()
+					}
+				</tbody>
+			</table>
 
 			<h2>Active Contests</h2>
 
-			<div>
-				<table id="now-con">
-					<thead>
-						<tr>
-							<td width="20%">Start</td>
-							<td width="10%">Type</td>
-							<td width="50%">Contest Name</td>
-							<td width="10%">Rated</td>
-							<td width="10%">Period</td>
-						</tr>
-					</thead>
-					<tbody>
-						{
-							await (async () => {
+			<table id="now-con">
+				<thead>
+					<tr>
+						<td width="20%">Start</td>
+						<td width="10%">Type</td>
+						<td width="50%">Contest Name</td>
+						<td width="10%">Rated</td>
+						<td width="10%">Period</td>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						await (async () => {
 
-								const data: ReactNode[] = [];
+							const data: ReactNode[] = [];
 
-								for (const contest of active_contests) {
+							for (const contest of active_contests) {
 
-									const period = await contest.period!!.get();
-									const start = await contest.start!!.get();
+								const period = await contest.period!!.get();
+								const start = await contest.start!!.get();
 
-									data.push(
-										<tr key={contest.id}>
-											<td>{start.toLocaleString("ja")}</td>
-											<td>{(await contest.public?.get()) ? "公開" : "非公開"}</td>
-											<td><a href={`/contests/${contest.id}`}>{await contest.name?.get()}</a></td>
-											<td>{await contest.rated?.get()}</td>
-											<td>{`${Math.floor((period - (period - period % 60) % 3600) / 3600)}:${Math.floor(((period - period % 60) % 3600) / 60)}:${period % 60}`}</td>
-										</tr>
-									);
+								data.push(
+									<tr key={contest.id}>
+										<td>{start.toLocaleString("ja")}</td>
+										<td>{(await contest.public?.get()) ? "公開" : "非公開"}</td>
+										<td><a href={`/contests/${contest.id}`}>{await contest.name?.get()}</a></td>
+										<td>{await contest.rated?.get()}</td>
+										<td>{`${Math.floor((period - (period - period % 60) % 3600) / 3600)}:${Math.floor(((period - period % 60) % 3600) / 60)}:${period % 60}`}</td>
+									</tr>
+								);
 
-								}
+							}
 
+							if(active_contests.length == 0)
+							{
+								return (
+									<tr>
+										<td colSpan={5}>
+											現在開催中のコンテストはありません。
+										</td>
+									</tr>
+								);
+							}
+
+							else 
+							{
 								return data;
-
-							})()
-						}
-					</tbody>
-				</table>
-			</div>
+							}
+						})()
+					}
+				</tbody>
+			</table>
 
 			<h2>Upcoming Contests</h2>
 
-			<div>
-				<table id="bef-con">
-					<thead>
-						<tr>
-							<td width="20%">Start</td>
-							<td width="10%">Type</td>
-							<td width="50%">Contest Name</td>
-							<td width="10%">Rated</td>
-							<td width="10%">Period</td>
-						</tr>
-					</thead>
-					<tbody>
-						{
-							await (async () => {
+			<table id="bef-con">
+				<thead>
+					<tr>
+						<td width="20%">Start</td>
+						<td width="10%">Type</td>
+						<td width="50%">Contest Name</td>
+						<td width="10%">Rated</td>
+						<td width="10%">Period</td>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						await (async () => {
 
-								const data: ReactNode[] = [];
+							const data: ReactNode[] = [];
 
-								for (const contest of upcoming_contests) {
+							for (const contest of upcoming_contests) {
 
-									const period = await contest.period!!.get();
-									const start = await contest.start!!.get();
+								const period = await contest.period!!.get();
+								const start = await contest.start!!.get();
 
-									data.push(
-										<tr key={contest.id}>
-											<td>{start.toLocaleString("ja")}</td>
-											<td>{(await contest.public?.get()) ? "公開" : "非公開"}</td>
-											<td><a href={`/contests/${contest.id}`}>{await contest.name?.get()}</a></td>
-											<td>{await contest.rated?.get()}</td>
-											<td>{`${Math.floor((period - (period - period % 60) % 3600) / 3600)}:${Math.floor(((period - period % 60) % 3600) / 60)}:${period % 60}`}</td>
-										</tr>
-									);
+								data.push(
+									<tr key={contest.id}>
+										<td>{start.toLocaleString("ja")}</td>
+										<td>{(await contest.public?.get()) ? "公開" : "非公開"}</td>
+										<td><a href={`/contests/${contest.id}`}>{await contest.name?.get()}</a></td>
+										<td>{await contest.rated?.get()}</td>
+										<td>{`${Math.floor((period - (period - period % 60) % 3600) / 3600)}:${Math.floor(((period - period % 60) % 3600) / 60)}:${period % 60}`}</td>
+									</tr>
+								);
 
-								}
+							}
 
+							if(upcoming_contests.length == 0)
+							{
+								return (
+									<tr>
+										<td colSpan={5}>
+											現在予定中のコンテストはありません。
+										</td>
+									</tr>
+								);
+							}
+
+							else 
+							{
 								return data;
-
-							})()
-						}
-					</tbody>
-				</table>
-			</div>
+							}
+						})()
+					}
+				</tbody>
+			</table>
 
 			<h2>Recent Contests</h2>
 
-			<div>
-				<table id="aft-con">
-					<thead>
-						<tr>
-							<td width="20%">Start</td>
-							<td width="10%">Type</td>
-							<td width="50%">Contest Name</td>
-							<td width="10%">Rated</td>
-							<td width="10%">Period</td>
-						</tr>
-					</thead>
-					<tbody>
-						{
-							await (async () => {
+			<table id="aft-con">
+				<thead>
+					<tr>
+						<td width="20%">Start</td>
+						<td width="10%">Type</td>
+						<td width="50%">Contest Name</td>
+						<td width="10%">Rated</td>
+						<td width="10%">Period</td>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						await (async () => {
 
-								const data: ReactNode[] = [];
+							const data: ReactNode[] = [];
 
-								for (const contest of recent_contests) {
+							for (const contest of recent_contests) {
 
-									const period = await contest.period!!.get();
-									const start = await contest.start!!.get();
+								const period = await contest.period!!.get();
+								const start = await contest.start!!.get();
 
-									data.push(
-										<tr key={contest.id}>
-											<td>{start.toLocaleString("ja")}</td>
-											<td>{(await contest.public?.get()) ? "公開" : "非公開"}</td>
-											<td><a href={`/contests/${contest.id}`}>{await contest.name?.get()}</a></td>
-											<td>{await contest.rated?.get()}</td>
-											<td>{`${Math.floor((period - (period - period % 60) % 3600) / 3600)}:${Math.floor(((period - period % 60) % 3600) / 60)}:${period % 60}`}</td>
-										</tr>
-									);
+								data.push(
+									<tr key={contest.id}>
+										<td>{start.toLocaleString("ja")}</td>
+										<td>{(await contest.public?.get()) ? "公開" : "非公開"}</td>
+										<td><a href={`/contests/${contest.id}`}>{await contest.name?.get()}</a></td>
+										<td>{await contest.rated?.get()}</td>
+										<td>{`${Math.floor((period - (period - period % 60) % 3600) / 3600)}:${Math.floor(((period - period % 60) % 3600) / 60)}:${period % 60}`}</td>
+									</tr>
+								);
 
-								}
+							}
 
+							if(recent_contests.length == 0)
+							{
+								return (
+									<tr>
+										<td colSpan={5}>
+											終了後のコンテストはありません。
+										</td>
+									</tr>
+								);
+							}
+
+							else 
+							{
 								return data;
-
-							})()
-						}
-					</tbody>
-				</table>
-			</div>
+							}
+						})()
+					}
+				</tbody>
+			</table>
 		</>
 	)
 }

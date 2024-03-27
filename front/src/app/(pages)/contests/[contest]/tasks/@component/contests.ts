@@ -68,14 +68,14 @@ export async function getTasks(sql: Connection, ids: string[]) {
 
 		for (let i = 0; i < id.length; i++) {
 
-			const cache = await redis.get(`task:${id[i]}`);
+			/*const cache = await redis.get(`task:${id[i]}`);
 
 			if (cache) {
 				id[i] = "";
 				res[i] = JSON.parse(cache);
-			} else {
+			} else {*/
 				resolvers.push(id[i]);
-			}
+			/*}*/
 
 		}
 
@@ -97,8 +97,8 @@ export async function getTasks(sql: Connection, ids: string[]) {
 
 			res[i] = { ...src, editors: JSON.parse(src.editors), testers: JSON.parse(src.testers) };
 
-			await redis.set(`task:${id[i]}`, JSON.stringify(res[i]));
-			await redis.expire(`task:${id[i]}`, 60 * 60);
+			//await redis.set(`task:${id[i]}`, JSON.stringify(res[i]));
+			//await redis.expire(`task:${id[i]}`, 60 * 60);
 
 		}
 
