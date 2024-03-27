@@ -52,4 +52,5 @@ div.headers {
 	padding: 5px;
 	margin: 0 20px;
 	font-size: 16px;
+	place-self: center;
 }
