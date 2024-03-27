@@ -1,29 +1,78 @@
-import styles from "./page.module.css";
+import getUser from "@/lib/user";
+import { getEditableTasks } from "../../contests/[contest]/task";
+import Link from "next/link";
+import style from "./page.module.css";
 
 export default async function Page() {
+
+	const tasks = await getEditableTasks((await getUser())!!.getID()!!);
+
+	const datas: { id: string, name: string, editors: string[], testers: string[] }[] = [];
+
+	for (const value of tasks) {
+
+		datas.push({ id: await value.getID() as string, name: await value.name?.get() as string, editors: await value.editors!!.get() as string[], testers: await value.testers!!.get() as string[] });
+
+	}
+
 	return (
 		<>
+
 			<h1>Tasks | AtsuoCoder Admin</h1>
-			<ul className={styles.buttons}>
-				<a href="/admin/tasks/new">
-					<li>
-						<span className={styles["material-icons"]}>add</span>
-						New Tasks
-					</li>
-				</a>
-				<a href="/admin/tasks/edit">
-					<li>
-						<span className={styles["material-icons"]}>edit</span>
-						Edit Tasks
-					</li>
-				</a>
-				<a href="/admin/tasks/delete">
-					<li>
-						<span className={styles["material-icons"]}>delete</span>
-						Delete Tasks
-					</li>
-				</a>
-			</ul>
+
+			<table>
+
+				<thead>
+
+					<tr>
+
+						<th>ID</th>
+						<th>Name</th>
+						<th>Editors</th>
+						<th>Testers</th>
+						<th>Delete</th>
+
+					</tr>
+
+				</thead>
+
+				<tbody>
+
+					<tr>
+
+						<td>
+
+							<Link href="/admin/tasks/new">
+
+								Add New
+
+							</Link>
+
+						</td>
+
+					</tr>
+
+					{
+						datas.map((task, index) => {
+
+							return (
+								<tr key={index}>
+									<td><Link href={`/admin/tasks/edit/${task.id}`}>{task.id}</Link></td>
+									<td>{task.name}</td>
+									<td>{task.editors.join(", ")}</td>
+									<td>{task.testers.join(", ")}</td>
+									<td><Link href={`/admin/tasks/delete/${task.id}`}><input type="button" value="Delete" style={{ background: "red", width: "-fit-content" }} /></Link></td>
+								</tr>
+							)
+
+						})
+					}
+
+				</tbody>
+
+			</table>
+
 		</>
 	)
+
 }

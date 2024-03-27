@@ -1,14 +1,14 @@
-import styles from "../form.module.css";
+import styles from "../../form.module.css";
 import { getTask } from "@/app/(pages)/contests/[contest]/task";
 import { sql } from "@/app/sql";
 import { notFound } from "next/navigation";
-import { hasProblemAdminPermission } from "../../permission";
+import { hasProblemAdminPermission } from "../../../permission";
 import getUser from "@/lib/user";
 
-export default async function PostEditTask(id: string) {
+export default async function PostEditTask({ params: { id }, searchParams: { done } }: { params: { id: string }, searchParams: { done?: string } }) {
 
 	const user = await getUser();
-	
+
 	const task = await getTask(sql, id);
 
 	if (!user || !task) {
@@ -17,7 +17,7 @@ export default async function PostEditTask(id: string) {
 
 	}
 
-	if(!hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
+	if (!hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
 
 		notFound();
 
@@ -27,7 +27,6 @@ export default async function PostEditTask(id: string) {
 		<>
 			<h1>Edit Tasks | AtsuoCoder Admin</h1>
 			<p>Editing {id}</p>
-			<br />
 			<div className={styles.body1}>
 				<form action="/admin/tasks/post/edit" method="post">
 					<input type="hidden" name="id" defaultValue={id} />
@@ -44,21 +43,15 @@ export default async function PostEditTask(id: string) {
 					<input name="editors" id="editors" type="text" required placeholder="yama_can, abn48" defaultValue={task.editors.join(', ')} />
 					<br />
 					<label htmlFor="editors" className={`${styles.warning} ${styles.show}`} id="editor-warning">
-						<ul>
-							<li> Warning: we will not warn if this field includes invalid username.</li>
-						</ul>
+						Warning: we will not warn if this field includes invalid username.
 					</label>
-					<br />
 					<label htmlFor="testers">Testers</label>
 					<br />
 					<input name="testers" id="testers" type="text" required placeholder="yama_can, abn48" defaultValue={task.testers.join(', ')} />
 					<br />
 					<label htmlFor="editors" className={`${styles.warning} ${styles.show}`} id="editor-warning">
-						<ul>
-							<li> Warning: we will not warn if this field includes invalid username.</li>
-						</ul>
+						Warning: we will not warn if this field includes invalid username.
 					</label>
-					<br />
 					<label htmlFor="question">Question</label>
 					<br />
 					<textarea name="question" id="question" required defaultValue={task.question} />

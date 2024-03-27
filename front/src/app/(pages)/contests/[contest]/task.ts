@@ -1,5 +1,8 @@
-import { Connection } from "mysql2/promise";
+import { Connection, RowDataPacket } from "mysql2/promise";
 import redis from "@/app/redis";
+import { sql } from "@/app/sql";
+import { hasAdminPremission, hasProblemAdminPermission } from "../../admin/permission";
+import getProblem, { Problem } from "@/lib/problem";
 
 export async function getTasks(sql: Connection, userId?: string) {
 
@@ -48,5 +51,23 @@ export async function getTask(sql: Connection, id: string) {
 		resolve(res);
 
 	})
+
+}
+
+export async function getEditableTasks(user: string): Promise<Problem[]> {
+
+	"use server";
+
+	const [data] = await sql.query<RowDataPacket[]>(await hasAdminPremission() || await hasProblemAdminPermission() ? "SELECT * FROM tasks;" : "SELECT * FROM tasks where LOCATE(?, editors) > 0;", [user]);
+
+	const problems = [];
+
+	for (const value of data) {
+
+		problems.push(await getProblem(value.id) as Problem);
+
+	}
+
+	return problems;
 
 }
