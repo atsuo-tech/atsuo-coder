@@ -9,17 +9,15 @@ export default async function PostEditTask(id: string) {
 
 	const user = await getUser();
 	
-	const tasks = await getTask(sql, id);
+	const task = await getTask(sql, id);
 
-	if (tasks.length == 0 || !user) {
+	if (!user || !task) {
 
 		notFound();
 
 	}
 
-	const task = tasks[0];
-
-	if(!hasProblemAdminPermission() && !task.editor.includes(user.getID()!!)) {
+	if(!hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
 
 		notFound();
 
@@ -41,9 +39,9 @@ export default async function PostEditTask(id: string) {
 					<br />
 					<input name="id" id="id" type="text" autoComplete="on" placeholder="aac001_a" required disabled defaultValue={id} />
 					<br />
-					<label htmlFor="editors">Editor</label>
+					<label htmlFor="editors">Editors</label>
 					<br />
-					<input name="editors" id="editors" type="text" required placeholder="yama_can, abn48" defaultValue={task.editor.join(', ')} />
+					<input name="editors" id="editors" type="text" required placeholder="yama_can, abn48" defaultValue={task.editors.join(', ')} />
 					<br />
 					<label htmlFor="editors" className={`${styles.warning} ${styles.show}`} id="editor-warning">
 						<ul>
@@ -51,9 +49,9 @@ export default async function PostEditTask(id: string) {
 						</ul>
 					</label>
 					<br />
-					<label htmlFor="testers">Tester</label>
+					<label htmlFor="testers">Testers</label>
 					<br />
-					<input name="testers" id="testers" type="text" required placeholder="yama_can, abn48" defaultValue={task.tester.join(', ')} />
+					<input name="testers" id="testers" type="text" required placeholder="yama_can, abn48" defaultValue={task.testers.join(', ')} />
 					<br />
 					<label htmlFor="editors" className={`${styles.warning} ${styles.show}`} id="editor-warning">
 						<ul>

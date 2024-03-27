@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
 
@@ -14,7 +14,7 @@ export default async function RootLayout({
 
 	if (!user) {
 
-		notFound();
+		redirect("/login");
 
 	}
 
@@ -27,9 +27,8 @@ export default async function RootLayout({
 	}
 
 	const start = await contest.start!!.get();
-	const period = await contest.period!!.get();
 
-	if (start.getTime() + period > Date.now()) {
+	if (start.getTime() < Date.now()) {
 
 		notFound();
 

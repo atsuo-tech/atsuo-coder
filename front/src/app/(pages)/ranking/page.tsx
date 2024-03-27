@@ -33,8 +33,8 @@ export default async function Page() {
 						result.map((user, i) =>
 							<tr key={i}>
 								<td>{i + 1}</td>
-								<td>{user.id}</td>
-								<td>{user.rating}</td>
+								<td><a href={"/users/" + user.id}>{user.id}</a></td>
+								<td className={!user.rating || user.rating == 0 ? undefined : `rating${Math.min(7, Math.floor(user.rating / 400))}`}>{user.rating}</td>
 								<td>{user.name?.join(" ")}</td>
 								<td>{user.grade}</td>
 							</tr>

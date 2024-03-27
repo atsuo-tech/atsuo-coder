@@ -17,7 +17,7 @@ export default async function PostNewTestcase(id: string) {
 
 	const task = await getTask(sql, id);
 
-	if (task.length == 0 || !await hasProblemAdminPermission() && !task[0].editor.includes(user.getID()!!)) {
+	if (!task || !await hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
 
 		notFound();
 
@@ -27,7 +27,7 @@ export default async function PostNewTestcase(id: string) {
 		<>
 			<h1>New Testcase | AtsuoCoder Admin</h1>
 			<div className={styles.body1}>
-				<form action="/admin/testcases/post" method="post" encType="multipart/form-data">
+				<form action="/admin/testcases/post/new" method="post" encType="multipart/form-data">
 					<input type="hidden" name="type" defaultValue="new" />
 					<label htmlFor="task_id">Task ID</label>
 					<br />

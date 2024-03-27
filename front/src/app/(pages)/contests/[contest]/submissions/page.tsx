@@ -2,13 +2,14 @@ import { sql } from "@/app/sql";
 import styles from "./[id]/submission.module.css";
 import { FieldPacket } from "mysql2";
 import { notFound } from "next/navigation";
-import getUser from "@/lib/user";
+import getUser, { Permissions } from "@/lib/user";
 import getContest, { Contest } from "@/lib/contest";
+import { hasContestAdminPermission } from "@/app/(pages)/admin/permission";
 
 export default async function Page({ params }: { params: { [key: string]: string } }) {
 
 	const user = await getUser();
-	
+
 	if (!user) {
 
 		notFound();
@@ -28,7 +29,7 @@ export default async function Page({ params }: { params: { [key: string]: string
 
 	if (start.getTime() + period > Date.now()) {
 
-		if (editors.indexOf(user.getID()!!) == -1 && testers.indexOf(user.getID()!!) == -1 && rated_users.indexOf(user.getID()!!) == -1 && unrated_users.indexOf(user.getID()!!) == -1) {
+		if (!(await hasContestAdminPermission()) && editors.indexOf(user.getID()!!) == -1 && testers.indexOf(user.getID()!!) == -1 && rated_users.indexOf(user.getID()!!) == -1 && unrated_users.indexOf(user.getID()!!) == -1) {
 
 			notFound();
 
@@ -39,23 +40,20 @@ export default async function Page({ params }: { params: { [key: string]: string
 	const submissions = await (async () => {
 
 		if (editors.includes(user.getID()!!) || testers.includes(user.getID()!!)) {
-		
+
 			return (await sql.query("SELECT id, task, user, created_at, judge, language FROM submissions WHERE contest = ? ORDER BY created_at DESC", [params.contest]) as [{ id: string, task: string, created_at: Date, judge: string, language: string, user: string }[], FieldPacket[]])[0];
-		
+
 		} else {
-		
+
 			return (await sql.query("SELECT id, task, user, created_at, judge, language FROM submissions WHERE contest = ? AND user = ? ORDER BY created_at DESC", [params.contest, user.getID()!!]) as [{ id: string, task: string, created_at: Date, judge: string, language: string, user: string }[], FieldPacket[]])[0];
-		
+
 		}
-	
+
 	})();
 
 	return (
 		<>
 			<h1>提出一覧 | AtsuoCoder</h1>
-			<div>
-				<input type="button" value="Reload" id="reload" />
-			</div>
 			<h2>Submissions</h2>
 			<table>
 				<thead>

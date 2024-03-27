@@ -33,23 +33,33 @@ export default async function Page(p: { params: { contest: string } }) {
 	// Unrated登録済みか
 	const isUnrated = user && (await contest.unrated_users!!.get()).includes(user.getID()!!);
 
+	// 編集者か
+	const isEditor = user && (await contest.editors!!.get()).includes(user.getID()!!);
+
+	// テスターか
+	const isTester = user && (await contest.testers!!.get()).includes(user.getID()!!);
+
+	// 運営か
+	const isManager = isEditor || isTester;
+
 	return (
 		<>
 			<div className={styles.contest_title}>
 
 				<h1>{await contest.name!!.get()}</h1>
 
-				{contestNotStarted ? <></> :
+				{contestNotStarted && !isManager ?
 					<ul>
-						<a href={`/contests/${p.params.contest}/register/rated`} className={styles.rated_button}>{isUnrated ? "Rated登録に変更" : "Rated登録"}</a>
-						<a href={`/contests/${p.params.contest}/register/unrated`} className={styles.unrated_button}>{isRated ? "Unrated登録に変更" : "Unrated登録"}</a>
-						<a href={`/contests/${p.params.contest}/register/cancel`} className={styles.cancel_button}>登録解除</a>
-					</ul>
+						{!isRated ? <a href={`/contests/${p.params.contest}/register/rated`} className={styles.rated_button}>{isUnrated ? "Rated登録に変更" : "Rated登録"}</a> : <></>}
+						{!isUnrated ? <a href={`/contests/${p.params.contest}/register/unrated`} className={styles.unrated_button}>{isRated ? "Unrated登録に変更" : "Unrated登録"}</a> : <></>}
+						{isRated || isUnrated ? <a href={`/contests/${p.params.contest}/register/cancel`} className={styles.cancel_button}>登録解除</a> : <></>}
+					</ul> :
+					<></>
 				}
 
 				<p>
-					Editor: {editors.join(' ')} | Tester: {testers.length != 0 ? testers.join(' ') : "None"}<br />
-					Rated: {rated || "無制限"} | Start: {start.toLocaleString("ja")} | End: {new Date(start.getTime() + period).toLocaleString("ja")} | Type: {isPublic ? "Public" : "Private"}
+					Editors: {editors.join(' ')} | Testers: {testers.length != 0 ? testers.join(' ') : "None"}<br />
+					Rated: {rated || "無制限"} | Start: {start.toLocaleString("ja")} | End: {period == -1 ? "Infinity" : new Date(start.getTime() + period).toLocaleString("ja")} | Type: {isPublic ? "Public" : "Private"}
 				</p>
 
 			</div>

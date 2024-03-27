@@ -47,7 +47,7 @@ export default async function Page() {
 					<br />
 					<input name="problems" id="problems" type="text" required placeholder="aac001_a, aac001_b, aac001_c ... , aac001_f" />
 					<br />
-					<label htmlFor="editors">Editor</label>
+					<label htmlFor="editors">Editors</label>
 					<br />
 					<input name="editors" id="editors" type="text" required placeholder="yama_can, abn48" />
 					<br />

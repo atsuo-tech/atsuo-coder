@@ -8,9 +8,9 @@ import getUser from "@/lib/user";
 
 export default async function PostEditTestcase(id: string, task_id: string) {
 
-	const tasks = await getTask(sql, task_id);
+	const task = await getTask(sql, task_id);
 
-	if (tasks.length == 0) {
+	if (!task) {
 
 		notFound();
 
@@ -22,8 +22,6 @@ export default async function PostEditTestcase(id: string, task_id: string) {
 
 	}
 
-	const task = tasks[0];
-
 	const user = await getUser();
 
 	if (!user) {
@@ -32,7 +30,7 @@ export default async function PostEditTestcase(id: string, task_id: string) {
 
 	}
 
-	if (!await hasProblemAdminPermission() && !task.editor.includes(user.getID()!!)) {
+	if (!await hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
 
 		notFound();
 
@@ -44,7 +42,7 @@ export default async function PostEditTestcase(id: string, task_id: string) {
 			<h1>Edit Testcase | AtsuoCoder Admin</h1>
 			<br />
 			<div className={styles.body1}>
-				<form action="/admin/testcases/post" method="post" encType="multipart/form-data">
+				<form action="/admin/testcases/post/edit" method="post" encType="multipart/form-data">
 					<input type="hidden" name="type" defaultValue="edit" />
 					<label htmlFor="task_id">Task ID</label>
 					<br />

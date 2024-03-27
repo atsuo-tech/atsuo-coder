@@ -9,8 +9,8 @@ export interface Contest {
 
 	public: boolean;
 
-	editor: string[];
-	tester: string[];
+	editors: string[];
+	testers: string[];
 
 	rated: string;
 

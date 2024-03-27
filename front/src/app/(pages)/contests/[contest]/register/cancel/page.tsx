@@ -1,47 +1,45 @@
-import { sql } from "@/app/sql";
 import redis from "@/app/redis";
-import { redirect } from "next/navigation";
+import { RedirectType, notFound, redirect } from "next/navigation";
 import getUser from "@/lib/user";
+import getContest from "@/lib/contest";
 
 export default async function Page({ params: { contest } }: { params: { contest: string } }) {
 
-	const sqlResult = (await sql.query("SELECT rated_users, unrated_users FROM contests WHERE id = ?", [contest]) as any)[0][0];
+	const contestInfo = await getContest(contest);
 
-	let rated_users = JSON.parse(sqlResult.rated_users) as string[];
-	let unrated_users = JSON.parse(sqlResult.unrated_users) as string[];
+	const start = await contestInfo!!.start!!.get();
+
+	if (start.getTime() < Date.now()) {
+
+		notFound();
+
+	}
+
+	const rated_users = await contestInfo!!.rated_users!!.get();
+	const unrated_users = await contestInfo!!.unrated_users!!.get();
 
 	const user = await getUser();
 
 	if (!user) {
 
-		return redirect("/login");
+		redirect("/login", RedirectType.push);
 
 	}
 
-	let change = false;
+	if (rated_users.includes(user.getID()!!)) {
 
-	if (rated_users.includes(user.getID() || "")) {
-
-		rated_users = rated_users.filter((v) => v != user.getID());
-		change = true;
+		await contestInfo!!.rated_users!!.set(rated_users.filter((value) => value != user.getID()!!));
 
 	}
 
-	if (unrated_users.includes(user.getID() || "")) {
+	if (unrated_users.includes(user.getID()!!)) {
 
-		unrated_users = unrated_users.filter((v) => v != user.getID());
-		change = true;
-
-	}
-
-	if (change) {
-
-		await sql.query("UPDATE contests SET rated_users = ?, unrated_users = ? WHERE id = ?", [JSON.stringify(rated_users), JSON.stringify(unrated_users), contest]);
+		await contestInfo!!.unrated_users!!.set(unrated_users.filter((value) => value != user.getID()!!));
 
 	}
 
 	await redis.del(`contest:${contest}`);
 
-	return redirect(`/contests/${contest}`);
+	redirect(`/contests/${contest}`, RedirectType.push);
 
 }

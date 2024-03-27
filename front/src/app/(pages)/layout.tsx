@@ -2,12 +2,9 @@ import './globals.css'
 import styles from './page.module.css'
 import headerStyles from "./header.module.css"
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import React from 'react';
 import { Permissions } from '@/lib/user'
 import getUser from '@/lib/user'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
 	title: 'Atsuo Coder',
@@ -28,7 +25,7 @@ export default async function RootLayout({
 		<html lang="ja">
 			<link rel="icon" href="/logo.png" />
 
-			<body className={inter.className}>
+			<body>
 				<div className={headerStyles.headers}>
 					<header className={headerStyles.title}>
 						<ul className={headerStyles.head}>

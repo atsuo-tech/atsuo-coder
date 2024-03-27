@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 import { notFound } from "next/navigation";
 import { hasContestAdminPermission } from "../../../permission";
 import getUser from "@/lib/user";
-import getContest from "@/lib/contest";
+import getContest, { deleteCache } from "@/lib/contest";
 
 function Unauthorized() {
 
@@ -48,6 +48,7 @@ export async function POST(req: NextRequest) {
 
 	}
 
+	await deleteCache(data.get("id") as string);
 	await sql.query("DELETE FROM contests WHERE id = ?", [data.get("id")]);
 	await redis.del(`contest:${data.get("id")}`);
 

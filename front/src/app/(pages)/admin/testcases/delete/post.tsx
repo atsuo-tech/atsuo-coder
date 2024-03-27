@@ -8,15 +8,13 @@ import getUser from "@/lib/user";
 
 export default async function PostDeleteTestcase(task_id: string, id: string) {
 
-	const tasks = await getTask(sql, task_id);
+	const task = await getTask(sql, task_id);
 
-	if (tasks.length == 0) {
+	if (!task) {
 
 		notFound();
 
 	}
-
-	const task = tasks[0];
 
 	const user = await getUser();
 
@@ -27,7 +25,7 @@ export default async function PostDeleteTestcase(task_id: string, id: string) {
 	}
 
 
-	if (!await hasProblemAdminPermission() && !task.editor.includes(user.getID()!!)) {
+	if (!await hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
 
 		notFound();
 
@@ -44,7 +42,7 @@ export default async function PostDeleteTestcase(task_id: string, id: string) {
 			<h1>Delete Testcase | AtsuoCoder Admin</h1>
 			<br />
 			<div className={styles.body1}>
-				<form action="/admin/testcases/post" method="post" encType="multipart/form-data">
+				<form action="/admin/testcases/post/delete" method="post" encType="multipart/form-data">
 					<input type="hidden" name="type" defaultValue="delete" />
 					<label htmlFor="task_id">Task ID</label>
 					<br />

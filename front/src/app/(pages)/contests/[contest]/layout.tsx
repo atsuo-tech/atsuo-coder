@@ -54,7 +54,7 @@ export default async function RootLayout({
 	const contestRunning = !contestNotStarted && !contestEnded;
 
 	// 問題にアクセスできるか
-	const permissionAllowedTask = permissionAllowed || (contestRunning && userRegistered);
+	const permissionAllowedTask = permissionAllowed || userRegistered || contestEnded;
 
 	if (!contestPublic && !permissionAllowed) {
 

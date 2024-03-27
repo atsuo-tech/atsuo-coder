@@ -1,3 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Noto+Sans+JP&family=Inter&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css');
+
+@font-face {
+	font-family: 'Google Sans';
+	src: url(/fonts/GoogleSans-Regular.ttf) format('turetype')
+}
+
 :root {
 	--max-width: 1100px;
 	--border-radius: 12px;
@@ -27,6 +35,8 @@
 	--callout-border-rgb: 172, 175, 176;
 	--card-rgb: 180, 185, 188;
 	--card-border-rgb: 131, 134, 135;
+
+	line-height: 2;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -58,11 +68,12 @@
 	}
 }
 
-* {
+*:not(.katex *) {
 	box-sizing: border-box;
-	padding: 0;
+	font-family: "Google Sans", "Lato", "Noto Sans JP", "Inter", sans-serif;
+	font-optical-sizing: auto;
+	font-style: normal;
 	margin: 0;
-	font-family: "Calibri";
 }
 
 html,
@@ -110,7 +121,8 @@ tr {
 }
 
 input,
-textarea {
+textarea,
+select {
 	width: 440px;
 	margin-bottom: 20px;
 	padding: 8px 10px;
@@ -176,4 +188,50 @@ header {
 
 textarea {
 	height: 300px;
+}
+
+ol li {
+
+	list-style-type: decimal;
+
+}
+
+/* 1-400 */
+.rating0 {
+	color: #5F7E88;
+}
+
+/* 400-800 */
+.rating1 {
+	color: #FFA500;
+}
+
+/* 800-1200 */
+.rating2 {
+	color: #008800;
+}
+
+/* 1200-1600 */
+.rating3 {
+	color: #FF4444;
+}
+
+/* 1600-2000 */
+.rating4 {
+	color: #FFFF00;
+}
+
+/* 2000-2400 */
+.rating5 {
+	color: #8080D0;
+}
+
+/* 2400-2800 */
+.rating6 {
+	color: #559FFF;
+}
+
+/* 3200- */
+.rating7 {
+	color: #00F8F8;
 }

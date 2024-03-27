@@ -19,17 +19,15 @@ export async function POST(req: NextRequest) {
 
 	}
 
-	const tasks = await getTask(sql, data.get("task_id") as string);
+	const task = await getTask(sql, data.get("task_id") as string);
 
-	if (tasks.length == 0) {
+	if (!task) {
 
 		notFound();
 
 	}
 
-	const task = tasks[0];
-
-	if (!user || !Permissions.hasPermission(await user.permission!!.get(), Permissions.BasePermissions.ProblemAdmin) && !task.editor.includes(user.getID()!!)) {
+	if (!user || !Permissions.hasPermission(await user.permission!!.get(), Permissions.BasePermissions.ProblemAdmin) && !task.editors.includes(user.getID()!!)) {
 
 		return new Response("Unauthorized", {
 			status: 401

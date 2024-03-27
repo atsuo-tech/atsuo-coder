@@ -1,6 +1,7 @@
 import getContest from "@/lib/contest";
 import getUser from "@/lib/user";
 import { notFound } from "next/navigation";
+import Waiter from "./waiter";
 
 export default async function RootLayout({
 	children,
@@ -43,6 +44,7 @@ export default async function RootLayout({
 					<>
 						<h1>Tasks | AtsuoCoder</h1>
 						<p>コンテストはまだ始まっていません。</p>
+						<Waiter start={await contest.start?.get()!!}></Waiter>
 					</>
 				);
 

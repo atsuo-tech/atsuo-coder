@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getTask } from "../../task";
 import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
+import Markdown from "@/components/markdown";
 
 export default async function Page(params: { params: { [key: string]: string } }) {
 
@@ -74,7 +75,7 @@ export default async function Page(params: { params: { [key: string]: string } }
 				<div className={submissionsStyle.grid}>
 					<div>
 						<h2>Task</h2>
-						<a href={`/contests/${params.params.contest}/tasks/${task}`}>{taskInfo[0].name}</a>
+						<a href={`/contests/${params.params.contest}/tasks/${task}`}>{taskInfo.name}</a>
 					</div>
 					<div>
 						<h2>Result</h2>
@@ -82,10 +83,14 @@ export default async function Page(params: { params: { [key: string]: string } }
 							judge == "WJ" ?
 								<p>Waiting Judge</p> :
 								"status" in parsedJudge ?
-									<><p className={submissionsStyle[`c-${resultStrings[parsedJudge.status].toLowerCase()}`]}>{resultStrings[parsedJudge.status]}</p><br /><code>{parsedJudge.message}</code></> :
+									<>
+										<p className={submissionsStyle[`c-${resultStrings[parsedJudge.status].toLowerCase()}`]}>{resultStrings[parsedJudge.status]}</p>
+									</> :
 									<>
 										<p>
-											<span className={submissionsStyle[`c-${resultStrings[parsedJudge[0][0]].toLowerCase()}`]}>{resultStrings[parsedJudge[0][0]]}</span>
+											<span className={submissionsStyle[`c-${resultStrings[parsedJudge[0][0]].toLowerCase()}`]}>
+												{resultStrings[parsedJudge[0][0]]}
+											</span>
 										</p>
 										<p>{parsedJudge[0][1]} points</p>
 									</>
@@ -93,6 +98,16 @@ export default async function Page(params: { params: { [key: string]: string } }
 					</div>
 				</div>
 				<br />
+				<div className={submissionsStyle.code}>
+					<h2>Compile Error</h2>
+					{
+						"message" in parsedJudge ?
+							<>
+								<Markdown md={"```" + (parsedJudge.message as string).replace("`", "\\`") + "```"} />
+							</> :
+							<></>
+					}
+				</div>
 				<h2>Testcases</h2>
 				<br />
 				{

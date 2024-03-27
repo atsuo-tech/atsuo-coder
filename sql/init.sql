@@ -8,8 +8,9 @@ CREATE TABLE `contests` (
 	`problems` TEXT,
 	`public` TINYINT(1) DEFAULT 0,
 	`name` TEXT,
-	`editor` TEXT,
-	`tester` TEXT,
+	`owner` CHAR(20),
+	`editors` TEXT,
+	`testers` TEXT,
 	`start` DATETIME,
 	`period` BIGINT,
 	`rated` TEXT,
@@ -38,8 +39,8 @@ CREATE TABLE `tasks` (
 	`id` VARCHAR(40) NOT NULL PRIMARY KEY,
 	`question` TEXT,
 	`judge_type` BIGINT,
-	`editor` TEXT,
-	`tester` TEXT,
+	`editors` TEXT,
+	`testers` TEXT,
 	`name` TEXT,
 	`score` BIGINT
 );
@@ -52,8 +53,10 @@ CREATE TABLE `tokens` (
 CREATE TABLE `users` (
 	`id` CHAR(20) NOT NULL PRIMARY KEY,
 	`password` TEXT,
-	`rating` BIGINT,
+	`rating` BIGINT DEFAULT 0,
 	`name` TEXT,
 	`grade` BIGINT,
-	`admin` BIGINT
+	`admin` BIGINT,
+	`performances` TEXT,
+	`inner_rating` BIGINT DEFAULT 0,
 );
