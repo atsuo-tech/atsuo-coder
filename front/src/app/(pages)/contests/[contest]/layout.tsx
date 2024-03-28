@@ -7,6 +7,8 @@ import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
 import { notFound } from "next/navigation";
 
+import { SiteHeader, SecondHeader, Header1Button, Header2Button, HeaderUserName, HeaderUserButton, ThirdHeader, Header3Button, FourthHeader, ContestTitle } from '../../../../components/styled-components';
+
 export default async function RootLayout({
 	children,
 	params
@@ -64,58 +66,42 @@ export default async function RootLayout({
 
 	return (
 		<>
+			<ThirdHeader>
+				<h2>Menu</h2>
+				<Header3Button>
+					<a href={`/contests/${params.contest}`}>
+						<span className={styles["material-icons"]}>home</span>
+						<p>TOP</p>
+					</a>
+				</Header3Button>
+				<Header3Button>
+					{
+						permissionAllowedTask ?
+							<a href={`/contests/${params.contest}/tasks`}>
+								<span className={styles["material-icons"]}>task</span>
+								<p>TASKS</p>
+							</a> :
+							<></>
+					}
+				</Header3Button>
+				<Header3Button>
+					<a href={`/contests/${params.contest}/standings`}>
+						<span className={styles["material-icons"]}>leaderboard</span>
+						<p>STANDINGS</p>
+					</a>
+				</Header3Button>
+				<Header3Button>
+					{
+						permissionAllowedTask ?
+							<a href={`/contests/${params.contest}/submissions`}>
+								<span className={styles["material-icons"]}>send</span>
+								<p>SUBMITTIONS</p>
+							</a> :
+							<></>
+					}
+				</Header3Button>
+			</ThirdHeader>
 			{children}
-			<div className={styles.contest}>
-				<div className={styles.tab}>
-					<ul>
-						<div className="pagenow">
-							<a href={`/contests/${params.contest}`}>
-								<li>
-									<span className={styles["material-icons"]}>home</span>
-									<br />
-									Top
-								</li>
-							</a>
-						</div>
-						{
-							permissionAllowedTask ?
-								<a href={`/contests/${params.contest}/tasks`}>
-									<li>
-										<span className={styles["material-icons"]}>
-											task
-										</span>
-										<br />
-										Tasks
-									</li>
-								</a> :
-								<></>
-						}
-						<a href={`/contests/${params.contest}/standings`}>
-							<li>
-								<span className={styles["material-icons"]}>
-									leaderboard
-								</span>
-								<br />
-								Standings
-							</li>
-						</a>
-						{
-							permissionAllowedTask ?
-								<a href={`/contests/${params.contest}/submissions`}>
-									<li>
-										<span className={styles["material-icons"]}>
-											send
-										</span>
-										<br />
-										Submittions
-									</li>
-								</a> :
-								<></>
-						}
-					</ul>
-				</div>
-			</div>
-			<div data-center="none"></div>
 		</>
 	)
 }

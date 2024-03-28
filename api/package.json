@@ -23,7 +23,8 @@
 		"mysql2": "^3.6.1",
 		"next": "^14.1.0",
 		"react-jsx-parser": "^1.29.0",
-		"redis": "^4.6.12"
+		"redis": "^4.6.12",
+		"styled-components": "^6.1.8"
 	},
 	"devDependencies": {
 		"@types/cookie-parser": "^1.4.6",

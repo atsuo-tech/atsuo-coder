@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
 		await sql.query("UPDATE users SET grade = ?, name = ? WHERE id = ?", [data.get("grade"), JSON.stringify([data.get("name1"), data.get("name2"), data.get("name3")].filter(Boolean)), user.getID()]);
 		url.pathname = "/account/settings";
 		url.searchParams.set("error", "0");
-		await redis.del("user:" + user.getID());
+		//await redis.del("user:" + user.getID());
 
 		return Response.redirect(url);
 
@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
 		await sql.query("UPDATE users SET password = ? WHERE id = ?", [hashedNewPassword, user.getID()]);
 		url.pathname = "/account/settings";
 		url.searchParams.set("error", "0");
-		await redis.del("user:" + user.getID());
+		//await redis.del("user:" + user.getID());
 
 		return Response.redirect(url);
 

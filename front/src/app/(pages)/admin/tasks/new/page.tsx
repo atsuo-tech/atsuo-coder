@@ -20,7 +20,6 @@ export default async function Page() {
 							<li> Warning: Do not include <a href="/reserved.json"><u>reserved strings</u></a>.</li>
 						</ul>
 					</label>
-					<br />
 					<label htmlFor="editors">Editors</label>
 					<br />
 					<input name="editors" id="editors" type="text" required placeholder="yama_can" />

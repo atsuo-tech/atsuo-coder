@@ -15,5 +15,14 @@
 		"init:mysql": "chmod 777 ./sql/init.sh && ./sql/init.sh"
 	},
 	"author": "Yama.can<yama.can95@gmail.com>",
-	"license": "ISC"
+	"license": "ISC",
+	"dependencies": {
+		"react-router-dom": "^6.22.3",
+		"styled-components": "^6.1.8"
+	},
+	"devDependencies": {
+		"autoprefixer": "^10.4.17",
+		"postcss": "^8.4.35",
+		"tailwindcss": "^3.4.1"
+	}
 }

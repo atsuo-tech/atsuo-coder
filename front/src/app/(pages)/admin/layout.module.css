@@ -42,6 +42,10 @@ div.links a {
 	left: 0;
 }
 
+.contest>.tab ul {
+	padding: 0;
+}
+
 .contest>.tab .pagenow {
 	background-color: #283848;
 	color: white;
