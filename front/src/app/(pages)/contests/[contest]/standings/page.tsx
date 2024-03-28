@@ -43,7 +43,7 @@ export default async function Page({ params: { contest: contestId } }: { params:
 
 	}
 
-	let users: { user: string, score: number, contestTime: number }[] = [];
+	let users: { user: string, score: number, contestTime: number, rating: number }[] = [];
 
 	for (const user in scores) {
 
@@ -58,7 +58,7 @@ export default async function Page({ params: { contest: contestId } }: { params:
 
 		}
 
-		users.push({ user, score: scores[user].score, contestTime: lastSubmitTime + (await contest.penalty!!.get()) * penalty });
+		users.push({ user, score: scores[user].score, contestTime: lastSubmitTime + (await contest.penalty!!.get()) * penalty, rating: await (await getUser(user))!!.rating!!.get()!! });
 
 	}
 
@@ -69,11 +69,15 @@ export default async function Page({ params: { contest: contestId } }: { params:
 
 	users = users.filter((user) => registerd_users.includes(user.user));
 
-	registerd_users.filter((user) => !users.find((value) => value.user == user)).map((user) => {
+	await Promise.all(
 
-		users.push({ user, score: 0, contestTime: 0 });
+		registerd_users.filter((user) => !users.find((value) => value.user == user)).map(async (user) => {
 
-	});
+			users.push({ user, score: 0, contestTime: 0, rating: await (await getUser(user))!!.rating!!.get()!! });
+
+		})
+		
+	);
 
 	users.sort((a, b) => (b.score - a.score == 0 ? a.contestTime - b.contestTime : b.score - a.score));
 
@@ -142,8 +146,8 @@ export default async function Page({ params: { contest: contestId } }: { params:
 										</td>
 										{
 											(penaltySum == 0) ?
-											<td>-</td> :
-											<td className={styles.penalty}>+{penaltySum}</td>
+												<td>-</td> :
+												<td className={styles.penalty}>+{penaltySum}</td>
 										}
 										{
 											(await contest.problems!!.get()).map((problem, j) => {
