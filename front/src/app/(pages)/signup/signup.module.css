@@ -20,23 +20,17 @@
 }
 
 .body1 {
-	color: white;
-	width: 640px;
-	margin: auto auto;
-	padding: 20px 0;
-	background: linear-gradient(90deg, #405060 480px, #102030 480px);
+	color: #000010;
+	width: 100%;
+	margin: 0;
+	background-color: white;
 	border-radius: 10px;
-	box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.3);
 	font-family: "Calibri";
 }
 
 .body1 h1 {
 	margin-left: 20px;
 	margin-bottom: 20px;
-}
-
-.body1 form {
-	margin-left: 20px;
 }
 
 .body1 form input[name^="name"] {

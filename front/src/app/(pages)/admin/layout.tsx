@@ -93,7 +93,6 @@ export default async function RootLayout({
 					</ul>
 				</div>
 			</div>
-			<div data-center="none"></div>
 		</>
 	);
 

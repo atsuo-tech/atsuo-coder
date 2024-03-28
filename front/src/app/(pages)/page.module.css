@@ -1,14 +1,21 @@
 .main {
+	width: calc(100% - 32rem);
+	margin: 8rem auto 2rem auto;
+	background-color: #ffffff;
+	color: #000010;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	padding: 6rem;
-	min-height: 100vh;
+	align-items: left;
+	padding: 2rem 4rem;
+	min-height: 60vh;
+	border-radius: 12px;
 }
 
-body:not(body:has(div[data-center="none"])) .main {
-	justify-content: space-between;
+.main *{
+	margin-top: 12px;
+	margin-bottom: 12px;
 }
+
 
 .description {
 	display: inherit;
