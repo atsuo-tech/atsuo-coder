@@ -35,7 +35,7 @@ export default async function User({ params: { id } }: { params: { id: string } 
 	const maxShow = Math.max(maxRating, maxInnerPerformance, maxPerformance);
 	const minShow = Math.min(minRating, minInnerPerformance, minPerformance);
 
-	const ratings = ["#5F7E88", "#FFA500", "#008800", "#FF4444", "#FFFF00", "#8080D0", "#559FFF", "#00F8F8"];
+	const ratings = ["#808080", "#804000", "#008000", "#00C0C0", "#0000FF", "#C0C000", "#FF8000", "#FF0000"];
 
 	function getRatingColor(rating: number) {
 
