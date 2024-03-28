@@ -3,7 +3,7 @@ div[class^=page_center] {
 }
 
 .pagenow {
-	margin-top: 24px;
+	margin-top: 0;
 }
 
 .pagenow * {

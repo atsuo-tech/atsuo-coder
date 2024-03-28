@@ -89,6 +89,17 @@ export default async function RootLayout({
 									</a> :
 									<></>
 							}
+							{
+								await hasAdminPremission() ?
+									<a href="/admin/ratings">
+										<li>
+											<span className={styles["material-icons"]}>trending_up</span>
+											<br />
+											Ratings
+										</li>
+									</a> :
+									<></>
+							}
 						</div>
 					</ul>
 				</div>
