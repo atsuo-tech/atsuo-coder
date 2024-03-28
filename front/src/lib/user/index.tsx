@@ -51,10 +51,13 @@ export class User {
 	private id: string | null = null;
 
 	public rating: Value<number, string> | null = null;
+	public inner_rating: Value<number, string> | null = null;
 	public name: Value<string[], string> | null = null;
 	public permission: Value<number, string> | null = null;
 	public password: Value<string, string> | null = null;
 	public grade: Value<number, string> | null = null;
+
+	public performances: Value<{ contest: string, rating: number, performance: number, innerPerformance: number }[], string> | null = null;
 
 	private loader: Promise<void> | null = null;
 
@@ -121,7 +124,7 @@ export class User {
 
 					});
 
-					this.rating = new Value<number, string>(id, Number(row.rating), 1000 * 60 * 60, async (id) => {
+					this.rating = new Value<number, string>(id, Number(row.rating), 0, async (id) => {
 
 						const [result] = await sql.query<RowDataPacket[]>("SELECT rating FROM users WHERE id = ?", [id]);
 
@@ -132,6 +135,20 @@ export class User {
 					}, async (value, id) => {
 
 						await sql.query<ResultSetHeader>("UPDATE users SET rating = ? WHERE id = ?", [value, id]);
+
+					});
+
+					this.inner_rating = new Value<number, string>(id, Number(row.inner_rating), 0, async (id) => {
+
+						const [result] = await sql.query<RowDataPacket[]>("SELECT inner_rating FROM users WHERE id = ?", [id]);
+
+						const row = result[0];
+
+						return Number(row.inner_rating);
+
+					}, async (value, id) => {
+
+						await sql.query<ResultSetHeader>("UPDATE users SET inner_rating = ? WHERE id = ?", [value, id]);
 
 					});
 
@@ -158,6 +175,20 @@ export class User {
 					}, async (value, id) => {
 
 						await sql.query("UPDATE users SET grade = ? WHERE id = ?", [value, id]);
+
+					});
+
+					this.performances = new Value<{ contest: string, rating: number, performance: number, innerPerformance: number }[], string>(id, JSON.parse(row.performances), 1000 * 60 * 60, async (id) => {
+
+						const [result] = await sql.query<RowDataPacket[]>("SELECT performances FROM users WHERE id = ?", [id]);
+
+						const row = result[0];
+
+						return JSON.parse(row.performances);
+
+					}, async (value, id) => {
+
+						await sql.query("UPDATE users SET performances = ? WHERE id = ?", [JSON.stringify(value), id]);
 
 					});
 
@@ -216,7 +247,7 @@ export default async function getUser(id?: string) {
 		if (data.length == 0) {
 
 			return null;
-			
+
 		} else {
 
 			id = data[0].user as string;
@@ -265,5 +296,11 @@ export function clearCache() {
 export function cacheSize() {
 
 	return Object.keys(cache).length;
+
+}
+
+export function deleteCache(id: string) {
+
+	delete cache[id];
 
 }

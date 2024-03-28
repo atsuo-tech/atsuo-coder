@@ -1,6 +1,6 @@
 "use client";
 
-export default async function Error() {
+export default function Error() {
 
 	return (
 		<div>

@@ -53,8 +53,10 @@ CREATE TABLE IF NOT EXISTS `tokens` (
 CREATE TABLE IF NOT EXISTS `users` (
 	`id` CHAR(20) NOT NULL PRIMARY KEY,
 	`password` TEXT,
-	`rating` BIGINT,
+	`rating` BIGINT DEFAULT 0,
 	`name` TEXT,
 	`grade` BIGINT,
-	`admin` BIGINT
+	`admin` BIGINT,
+	`performances` TEXT,
+	`inner_rating` BIGINT DEFAULT 0,
 );

@@ -1,7 +1,7 @@
 import "./layout.css";
 import styles from "./layout.module.css";
 import { notFound } from "next/navigation";
-import { hasUserAdminPermission, hasUserApproverPermission } from "./permission";
+import { hasAdminPremission, hasUserAdminPermission, hasUserApproverPermission } from "./permission";
 import getUser from "@/lib/user";
 
 export default async function RootLayout({
@@ -74,6 +74,17 @@ export default async function RootLayout({
 											<span className={styles["material-icons"]}>group</span>
 											<br />
 											Users
+										</li>
+									</a> :
+									<></>
+							}
+							{
+								await hasAdminPremission() ?
+									<a href="/admin/caches">
+										<li>
+											<span className={styles["material-icons"]}>cached</span>
+											<br />
+											Caches
 										</li>
 									</a> :
 									<></>

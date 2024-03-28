@@ -6,3 +6,9 @@ export const sql = await mysql.createConnection({
 	password: process.env.db_password,
 	stringifyObjects: true,
 });
+
+sql.on("close", async () => {
+
+	await sql.connect();
+
+})

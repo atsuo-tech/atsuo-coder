@@ -13,13 +13,6 @@ export default async function Page({ params: { contest: contestId } }: { params:
 	const contest = await getContest(contestId);
 	if (!contest) notFound();
 
-	if ((await contest.start!!.get()).getTime() > Date.now()) {
-
-		if (user && !(await contest.editors!!.get()).includes(user.getID()!!) && !(await contest.testers!!.get()).includes(user.getID()!!)) notFound();
-		if (!user) notFound();
-
-	}
-
 	const [submissions, _] = await sql.query("SELECT * FROM submissions WHERE contest = ? ORDER BY created_at", [contestId]) as [{ id: string, sourceCode: string, contest: string, task: string, user: string, created_at: Date, judge: string, language: string }[], FieldPacket[]];
 
 	const scores: { [user: string]: { score: number, problems: { [problem: string]: { score: number, penalty: number, notEffectedPenalty: number, lastSubmitTime: number } } } } = {};
@@ -93,6 +86,7 @@ export default async function Page({ params: { contest: contestId } }: { params:
 						<td className={styles.user}>#</td>
 						<td className={styles.user}>User</td>
 						<td className={styles.user}>Penalty</td>
+						<td className={styles.user}>Last Submit</td>
 						<td className={styles.user}>Total</td>
 						{
 							(await contest.problems!!.get()).map((problem, i) => {
@@ -126,11 +120,20 @@ export default async function Page({ params: { contest: contestId } }: { params:
 
 								}
 
+								let lastSubmitTime = 0;
+
+								for(const problem in scores[user.user].problems) {
+
+									lastSubmitTime = Math.max(lastSubmitTime, scores[user.user].problems[problem].lastSubmitTime);
+
+								}
+
 								nodes.push(
 									<tr key={i}>
 										<td>{i + 1}</td>
 										<td className={styles.user}>{user.user}</td>
 										<td className={styles.user}>{penaltySum}</td>
+										<td className={styles.user}>{new Date(lastSubmitTime - 9 * 3600 * 1000).toLocaleTimeString("ja-jp")}</td>
 										<td className={styles.user}>{scores[user.user]?.score || 0}</td>
 										{
 											(await contest.problems!!.get()).map((problem, j) => {

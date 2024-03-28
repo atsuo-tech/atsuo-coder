@@ -27,9 +27,8 @@ export default async function RootLayout({
 	}
 
 	const start = await contest.start!!.get();
-	const period = await contest.period!!.get();
 
-	if (start.getTime() + period > Date.now()) {
+	if (start.getTime() < Date.now()) {
 
 		notFound();
 

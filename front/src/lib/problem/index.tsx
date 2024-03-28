@@ -9,7 +9,7 @@ export class Problem {
 
 		if (id) {
 
-			this.loader = sql.query("SELECT * FROM problems WHERE id = ?", [id]).then((data) => {
+			this.loader = sql.query("SELECT * FROM tasks WHERE id = ?", [id]).then((data) => {
 
 				const rows = data[0] as any[];
 
@@ -17,24 +17,24 @@ export class Problem {
 
 				const row = rows[0];
 
-				this.title = new Value<string, string>(id, row.title, 1000 * 60 * 60 * 24, async (id) => {
+				this.name = new Value<string, string>(id, row.name, 1000 * 60 * 60 * 24, async (id) => {
 
-					const [data] = await sql.query("SELECT title FROM problems WHERE id = ?", [id]);
+					const [data] = await sql.query("SELECT name FROM tasks WHERE id = ?", [id]);
 
 					const row = (data as any[])[0];
 
-					return (row as { title: string }).title;
+					return (row as { name: string }).name;
 
 				}, async (value, id) => {
 
-					await sql.query("UPDATE problems SET title = ? WHERE id = ?", [value, id]);
+					await sql.query("UPDATE tasks SET name = ? WHERE id = ?", [value, id]);
 
 				});
 
 
 				this.score = new Value<bigint, string>(id, BigInt(row.score), 1000 * 60 * 60 * 24, async (id) => {
 
-					const [data] = await sql.query("SELECT score FROM problems WHERE id = ?", [id]);
+					const [data] = await sql.query("SELECT score FROM tasks WHERE id = ?", [id]);
 
 					const row = (data as any[])[0];
 
@@ -42,27 +42,13 @@ export class Problem {
 
 				}, async (value, id) => {
 
-					await sql.query("UPDATE problems SET score = ? WHERE id = ?", [value.toString(), id]);
-
-				});
-
-				this.admins = new Value<string[], string>(id, JSON.parse(row.admins), 1000 * 60 * 60 * 24, async (id) => {
-
-					const [data] = await sql.query("SELECT admins FROM problems WHERE id = ?", [id]);
-
-					const row = (data as any[])[0];
-
-					return JSON.parse((row as { admins: string }).admins);
-
-				}, async (value, id) => {
-
-					await sql.query("UPDATE problems SET admins = ? WHERE id = ?", [JSON.stringify(value), id]);
+					await sql.query("UPDATE tasks SET score = ? WHERE id = ?", [value.toString(), id]);
 
 				});
 
 				this.editors = new Value<string[], string>(id, JSON.parse(row.editors), 1000 * 60 * 60 * 24, async (id) => {
 
-					const [data] = await sql.query("SELECT editors FROM problems WHERE id = ?", [id]);
+					const [data] = await sql.query("SELECT editors FROM tasks WHERE id = ?", [id]);
 
 					const row = (data as any[])[0];
 
@@ -70,13 +56,13 @@ export class Problem {
 
 				}, async (value, id) => {
 
-					await sql.query("UPDATE problems SET editors = ? WHERE id = ?", [JSON.stringify(value), id]);
+					await sql.query("UPDATE tasks SET editors = ? WHERE id = ?", [JSON.stringify(value), id]);
 
 				});
 
 				this.testers = new Value<string[], string>(id, JSON.parse(row.testers), 1000 * 60 * 60 * 24, async (id) => {
 
-					const [data] = await sql.query("SELECT testers FROM problems WHERE id = ?", [id]);
+					const [data] = await sql.query("SELECT testers FROM tasks WHERE id = ?", [id]);
 
 					const row = (data as any[])[0];
 
@@ -84,9 +70,11 @@ export class Problem {
 
 				}, async (value, id) => {
 
-					await sql.query("UPDATE problems SET testers = ? WHERE id = ?", [JSON.stringify(value), id]);
+					await sql.query("UPDATE tasks SET testers = ? WHERE id = ?", [JSON.stringify(value), id]);
 
 				});
+
+				this.id = row.id;
 
 				this.valid = true;
 
@@ -103,10 +91,9 @@ export class Problem {
 
 	private id: string | null = null;
 
-	public title: Value<string, string> | null = null;
+	public name: Value<string, string> | null = null;
 	public score: Value<bigint, string> | null = null;
 
-	public admins: Value<string[], string> | null = null;
 	public editors: Value<string[], string> | null = null;
 	public testers: Value<string[], string> | null = null;
 

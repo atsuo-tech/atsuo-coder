@@ -53,3 +53,9 @@ div.headers {
 	margin: 0 20px;
 	font-size: 16px;
 }
+
+.headers h2,
+.headers li,
+.menu li {
+	place-self: center;
+}
