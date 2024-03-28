@@ -1,2 +1,48 @@
-.user {
+.passage{
+    margin: 0;
+}
+
+.score{
+    color: #00a0f0;
+    margin: 0;
+    font-weight: 600;
+}
+
+.penalty{
+    color: #ff0000;
+    margin: 0;
+    font-weight: 600;
+}
+
+.score_total{
+    color: #0000ff;
+    margin: 0;
+    font-weight: 600;
+}
+
+.submit_time{
+    color: #a0a0a0;
+    margin: -12px 0 0 0;
+    font-size: 10px;
+}
+
+.tabler{
+    height: 40px;
+}
+
+.rank_column{
+    width: 40px;
+}
+
+.score_column{
+    width: 60px;
+}
+
+.user{
+    text-align: left;
+    padding-left: 12px;
+}
+
+.user p{
+    margin: 0;
 }

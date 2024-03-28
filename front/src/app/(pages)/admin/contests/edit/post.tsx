@@ -32,10 +32,16 @@ export default async function PostEditContest(id: string) {
 					<br />
 					<input name="start" id="start" type="datetime-local" required defaultValue={(new Date((await contest.start!!.get()).getTime() + 9 * 60 * 60 * 1000)).toISOString().slice(0, 16)} />
 					<br />
+
+					<label htmlFor="public">Public</label>
+					<p>&quot;0&quot;: private, &quot;1&quot;: public.</p>
+					<input name="public" id="public" type="number" required className={styles.public} placeholder="1" defaultValue={Number(await contest.public?.get())} />
+
+					<br />
 					<label htmlFor="period">Period</label>
 					<p>If this contest should be permanent contest, set this field &quot;-1&quot;.</p>
 					<br />
-					<input name="period" id="period" type="number" required className={styles.period} placeholder="100" defaultValue={(await contest.period!!.get()) / 60 / 1000} />
+					<input name="period" id="period" type="boolean" required className={styles.period} placeholder="100" defaultValue={(await contest.period!!.get()) / 60 / 1000} />
 					<label htmlFor="period">minutes</label>
 					<br />
 					<label htmlFor="penalty">Penalty</label>
