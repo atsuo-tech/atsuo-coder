@@ -49,7 +49,7 @@ export const Header1Button = styled.button < { signup?: any } >`
 export const Header2Button = styled.button`
     width: 8rem;
     height: 2rem;
-    display: block;
+    display: flex;
     margin-top: auto;
     margin-bottom: 0;
     padding: 4px 16px;
@@ -58,6 +58,11 @@ export const Header2Button = styled.button`
     text-align: center;
     align-items: center;
     transition: all 0.5s ease;
+    & a{
+        width: 100%;
+        display: block;
+        align-self: center;
+    }
     &:hover{
         color: #00a0f0;
     }
@@ -103,9 +108,9 @@ export const HeaderUserButton = styled.button< { logout?: any } >`
         color: ${({ logout }) => (logout ? '#f00000' : '#00a0f0')};
     }
     & p{
-        margin-top: -8px;
-        font-size: 10px;
-        font-weight: 600;
+        margin-top: -16px;
+        font-size: 9px;
+        font-weight: 800;
     }
 `
 
