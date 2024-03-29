@@ -66,7 +66,7 @@ export default async function RootLayout({
 					<SecondHeader>
 						<Header2Button><a href="/">HOME</a></Header2Button>
 						<Header2Button><a href="/contests">CONTESTS</a></Header2Button>
-						<Header2Button><a href="/ranking">RAKING</a></Header2Button>
+						<Header2Button><a href="/ranking">RANKING</a></Header2Button>
 					</SecondHeader>
 				</div>
 
