@@ -70,7 +70,7 @@ export default async function Page(params: { searchParams: { [key: string]: stri
 
 							for (const contest of permanent_contests) {
 
-								const period = await contest.period!!.get();
+								const period = await contest.period!!.get() / 1000;
 								const start = await contest.start!!.get();
 
 								data.push(
@@ -125,7 +125,7 @@ export default async function Page(params: { searchParams: { [key: string]: stri
 
 							for (const contest of active_contests) {
 
-								const period = await contest.period!!.get();
+								const period = await contest.period!!.get() / 1000;
 								const start = await contest.start!!.get();
 
 								data.push(
@@ -180,7 +180,7 @@ export default async function Page(params: { searchParams: { [key: string]: stri
 
 							for (const contest of upcoming_contests) {
 
-								const period = await contest.period!!.get();
+								const period = await contest.period!!.get() / 1000;
 								const start = await contest.start!!.get();
 
 								data.push(
@@ -234,7 +234,7 @@ export default async function Page(params: { searchParams: { [key: string]: stri
 
 							for (const contest of recent_contests) {
 
-								const period = await contest.period!!.get();
+								const period = await contest.period!!.get() / 1000;
 								const start = await contest.start!!.get();
 
 								data.push(
