@@ -2,6 +2,7 @@ import getUser from "@/lib/user";
 import { getEditableTasks } from "../../contests/[contest]/task";
 import Link from "next/link";
 import style from "./page.module.css";
+import { hasProblemMakerPermission } from "../permission";
 
 export default async function Page() {
 
@@ -38,19 +39,23 @@ export default async function Page() {
 
 				<tbody>
 
-					<tr>
+					{
+						await hasProblemMakerPermission() ?
+							<tr>
 
-						<td>
+								<td>
 
-							<Link href="/admin/tasks/new">
+									<Link href="/admin/tasks/new">
 
-								Add New
+										Add New
 
-							</Link>
+									</Link>
 
-						</td>
+								</td>
 
-					</tr>
+							</tr> :
+							<></>
+					}
 
 					{
 						datas.map((task, index) => {
