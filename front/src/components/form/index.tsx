@@ -16,7 +16,7 @@ export default function Form(
 
 		<div className={styles.body1}>
 
-			<form action="/admin/contests/post/new" method="post" encType="multipart/form-data">
+			<form action={action} method={method} encType="multipart/form-data">
 
 				{children}
 
