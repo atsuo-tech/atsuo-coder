@@ -1,10 +1,9 @@
 .contest_title {
-	width: calc(100% - 240px);
+	width: 100%;
 	margin: auto;
-	margin-top: 20px;
 	border-radius: 5px;
-	background-color: #405060;
-	padding: 20px;
+	background-color: #d0e0f0;
+	padding: 20px 20px 5px 20px;
 	margin-bottom: 0;
 }
 
@@ -25,23 +24,22 @@
 .contest_title ul * {
 	width: 250px;
 	margin: 0 20px;
-	padding-top: 4px;
-	border: 1px solid;
-	border-color: #283848;
-	border-radius: 5px;
+	padding: 4px 0;
+	border-radius: 12px;
 	user-select: none;
 	cursor: pointer;
+	justify-content: center;
 }
 
 .contest_title .rated_button {
-	background-color: white;
-	color: #102030;
+	background-color: #00a0f0;
+	color: white;
 	transition: 0.2s;
 }
 
 .contest_title .rated_button:hover {
-	background-color: lightgray;
-	color: #102030;
+	background-color: #0080b0;
+	color: lightgray;
 }
 
 .contest_title .rated_button:active {
@@ -50,14 +48,14 @@
 }
 
 .contest_title .unrated_button {
-	background-color: #102030;
-	color: white;
+	background-color: white;
+	color: #000010;
 	transition: 0.2s;
 }
 
 .contest_title .unrated_button:hover {
-	background-color: #102030;
-	color: lightgray;
+	background-color: lightgray;
+	color: #000010;
 }
 
 .contest_title .unrated_button:active {
@@ -66,13 +64,13 @@
 }
 
 .contest_title .cancel_button {
-	background-color: red;
+	background-color: #f06060;
 	color: white;
 	transition: 0.2s;
 }
 
 .contest_title .cancel_button:hover {
-	background-color: #ff5050;
+	background-color: #f0a0a0;
 	color: white;
 }
 
@@ -82,5 +80,10 @@
 }
 
 .description {
-	width: calc(100% - 240px);
+	width: 100%;
+	margin: 0;
+}
+
+.description *{
+	margin: 0;
 }

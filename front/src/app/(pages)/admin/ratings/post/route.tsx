@@ -8,7 +8,7 @@ import getContest from "@/lib/contest";
 
 export async function POST(req: NextRequest) {
 
-	if (!hasAdminPremission()) {
+	if (!(await hasAdminPremission())) {
 
 		notFound();
 

@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato&family=Noto+Sans+JP&family=Inter&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@100..900&display=swap');
 @import url('https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css');
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 @font-face {
 	font-family: 'Google Sans';
@@ -70,10 +74,20 @@
 
 *:not(.katex *) {
 	box-sizing: border-box;
-	font-family: "Google Sans", "Lato", "Noto Sans JP", "Inter", sans-serif;
+	font-family: "M PLUS 1", "M PLUS 1", "Google Sans", "Lato", "Noto Sans JP", "Inter", sans-serif;
 	font-optical-sizing: auto;
 	font-style: normal;
 	margin: 0;
+}
+
+.katex .katex-html {
+	margin: 0;
+	& .base {
+		margin: 0;
+		& .strut {
+			display: none;
+		}
+	}
 }
 
 html,
@@ -83,8 +97,7 @@ body {
 }
 
 body {
-	color: white;
-	background-color: #283848;
+	background-color: #d0e0f0;
 }
 
 a {
@@ -98,15 +111,36 @@ a {
 	}
 }
 
-table {
-	border: white 2px solid;
+h1, h2{
+	font-weight: bold;
+}
+
+h1 {
+	font-size: 2.5rem;
+	color: #00a0f0;
+}
+
+h2 {
+	font-size: 1.4rem;
+}
+
+table, thead {
+	border: solid;
+	border-color: #d0e0f0 #ffffff;
+	border-width: 2px 0;
 	border-collapse: collapse;
 	text-align: center;
-	width: 950px;
+	width: 100%;
+}
+
+thead {
+	background-color: #d0e0f0;
+	font-weight: bold;
 }
 
 tr {
-	border: white 1px solid;
+	border-width: 1px 0;
+    font-size: 14px;
 }
 
 .scroll {
@@ -126,23 +160,23 @@ select {
 	width: 440px;
 	margin-bottom: 20px;
 	padding: 8px 10px;
-	border: 1px solid #283848;
+	border: 2px solid #d0e0f0;
 	border-radius: 5px;
-	background-color: #708090;
-	color: white;
+	background-color: white;
+	color: #000010;
 	font-size: 1em;
 	line-height: 1.2;
 	outline: 0;
 }
 
 input:focus {
-	border: 1px solid #60A0F0;
+	border: 2px solid #00A0F0;
 	transition: all 0.6s ease;
 	outline: 0;
 }
 
 input[type="submit"] {
-	background-color: #102030;
+	background-color: #00a0f0;
 	transition: all 0.6s ease;
 	border: none;
 	width: 440px;
@@ -152,7 +186,7 @@ input[type="submit"] {
 
 input::placeholder,
 textarea::placeholder {
-	color: #C0C0C0;
+	color: white;
 }
 
 input[type="button"]:focus {
@@ -161,7 +195,7 @@ input[type="button"]:focus {
 
 input[type="button"]:active,
 input[type="submit"]:active {
-	background-color: #102030;
+	background-color: #00a0f0;
 }
 
 input[type="submit"]:disabled {
@@ -198,40 +232,40 @@ ol li {
 
 /* 1-400 */
 .rating0 {
-	color: #5F7E88;
+	color: #808080;
 }
 
 /* 400-800 */
 .rating1 {
-	color: #FFA500;
+	color: #804000;
 }
 
 /* 800-1200 */
 .rating2 {
-	color: #008800;
+	color: #008000;
 }
 
 /* 1200-1600 */
 .rating3 {
-	color: #FF4444;
+	color: #00C0C0;
 }
 
 /* 1600-2000 */
 .rating4 {
-	color: #FFFF00;
+	color: #0000FF;
 }
 
 /* 2000-2400 */
 .rating5 {
-	color: #8080D0;
+	color: #C0C000;
 }
 
 /* 2400-2800 */
 .rating6 {
-	color: #559FFF;
+	color: #FF8000;
 }
 
-/* 3200- */
+/* 2800- */
 .rating7 {
-	color: #00F8F8;
+	color: #FF0000;
 }

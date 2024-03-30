@@ -43,7 +43,7 @@ export default async function Page({ params: { contest: contestId } }: { params:
 
 	}
 
-	let users: { user: string, score: number, contestTime: number }[] = [];
+	let users: { user: string, score: number, contestTime: number, rating: number }[] = [];
 
 	for (const user in scores) {
 
@@ -58,7 +58,7 @@ export default async function Page({ params: { contest: contestId } }: { params:
 
 		}
 
-		users.push({ user, score: scores[user].score, contestTime: lastSubmitTime + (await contest.penalty!!.get()) * penalty });
+		users.push({ user, score: scores[user].score, contestTime: lastSubmitTime + (await contest.penalty!!.get()) * penalty, rating: await (await getUser(user))!!.rating!!.get()!! });
 
 	}
 
@@ -69,11 +69,15 @@ export default async function Page({ params: { contest: contestId } }: { params:
 
 	users = users.filter((user) => registerd_users.includes(user.user));
 
-	registerd_users.filter((user) => !users.find((value) => value.user == user)).map((user) => {
+	await Promise.all(
 
-		users.push({ user, score: 0, contestTime: 0 });
+		registerd_users.filter((user) => !users.find((value) => value.user == user)).map(async (user) => {
 
-	});
+			users.push({ user, score: 0, contestTime: 0, rating: await (await getUser(user))!!.rating!!.get()!! });
+
+		})
+		
+	);
 
 	users.sort((a, b) => (b.score - a.score == 0 ? a.contestTime - b.contestTime : b.score - a.score));
 
@@ -83,16 +87,15 @@ export default async function Page({ params: { contest: contestId } }: { params:
 			<table>
 				<thead>
 					<tr>
-						<td className={styles.user}>#</td>
-						<td className={styles.user}>User</td>
-						<td className={styles.user}>Penalty</td>
-						<td className={styles.user}>Last Submit</td>
-						<td className={styles.user}>Total</td>
+						<td className={styles.rank_column}>#</td>
+						<td>User</td>
+						<td className={styles.score_column}>Total</td>
+						<td className={styles.score_column}>Penalty</td>
 						{
 							(await contest.problems!!.get()).map((problem, i) => {
 
 								return (
-									<td key={i}><a href={`/contests/${contestId}/tasks/${problem}`}>{problem}</a></td>
+									<td key={i} className={styles.score_column}><a href={`/contests/${contestId}/tasks/${problem}`}>{String.fromCharCode(65 + i)}</a></td>
 								)
 
 							})
@@ -122,26 +125,45 @@ export default async function Page({ params: { contest: contestId } }: { params:
 
 								let lastSubmitTime = 0;
 
-								for(const problem in scores[user.user].problems) {
+								for (const problem in scores[user.user].problems) {
 
 									lastSubmitTime = Math.max(lastSubmitTime, scores[user.user].problems[problem].lastSubmitTime);
 
 								}
 
 								nodes.push(
-									<tr key={i}>
+									<tr key={i} className={styles.tabler}>
 										<td>{i + 1}</td>
-										<td className={styles.user}>{user.user}</td>
-										<td className={styles.user}>{penaltySum}</td>
-										<td className={styles.user}>{new Date(lastSubmitTime - 9 * 3600 * 1000).toLocaleTimeString("ja-jp")}</td>
-										<td className={styles.user}>{scores[user.user]?.score || 0}</td>
+										<td className={styles.user}><p className={!user.rating || user.rating == 0 ? undefined : `rating${Math.min(7, Math.floor(user.rating / 400))}`}>{user.user}</p></td>
+										<td className={styles.score_column}>
+											{(scores[user.user]?.score == 0) ?
+												<p className={styles.passage}> - </p> :
+												<>
+													<p className={styles.score_total}>{scores[user.user]?.score}</p>
+													<p className={styles.submit_time}>{new Date(lastSubmitTime - 9 * 3600 * 1000).toLocaleTimeString("ja-jp")}</p>
+												</>
+											}
+										</td>
+										{
+											(penaltySum == 0) ?
+												<td>-</td> :
+												<td className={styles.penalty}>+{penaltySum}</td>
+										}
 										{
 											(await contest.problems!!.get()).map((problem, j) => {
 												if (!scores[user.user].problems[problem]) {
 													scores[user.user].problems[problem] = { lastSubmitTime: 0, notEffectedPenalty: 0, penalty: 0, score: 0 };
 												}
 												return (
-													<td key={j}>{scores[user.user].problems[problem].score}</td>
+													<td key={j} className={styles.score_column}>
+														{(scores[user.user].problems[problem].score == 0) ?
+															<p className={styles.passage}> - </p> :
+															<>
+																<p className={styles.score}>{scores[user.user].problems[problem].score}</p>
+																<p className={styles.submit_time}>{new Date(scores[user.user].problems[problem].lastSubmitTime - 9 * 3600 * 1000).toLocaleTimeString("ja-jp")}</p>
+															</>
+														}
+													</td>
 												)
 											})
 										}

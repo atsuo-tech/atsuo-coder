@@ -1,10 +1,12 @@
+import Form from "@/components/form";
+
 export default async function Rating() {
 
 	return (
 		<>
 			<h1>Rating | Atsuo Coder</h1>
 			<br />
-			<form action="/admin/ratings/post" method="post">
+			<Form action="/admin/ratings/post" method="post">
 
 				<label htmlFor="id">Contest ID</label>
 				<br />
@@ -23,7 +25,7 @@ export default async function Rating() {
 
 				<input type="submit" value="Submit" />
 
-			</form>
+			</Form>
 		</>
 	)
 

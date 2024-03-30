@@ -1,3 +1,11 @@
 div[class^=page_center] {
 	display: none;
 }
+
+.pagenow {
+	margin-top: 0;
+}
+
+.pagenow * {
+	margin-bottom: 0;
+}
