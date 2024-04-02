@@ -11,7 +11,7 @@
 	border-radius: 12px;
 }
 
-.main *{
+.main *:not(.katex *) {
 	margin-top: 12px;
 	margin-bottom: 12px;
 }
