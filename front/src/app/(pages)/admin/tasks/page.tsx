@@ -43,7 +43,7 @@ export default async function Page() {
 						await hasProblemMakerPermission() ?
 							<tr>
 
-								<td>
+								<td colSpan={5}>
 
 									<Link href="/admin/tasks/new">
 
