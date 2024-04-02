@@ -269,3 +269,7 @@ ol li {
 .rating7 {
 	color: #FF0000;
 }
+
+.katex * {
+	margin: 0 !important;
+}
