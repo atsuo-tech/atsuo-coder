@@ -74,32 +74,32 @@ export default async function RootLayout({
 						<p>TOP</p>
 					</a>
 				</Header3Button>
-				<Header3Button>
-					{
-						permissionAllowedTask ?
+				{
+					permissionAllowedTask ?
+						<Header3Button>
 							<a href={`/contests/${params.contest}/tasks`}>
 								<span className={styles["material-icons"]}>task</span>
 								<p>TASKS</p>
-							</a> :
-							<></>
-					}
-				</Header3Button>
+							</a>
+						</Header3Button> :
+						<></>
+				}
 				<Header3Button>
 					<a href={`/contests/${params.contest}/standings`}>
 						<span className={styles["material-icons"]}>leaderboard</span>
 						<p>STANDINGS</p>
 					</a>
 				</Header3Button>
-				<Header3Button>
-					{
-						permissionAllowedTask ?
+				{
+					permissionAllowedTask ?
+						<Header3Button>
 							<a href={`/contests/${params.contest}/submissions`}>
 								<span className={styles["material-icons"]}>send</span>
 								<p>SUBMITTIONS</p>
-							</a> :
-							<></>
-					}
-				</Header3Button>
+							</a>
+						</Header3Button> :
+						<></>
+				}
 			</ThirdHeader>
 			{children}
 		</>
