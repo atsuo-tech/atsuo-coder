@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-export default function Waiter({ start }: { start: Date }) {
+export default function Waiter({ start, url }: { start: Date, url: string }) {
 
 	useEffect(() => {
 
@@ -14,7 +14,8 @@ export default function Waiter({ start }: { start: Date }) {
 
 			if (start.getTime() - Date.now() <= 0) {
 
-				location.reload();
+
+				location.href = url;
 
 			}
 

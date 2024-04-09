@@ -1,7 +1,6 @@
 import getContest from "@/lib/contest";
 import getUser from "@/lib/user";
-import { notFound } from "next/navigation";
-import Waiter from "./waiter";
+import { notFound, redirect } from "next/navigation";
 
 export default async function RootLayout({
 	children,
@@ -34,25 +33,7 @@ export default async function RootLayout({
 
 	if (!contestStarted) {
 
-		// コンテスト開始前
-
-		if (!user || (!editors.includes(user.getID()!!) && !testers.includes(user.getID()!!))) {
-
-			if (user && (rated_users.includes(user.getID()!!) || unrated_users.includes(user.getID()!!))) {
-
-				return (
-					<>
-						<h1>Tasks | AtsuoCoder</h1>
-						<p>コンテストはまだ始まっていません。</p>
-						<Waiter start={await contest.start?.get()!!}></Waiter>
-					</>
-				);
-
-			}
-
-			notFound();
-
-		}
+		redirect(`/contests/${params.contest}/wait`);
 
 	} else if (!contestEnded) {
 
