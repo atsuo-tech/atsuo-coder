@@ -19,24 +19,18 @@ export default async function WaiterPage({
 
 	// コンテスト開始前
 
-	if (!user || (!editors.includes(user.getID()!!) && !testers.includes(user.getID()!!))) {
+	if (user && (rated_users.includes(user.getID()!!) || unrated_users.includes(user.getID()!!))) {
 
-		if (user && (rated_users.includes(user.getID()!!) || unrated_users.includes(user.getID()!!))) {
-
-			return (
-				<>
-					<h1>Tasks | AtsuoCoder</h1>
-					<p>コンテストはまだ始まっていません。</p>
-					<Waiter start={await contest.start?.get()!!} url={`/contests/${params.contest}/tasks`}></Waiter>
-				</>
-			);
-
-		}
-
-		notFound();
+		return (
+			<>
+				<h1>Tasks | AtsuoCoder</h1>
+				<p>コンテストはまだ始まっていません。</p>
+				<Waiter start={await contest.start?.get()!!} url={`/contests/${params.contest}/tasks`}></Waiter>
+			</>
+		);
 
 	}
-	
-	redirect(`/contests/${params.contest}/tasks`);
 
+	notFound();
+	
 }

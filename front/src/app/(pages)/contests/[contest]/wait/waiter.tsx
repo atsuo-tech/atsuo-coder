@@ -14,6 +14,7 @@ export default function Waiter({ start, url }: { start: Date, url: string }) {
 
 			if (start.getTime() - Date.now() <= 0) {
 
+				console.log(start.getTime(), Date.now());
 
 				location.href = url;
 
