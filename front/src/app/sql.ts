@@ -7,8 +7,8 @@ export const sql = await mysql.createConnection({
 	stringifyObjects: true,
 });
 
-sql.on("close", async () => {
+setInterval(() => {
 
-	await sql.connect();
+	sql.query("SELECT 1");
 
-})
+}, 60 * 60 * 1000);
