@@ -31,7 +31,7 @@ export default async function RootLayout({
 
 	const user = await getUser();
 
-	if (!contestStarted) {
+	if (!contestStarted && (!user || (!editors.includes(user.getID()!!) && !testers.includes(user.getID()!!) && !rated_users.includes(user.getID()!!) && !unrated_users.includes(user.getID()!!)))) {
 
 		redirect(`/contests/${params.contest}/wait`);
 
