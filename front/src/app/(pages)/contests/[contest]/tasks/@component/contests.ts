@@ -58,11 +58,11 @@ export async function getContest(sql: Connection, id: string, showPublic = false
 
 export async function getTasks(sql: Connection, ids: string[]) {
 
-	return new Promise<{ id: string, question: string, judge_type: number, editors: string, testers: string, name: string, score: number }[]>(async (resolve) => {
+	return new Promise<{ id: string, question: string, judge_type: number, editors: string[], testers: string[], name: string, score: number }[]>(async (resolve) => {
 
 		const id = Array.from(ids);
 
-		let res: { id: string, question: string, judge_type: number, editors: string, testers: string, name: string, score: number }[] = [];
+		let res: { id: string, question: string, judge_type: number, editors: string[], testers: string[], name: string, score: number }[] = [];
 
 		let resolvers: string[] = [];
 

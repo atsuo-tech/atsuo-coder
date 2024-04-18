@@ -23,9 +23,9 @@ export default async function Page(p: { params: { contest: string } }) {
 	}
 
 	const problems = await contest.problems!!.get();
-	
+
 	const tasks = await getTasks(sql, problems);
-	
+
 	return (
 		<>
 			<h1>Tasks | AtsuoCoder</h1>
@@ -49,7 +49,7 @@ export default async function Page(p: { params: { contest: string } }) {
 									{task!!.score}
 								</td>
 								<td>
-									{task!!.editors}
+									{task!!.editors.join(" ")}
 								</td>
 							</tr>
 						</>;
