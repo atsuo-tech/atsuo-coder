@@ -6,7 +6,7 @@ import { languageData } from "./config";
 export default class JudgeServer {
 
 	// ジャッジ待ちの問題ID
-	private queue: string[] = [];
+	public queue: string[] = [];
 
 	private judging: { [id: string]: Judge } = {};
 
@@ -36,8 +36,8 @@ export default class JudgeServer {
 
 	}
 
-	private readonly maxJudge = 10;
-	private judgingCount = 0;
+	public readonly maxJudge = 10;
+	public judgingCount = 0;
 
 	public async addQueue(sql: Connection, submissionID: string) {
 

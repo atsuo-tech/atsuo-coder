@@ -100,6 +100,17 @@ export default async function RootLayout({
 									</a> :
 									<></>
 							}
+							{
+								await hasAdminPremission() ?
+									<a href="/admin/systems">
+										<li>
+											<span className={styles["material-icons"]}>system_update</span>
+											<br />
+											System Managements
+										</li>
+									</a> :
+									<></>
+							}
 						</div>
 					</ul>
 				</div>
