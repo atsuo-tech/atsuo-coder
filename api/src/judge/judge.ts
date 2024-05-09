@@ -37,7 +37,6 @@ export default class JudgeServer {
 	}
 
 	public readonly maxJudge = 10;
-	public judgingCount = 0;
 
 	public async addQueue(sql: Connection, submissionID: string) {
 
@@ -49,9 +48,7 @@ export default class JudgeServer {
 
 	public async updateQueue(sql: Connection) {
 
-		if (this.queue.length > 0 && this.judgingCount < this.maxJudge) {
-
-			this.judgingCount++;
+		if (this.queue.length > 0 && Object.entries(this.judging).length < this.maxJudge) {
 
 			const submissionID = this.queue[0];
 			this.queue.shift();
@@ -61,7 +58,6 @@ export default class JudgeServer {
 			const [{ task, sourceCode, language }] = data[0] as [{ task: string, sourceCode: string, language: string }];
 
 			if (this.locked[task]) {
-				this.judgingCount--;
 				this.queue.unshift(submissionID);
 				await sql.query("UPDATE submissions SET judge = ? where id = ?;", [JSON.stringify({ status: Result.IE, message: "The task is temporarily locked for update. Please submit again." }), submissionID]);
 				return;
@@ -92,8 +88,6 @@ export default class JudgeServer {
 			});
 
 			delete this.judging[submissionID];
-
-			this.judgingCount--;
 
 			// DBに保存
 			await sql.query("UPDATE submissions SET judge = ? where id = ?;", [JSON.stringify([[response, sum], ...judge]), submissionID]);
