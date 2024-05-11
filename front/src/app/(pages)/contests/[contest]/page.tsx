@@ -48,14 +48,12 @@ export default async function Page(p: { params: { contest: string } }) {
 
 				<h1>{await contest.name!!.get()}</h1>
 
-				{contestNotStarted && !isManager ?
-					<ul>
-						{!isRated ? <a href={`/contests/${p.params.contest}/register/rated`} className={styles.rated_button}>{isUnrated ? "Rated登録に変更" : "Rated登録"}</a> : <></>}
-						{!isUnrated ? <a href={`/contests/${p.params.contest}/register/unrated`} className={styles.unrated_button}>{isRated ? "Unrated登録に変更" : "Unrated登録"}</a> : <></>}
-						{isRated || isUnrated ? <a href={`/contests/${p.params.contest}/register/cancel`} className={styles.cancel_button}>登録解除</a> : <></>}
-					</ul> :
-					<></>
-				}
+
+				<ul>
+					{contestNotStarted && !isManager && !isRated ? <a href={`/contests/${p.params.contest}/register/rated`} className={styles.rated_button}>{isUnrated ? "Rated登録に変更" : "Rated登録"}</a> : <></>}
+					{!isManager && !isUnrated ? <a href={`/contests/${p.params.contest}/register/unrated`} className={styles.unrated_button}>{isRated ? "Unrated登録に変更" : "Unrated登録"}</a> : <></>}
+					{contestNotStarted && !isManager && (isRated || isUnrated) ? <a href={`/contests/${p.params.contest}/register/cancel`} className={styles.cancel_button}>登録解除</a> : <></>}
+				</ul>
 
 				<p>
 					Editors: {editors.join(' ')} | Testers: {testers.length != 0 ? testers.join(' ') : "None"}<br />

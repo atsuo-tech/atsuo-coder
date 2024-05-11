@@ -8,8 +8,9 @@ export default async function Page({ params: { contest } }: { params: { contest:
 	const contestInfo = await getContest(contest);
 
 	const start = await contestInfo!!.start!!.get();
+	const period = await contestInfo!!.period!!.get();
 
-	if (start.getTime() < Date.now()) {
+	if (start.getTime() + period < Date.now()) {
 
 		notFound();
 
