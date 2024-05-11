@@ -87,7 +87,7 @@ export class User {
 
 					this.id = row.id;
 
-					this.permission = new Value<number, string>(this.id!!, Number(row.admin), 1000 * 60 * 60, async (id) => {
+					this.permission = new Value<number, string>(this.id!!, Number(row.admin), 0, async (id) => {
 
 						const [result] = await sql.query<RowDataPacket[]>("SELECT admin FROM users WHERE id = ?", [id])
 
