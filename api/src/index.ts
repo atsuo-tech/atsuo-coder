@@ -101,6 +101,18 @@ front.prepare().then(async () => {
 
 	});
 
+	sql.query<RowDataPacket[]>("SELECT * FROM submissions WHERE judge = 'WJ';").then((data) => {
+
+		data[0].forEach((submission) => {
+
+			const { id, task } = submission as { id: string, task: string };
+
+			judgeServer.addQueue(sql, id);
+
+		});
+
+	});
+
 	// judgeServer.addQueue(sql, "test");
 	setInterval(() => {
 		judgeServer.updateQueue(sql);

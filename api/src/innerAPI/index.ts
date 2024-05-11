@@ -18,7 +18,8 @@ export default async function getInnerAPI(judgeServer: JudgeServer, loadTestcase
 
 	innerAPI.get("/judge/queue", (req, res) => {
 
-		res.json({ maxJudge: judgeServer.maxJudge, judgingCount: judgeServer.judgingCount, queue: judgeServer.queue });
+		res.setHeader("Cache-Control", "no-store");
+		res.json({ maxJudge: judgeServer.maxJudge, judgingCount: Object.entries(judgeServer.judging).length, queue: judgeServer.queue });
 
 	});
 
