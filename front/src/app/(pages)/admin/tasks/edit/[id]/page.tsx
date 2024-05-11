@@ -19,7 +19,7 @@ export default async function PostEditTask({ params: { id }, searchParams: { don
 
 	}
 
-	if (!hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
+	if (!await hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
 
 		notFound();
 
