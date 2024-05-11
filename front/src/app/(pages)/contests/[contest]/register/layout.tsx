@@ -26,14 +26,6 @@ export default async function RootLayout({
 
 	}
 
-	const start = await contest.start!!.get();
-
-	if (start.getTime() < Date.now()) {
-
-		notFound();
-
-	}
-
 	return <>{children}</>;
 
 }
