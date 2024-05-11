@@ -8,7 +8,7 @@ export default class JudgeServer {
 	// ジャッジ待ちの問題ID
 	public queue: string[] = [];
 
-	private judging: { [id: string]: Judge } = {};
+	public judging: { [id: string]: Judge } = {};
 
 	public problems: {
 		[id: string]: {
