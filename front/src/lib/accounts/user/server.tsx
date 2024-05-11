@@ -58,8 +58,8 @@ export namespace Server {
 
 			const token = await Server.makeToken(user);
 
-			cookies().set("cc", token.cc);
-			cookies().set("ct", token.ct);
+			cookies().set("cc", token.cc, { maxAge: 60 * 60 * 24 * 365 });
+			cookies().set("ct", token.ct, { maxAge: 60 * 60 * 24 * 365 });
 
 			resolve(token);
 
