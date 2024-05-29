@@ -27,6 +27,9 @@ export default async function Page(p: { params: { contest: string } }) {
 	// コンテスト開始前か
 	const contestNotStarted = start.getTime() > Date.now();
 
+	// コンテスト終了後か
+	const contestEnded = period != -1 && start.getTime() + period < Date.now();
+
 	// Rated登録済みか
 	const isRated = user && (await contest.rated_users!!.get()).includes(user.getID()!!);
 
@@ -51,7 +54,7 @@ export default async function Page(p: { params: { contest: string } }) {
 
 				<ul>
 					{contestNotStarted && !isManager && !isRated ? <a href={`/contests/${p.params.contest}/register/rated`} className={styles.rated_button}>{isUnrated ? "Rated登録に変更" : "Rated登録"}</a> : <></>}
-					{!isManager && !isUnrated ? <a href={`/contests/${p.params.contest}/register/unrated`} className={styles.unrated_button}>{isRated ? "Unrated登録に変更" : "Unrated登録"}</a> : <></>}
+					{!contestEnded && !isManager && !isUnrated ? <a href={`/contests/${p.params.contest}/register/unrated`} className={styles.unrated_button}>{isRated ? "Unrated登録に変更" : "Unrated登録"}</a> : <></>}
 					{contestNotStarted && !isManager && (isRated || isUnrated) ? <a href={`/contests/${p.params.contest}/register/cancel`} className={styles.cancel_button}>登録解除</a> : <></>}
 				</ul>
 
