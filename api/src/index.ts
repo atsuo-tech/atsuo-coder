@@ -115,8 +115,24 @@ front.prepare().then(async () => {
 
 	// judgeServer.addQueue(sql, "test");
 	setInterval(() => {
+
 		judgeServer.updateQueue(sql);
-	}, 1500);
+
+		sql.query<RowDataPacket[]>("SELECT * FROM submissions WHERE judge = 'WJ';").then((datas) => {
+
+			for (const data of datas[0]) {
+
+				if (!(data.id in judgeServer.judging) && judgeServer.queue.indexOf(data.id) == -1) {
+
+					judgeServer.addQueue(sql, data.id);
+
+				}
+
+			}
+
+		});
+
+	}, 100);
 
 	app.use((req, res, next) => {
 		if (req.path.endsWith("/") && req.path.length > 1) {
@@ -215,8 +231,17 @@ front.prepare().then(async () => {
 
 	(await getInnerAPI(judgeServer, loadTestcases)).listen(9834, "localhost");
 
-	http.createServer((rep, res) => res.writeHead(301, { Location: `https://${rep.headers.host}${rep.url}` }).end()).listen(80);
-	https.createServer({ cert: fs.readFileSync(path.join(__dirname, "./../../certs/cert.pem")), key: fs.readFileSync(path.join(__dirname, "./../../certs/key.pem")) }, app).listen(process.env.port ? Number(process.env.port) : 443, process.env.domain)
+	const portRequest = await fetch("http://localhost:8290/add", {
+		body: JSON.stringify({
+			host: "judge.w-pcp.net"
+		}),
+		headers: {
+			"Content-Type": "application/json"
+		},
+		method: "POST",
+	}).then((res) => res.json());
+	console.log(portRequest);
+	http.createServer({}, app).listen(process.env.port ? Number(process.env.port) : portRequest.port, process.env.domain)
 });
 
 type Router = ((sql: mysql.Connection) => express.Router);
