@@ -8,8 +8,8 @@ export default function Form(
 		method
 	}: {
 		children: React.ReactNode,
-		action: string,
-		method: "get" | "post"
+		action: any,
+		method?: "get" | "post"
 	}) {
 
 	return (

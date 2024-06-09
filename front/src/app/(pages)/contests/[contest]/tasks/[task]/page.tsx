@@ -9,6 +9,7 @@ import React from 'react';
 import Markdown from "@/components/markdown";
 import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
+import Link from "next/link";
 
 export default async function Page(p: { params: { contest: string, task: string } }) {
 
@@ -38,7 +39,7 @@ export default async function Page(p: { params: { contest: string, task: string 
 
 	const taskInfo = await getProblem(p.params.task);
 
-	if(!taskInfo) {
+	if (!taskInfo) {
 
 		notFound();
 
@@ -49,6 +50,18 @@ export default async function Page(p: { params: { contest: string, task: string 
 	const ct_token = crypto.randomUUID();
 	await sql.query("INSERT INTO ct_token (id, use_to, created_at, user_id) VALUES (?, ?, now(), ?);", [ct_token, "SUBMIT", user.getID()]);
 
+	const isEditor = (await contest.editors!!.get()).includes(user.getID()!!);
+	const isTester = (await contest.testers!!.get()).includes(user.getID()!!);
+
+	const period = await contest.period!!.get();
+	const start = await contest.start!!.get();
+
+	// コンテスト終了後か
+	const contestEnded = period != -1 && (start.getTime() + period < Date.now());
+
+	// 運営か
+	const isManager = isEditor || isTester;
+
 	return (
 		<>
 			<title>{data.name}</title>
@@ -57,6 +70,14 @@ export default async function Page(p: { params: { contest: string, task: string 
 				Editors: {data.editors} Testers: {data.testers.length == 0 ? "なし" : data.testers}<br />
 				Score: {data.score.toString()}
 			</p>
+			{
+				contestEnded || isManager ?
+					<>
+						<h2>解説</h2>
+						<Link href={`/contests/${p.params.contest}/tasks/${p.params.task}/editorial`}>解説を見る</Link>
+					</> :
+					<></>
+			}
 			<div className={submitStyle.task}>
 				<div id="task">
 					<Markdown md={data.question} />

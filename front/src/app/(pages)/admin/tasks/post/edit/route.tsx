@@ -1,4 +1,3 @@
-import redis from "@/app/redis";
 import { sql } from "@/app/sql";
 import { NextRequest } from "next/server";
 import { hasProblemAdminPermission } from "../../../permission";
@@ -64,8 +63,6 @@ export async function POST(req: NextRequest) {
 		return new Response("Failed to update", { status: 500 });
 
 	}
-
-	await redis.del(`task:${data.get("id")}`);
 
 	return new Response("301", { status: 301, headers: { location: `/admin/tasks` } });
 
