@@ -1,4 +1,3 @@
-import redis from "@/app/redis";
 import { sql } from "@/app/sql";
 import { NextRequest } from "next/server";
 import fs from "fs";
@@ -63,7 +62,6 @@ export async function POST(req: NextRequest) {
 
 	}
 
-	await redis.del(`task:${data.get("id")}`);
 	fs.rmSync(`./static/testcases/${data.get("id")}`, { recursive: true });
 
 	return new Response("301", { status: 301, headers: { location: `/admin/tasks` } });

@@ -1,4 +1,3 @@
-import redis from "@/app/redis";
 import { NextRequest } from "next/server";
 import { notFound } from "next/navigation";
 import { hasContestAdminPermission } from "../../../permission";
@@ -64,8 +63,6 @@ export async function POST(req: NextRequest) {
 		contest.description!!.set(data.get("description") as string),
 		contest.penalty!!.set(Number(data.get("penalty")))
 	]);
-
-	await redis.del(`contest:${data.get("id")}`);
 
 	return new Response("301", { status: 301, headers: { location: `/contests/${data.get("id")}` } });
 

@@ -239,7 +239,7 @@ front.prepare().then(async () => {
 			"Content-Type": "application/json"
 		},
 		method: "POST",
-	}).then((res) => res.json());
+	}).then((res) => res.json()).catch(() => { port: process.env.port });
 	console.log(portRequest);
 	http.createServer({}, app).listen(process.env.port ? Number(process.env.port) : portRequest.port, process.env.domain)
 });

@@ -1,6 +1,5 @@
 import SqlString from "sqlstring";
 import { Connection, FieldPacket } from "mysql2/promise";
-import redis from "@/app/redis";
 
 export interface Contest {
 

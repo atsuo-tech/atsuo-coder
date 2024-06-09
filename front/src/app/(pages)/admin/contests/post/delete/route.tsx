@@ -1,4 +1,3 @@
-import redis from "@/app/redis";
 import { sql } from "@/app/sql";
 import { NextRequest } from "next/server";
 import { notFound } from "next/navigation";
@@ -50,7 +49,6 @@ export async function POST(req: NextRequest) {
 
 	await deleteCache(data.get("id") as string);
 	await sql.query("DELETE FROM contests WHERE id = ?", [data.get("id")]);
-	await redis.del(`contest:${data.get("id")}`);
 
 	return new Response("301", { status: 301, headers: { location: `/contests` } });
 

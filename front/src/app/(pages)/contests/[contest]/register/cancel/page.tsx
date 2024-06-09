@@ -1,4 +1,3 @@
-import redis from "@/app/redis";
 import { RedirectType, notFound, redirect } from "next/navigation";
 import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
@@ -37,8 +36,6 @@ export default async function Page({ params: { contest } }: { params: { contest:
 		await contestInfo!!.unrated_users!!.set(unrated_users.filter((value) => value != user.getID()!!));
 
 	}
-
-	await redis.del(`contest:${contest}`);
 
 	redirect(`/contests/${contest}`, RedirectType.push);
 

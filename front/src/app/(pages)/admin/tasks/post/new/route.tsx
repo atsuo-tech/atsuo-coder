@@ -69,6 +69,7 @@ export async function POST(req: NextRequest) {
 	}
 
 	fs.mkdirSync(`./static/testcases/${data.get("id")}`);
+	fs.mkdirSync(`./static/editorials/${data.get("id")}`);
 
 	return new Response("301", { status: 301, headers: { location: `/admin/tasks` } });
 

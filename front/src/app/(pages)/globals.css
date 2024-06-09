@@ -184,11 +184,6 @@ input[type="submit"] {
 	color: white;
 }
 
-input::placeholder,
-textarea::placeholder {
-	color: white;
-}
-
 input[type="button"]:focus {
 	border: 1px solid #283848;
 }

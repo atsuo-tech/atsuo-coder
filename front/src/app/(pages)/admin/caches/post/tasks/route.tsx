@@ -1,6 +1,5 @@
 import { NextRequest } from "next/server";
 import { hasAdminPremission } from "../../../permission";
-import redis from "@/app/redis";
 
 export async function POST(request: NextRequest) {
 
@@ -17,8 +16,6 @@ export async function POST(request: NextRequest) {
 		return new Response("Bad Request", { status: 400 });
 
 	}
-
-	await redis.del(`task:${form.id}`);
 
 	return new Response("OK");
 
