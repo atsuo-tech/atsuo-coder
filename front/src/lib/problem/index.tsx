@@ -1,5 +1,7 @@
 import { sql } from "@/app/sql";
 import Value from "../value";
+import { RowDataPacket } from "mysql2";
+import { hasAdminPremission, hasProblemAdminPermission } from "@/app/(pages)/admin/permission";
 
 let cache: { [id: string]: Problem } = {};
 
@@ -74,6 +76,20 @@ export class Problem {
 
 				});
 
+				this.question = new Value<string, string>(id, row.question, 1000 * 60 * 60 * 24, async (id) => {
+
+					const [data] = await sql.query("SELECT question FROM tasks WHERE id = ?", [id]);
+
+					const row = (data as any[])[0];
+
+					return (row as { question: string }).question;
+
+				}, async (value, id) => {
+
+					await sql.query("UPDATE tasks SET question = ? WHERE id = ?", [value, id]);
+
+				});
+
 				this.id = row.id;
 
 				this.valid = true;
@@ -97,9 +113,23 @@ export class Problem {
 	public editors: Value<string[], string> | null = null;
 	public testers: Value<string[], string> | null = null;
 
+	public question: Value<string, string> | null = null;
+
 	public async getID() {
 
 		return this.id;
+
+	}
+
+	public async getData() {
+
+		return {
+			name: await this.name!!.get(),
+			score: await this.score!!.get(),
+			editors: await this.editors!!.get(),
+			testers: await this.testers!!.get(),
+			question: await this.question!!.get()
+		};
 
 	}
 
@@ -159,5 +189,19 @@ export function clearCache() {
 export function cacheSize() {
 
 	return Object.keys(cache).length;
+
+}
+
+export async function getEditableProblems(user: string) {
+
+	const tasks = await sql.query<RowDataPacket[]>(await hasAdminPremission() || await hasProblemAdminPermission() ? "SELECT * FROM tasks;" : "SELECT * FROM tasks where LOCATE(?, editors) > 0;", [user]);
+
+	return await Promise.all(
+		tasks[0].map((task) => {
+
+			return getProblem(task.id);
+
+		})
+	);
 
 }

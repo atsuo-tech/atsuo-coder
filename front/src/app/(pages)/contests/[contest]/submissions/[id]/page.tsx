@@ -1,7 +1,7 @@
 import { sql } from "@/app/sql";
 import submissionsStyle from "./submission.module.css";
 import { notFound } from "next/navigation";
-import { getTask } from "../../task";
+import getProblem from "@/lib/problem";
 import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
 import Markdown from "@/components/markdown";
@@ -57,11 +57,17 @@ export default async function Page(params: { params: { [key: string]: string } }
 
 	const { sourceCode, judge, task } = Array.from(result[0] as any)[0] as any;
 
-	const taskInfo = await getTask(sql, task);
+	const taskInfo = await getProblem(task);
+
+	if (!taskInfo) {
+
+		notFound();
+
+	}
 
 	const parsedJudge = judge == "WJ" ? {} : JSON.parse(judge);
 
-	const resultStrings = ["AC", "WA", "RE", "CE", "TLE", "OLE", "MLE", "QLE", "IE"];
+	const resultStrings = ["AC", "WA", "RE", "CE", "TLE", "OLE", "MLE", "QLE", "IE", "Hack"];
 
 	return (
 		<>
@@ -75,7 +81,7 @@ export default async function Page(params: { params: { [key: string]: string } }
 				<div className={submissionsStyle.grid}>
 					<div>
 						<h2>Task</h2>
-						<a href={`/contests/${params.params.contest}/tasks/${task}`}>{taskInfo.name}</a>
+						<a href={`/contests/${params.params.contest}/tasks/${task}`}>{await taskInfo.name!!.get()}</a>
 					</div>
 					<div>
 						<h2>Result</h2>

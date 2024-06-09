@@ -1,5 +1,5 @@
 import styles from "../../form.module.css";
-import { getTask } from "@/app/(pages)/contests/[contest]/task";
+import getProblem from "@/lib/problem";
 import { sql } from "@/app/sql";
 import { notFound } from "next/navigation";
 import { hasProblemAdminPermission } from "../../../permission";
@@ -11,7 +11,7 @@ export default async function PostEditTask({ params: { id }, searchParams: { don
 
 	const user = await getUser();
 
-	const task = await getTask(sql, id);
+	const task = await getProblem(id);
 
 	if (!user || !task) {
 
@@ -19,7 +19,7 @@ export default async function PostEditTask({ params: { id }, searchParams: { don
 
 	}
 
-	if (!await hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
+	if (!await hasProblemAdminPermission() && !(await task.editors!!.get()).includes(user.getID()!!)) {
 
 		notFound();
 
@@ -33,7 +33,7 @@ export default async function PostEditTask({ params: { id }, searchParams: { don
 				<input type="hidden" name="id" defaultValue={id} />
 				<label htmlFor="name">Name</label>
 				<br />
-				<input name="name" id="name" type="text" autoComplete="on" placeholder="A. console.log" required defaultValue={task.name} />
+				<input name="name" id="name" type="text" autoComplete="on" placeholder="A. console.log" required defaultValue={await task.name!!.get()} />
 				<br />
 				<label htmlFor="id">ID</label>
 				<br />
@@ -41,21 +41,21 @@ export default async function PostEditTask({ params: { id }, searchParams: { don
 				<br />
 				<label htmlFor="editors">Editors</label>
 				<br />
-				<input name="editors" id="editors" type="text" required placeholder="yama_can, abn48" defaultValue={task.editors.join(', ')} />
+				<input name="editors" id="editors" type="text" required placeholder="yama_can, abn48" defaultValue={(await task.editors!!.get()).join(', ')} />
 				<br />
 				<Warning>
 					Warning: we will not warn if this field includes invalid username.
 				</Warning>
 				<label htmlFor="testers">Testers</label>
 				<br />
-				<input name="testers" id="testers" type="text" required placeholder="yama_can, abn48" defaultValue={task.testers.join(', ')} />
+				<input name="testers" id="testers" type="text" required placeholder="yama_can, abn48" defaultValue={(await task.testers!!.get()).join(', ')} />
 				<br />
 				<Warning>
 					Warning: we will not warn if this field includes invalid username.
 				</Warning>
 				<label htmlFor="question">Question</label>
 				<br />
-				<textarea name="question" id="question" required defaultValue={task.question} />
+				<textarea name="question" id="question" required defaultValue={await task.question!!.get()} />
 				<br />
 				<input type="submit" defaultValue="Edit" />
 			</Form>

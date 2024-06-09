@@ -1,5 +1,5 @@
 import styles from "../form.module.css";
-import { getTask } from "@/app/(pages)/contests/[contest]/task";
+import getProblem from "@/lib/problem";
 import { sql } from "@/app/sql";
 import { notFound } from "next/navigation";
 import { hasProblemAdminPermission } from "../../permission";
@@ -17,9 +17,9 @@ export default async function PostNewTestcase(id: string) {
 
 	}
 
-	const task = await getTask(sql, id);
+	const task = await getProblem(id);
 
-	if (!task || !await hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
+	if (!task || !await hasProblemAdminPermission() && !(await task.editors!!.get()).includes(user.getID()!!)) {
 
 		notFound();
 

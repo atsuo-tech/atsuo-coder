@@ -1,4 +1,4 @@
-import { getTask } from "@/app/(pages)/contests/[contest]/task";
+import getProblem from "@/lib/problem";
 import styles from "../../form.module.css";
 import { sql } from "@/app/sql";
 import { notFound } from "next/navigation";
@@ -8,7 +8,7 @@ import Form from "@/components/form";
 
 export default async function Page({ params: { id } }: { params: { id: string } }) {
 
-	const task = await getTask(sql, id);
+	const task = await getProblem(id);
 
 	if (!task) {
 
@@ -18,7 +18,7 @@ export default async function Page({ params: { id } }: { params: { id: string } 
 
 	const user = await getUser();
 
-	if (!user || !await hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
+	if (!user || !await hasProblemAdminPermission() && !(await task.editors!!.get()).includes(user.getID()!!)) {
 
 		notFound();
 

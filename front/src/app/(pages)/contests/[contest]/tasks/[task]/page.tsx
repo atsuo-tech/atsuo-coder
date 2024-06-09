@@ -1,6 +1,6 @@
 import { sql } from "@/app/sql";
 import { notFound } from "next/navigation";
-import { getTask } from "../../task";
+import getProblem from "@/lib/problem";
 import crypto from "crypto";
 
 import submitStyle from "./task.module.css";
@@ -36,7 +36,7 @@ export default async function Page(p: { params: { contest: string, task: string 
 
 	}
 
-	const taskInfo = await getTask(sql, p.params.task);
+	const taskInfo = await getProblem(p.params.task);
 
 	if(!taskInfo) {
 
@@ -44,20 +44,22 @@ export default async function Page(p: { params: { contest: string, task: string 
 
 	}
 
+	const data = await taskInfo.getData();
+
 	const ct_token = crypto.randomUUID();
 	await sql.query("INSERT INTO ct_token (id, use_to, created_at, user_id) VALUES (?, ?, now(), ?);", [ct_token, "SUBMIT", user.getID()]);
 
 	return (
 		<>
-			<title>{taskInfo.name}</title>
-			<h1>{taskInfo.name}</h1>
+			<title>{data.name}</title>
+			<h1>{data.name}</h1>
 			<p>
-				Editors: {taskInfo.editors} Testers: {taskInfo.testers.length == 0 ? "なし" : taskInfo.testers}<br />
-				Score: {taskInfo.score}
+				Editors: {data.editors} Testers: {data.testers.length == 0 ? "なし" : data.testers}<br />
+				Score: {data.score.toString()}
 			</p>
 			<div className={submitStyle.task}>
 				<div id="task">
-					<Markdown md={taskInfo.question} />
+					<Markdown md={data.question} />
 				</div>
 			</div >
 

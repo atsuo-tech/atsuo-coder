@@ -1,5 +1,5 @@
 import styles from "../form.module.css";
-import { getTask } from "@/app/(pages)/contests/[contest]/task";
+import getProblem from "@/lib/problem";
 import { sql } from "@/app/sql";
 import fs from "fs";
 import { notFound } from "next/navigation";
@@ -9,7 +9,7 @@ import Form from "@/components/form";
 
 export default async function PostDeleteTestcase(task_id: string, id: string) {
 
-	const task = await getTask(sql, task_id);
+	const task = await getProblem(task_id);
 
 	if (!task) {
 
@@ -26,7 +26,7 @@ export default async function PostDeleteTestcase(task_id: string, id: string) {
 	}
 
 
-	if (!await hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
+	if (!await hasProblemAdminPermission() && !(await task.editors!!.get()).includes(user.getID()!!)) {
 
 		notFound();
 
