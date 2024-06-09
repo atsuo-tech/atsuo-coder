@@ -1,5 +1,5 @@
 import styles from "../form.module.css";
-import { getTask } from "@/app/(pages)/contests/[contest]/task";
+import getProblems from "@/lib/problem";
 import { sql } from "@/app/sql";
 import fs from "fs";
 import { notFound } from "next/navigation";
@@ -9,7 +9,7 @@ import Form from "@/components/form";
 
 export default async function PostEditTestcase(id: string, task_id: string) {
 
-	const task = await getTask(sql, task_id);
+	const task = await getProblems(task_id);
 
 	if (!task) {
 
@@ -31,7 +31,7 @@ export default async function PostEditTestcase(id: string, task_id: string) {
 
 	}
 
-	if (!await hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
+	if (!await hasProblemAdminPermission() && !(await task.editors!!.get()).includes(user.getID()!!)) {
 
 		notFound();
 
@@ -56,7 +56,7 @@ export default async function PostEditTestcase(id: string, task_id: string) {
 				<br />
 				<label htmlFor="score">Score</label>
 				<br />
-				<input id="score" name="score" type="number" placeholder="Score" required defaultValue={task.score} />
+				<input id="score" name="score" type="number" placeholder="Score" required defaultValue={(await task.score!!.get()).toString()} />
 				<br />
 				<label htmlFor="input">Reupload input files</label>
 				<br />

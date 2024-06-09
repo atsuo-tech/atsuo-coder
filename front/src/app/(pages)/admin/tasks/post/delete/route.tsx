@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 import fs from "fs";
 import { hasProblemAdminPermission } from "../../../permission";
 import { ResultSetHeader } from "mysql2";
-import { getTask } from "@/app/(pages)/contests/[contest]/task";
+import getProblem from "@/lib/problem";
 import getUser from "@/lib/user";
 import { notFound } from "next/navigation";
 
@@ -41,11 +41,15 @@ export async function POST(req: NextRequest) {
 		return BadRequest();
 	}
 
-	const tasks = await getTask(sql, data.get("id") as string);
+	const task = await getProblem(data.get("id") as string);
 
-	const task = tasks[0];
+	if(!task) {
 
-	if (!await hasProblemAdminPermission() && !task.editors.includes(user.getID()!!)) {
+		return notFound();
+
+	}
+
+	if (!await hasProblemAdminPermission() && !(await task.editors!!.get()).includes(user.getID()!!)) {
 
 		return Unauthorized();
 

@@ -58,5 +58,5 @@ CREATE TABLE IF NOT EXISTS `users` (
 	`grade` BIGINT,
 	`admin` BIGINT,
 	`performances` TEXT,
-	`inner_rating` BIGINT DEFAULT 0,
+	`inner_rating` BIGINT DEFAULT 0
 );

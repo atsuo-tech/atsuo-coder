@@ -1,7 +1,6 @@
 import { sql } from "@/app/sql";
 import crypto from "crypto";
 import { NextRequest } from "next/server";
-import redis from "@/app/redis";
 import getUser from "@/lib/user";
 import { notFound } from "next/navigation";
 

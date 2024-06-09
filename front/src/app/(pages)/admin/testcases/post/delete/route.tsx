@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import fs from "fs";
 import { hasProblemAdminPermission } from "../../../permission";
-import { getTask } from "@/app/(pages)/contests/[contest]/task";
+import getProblem from "@/lib/problem";
 import { sql } from "@/app/sql";
 import getUser from "@/lib/user";
 import { notFound } from "next/navigation";
@@ -26,9 +26,15 @@ export async function POST(req: NextRequest) {
 
 	}
 
-	const task = await getTask(sql, data.get("task_id") as string);
+	const task = await getProblem(data.get("task_id") as string);
 
-	if (!user || !await hasProblemAdminPermission() && !task[0].editors.includes(user.getID()!!)) {
+	if(!task) {
+
+		notFound();
+
+	}
+
+	if (!user || !await hasProblemAdminPermission() && !(await task.editors!!.get()).includes(user.getID()!!)) {
 
 		return new Response("Unauthorized", {
 			status: 401

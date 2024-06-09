@@ -63,6 +63,10 @@ div.onlyme label {
 	background-color: darkslategray;
 }
 
+.c-hack {
+	background-color: red;
+}
+
 .c-wj,
 .c-ac,
 .c-wa,
@@ -72,7 +76,8 @@ div.onlyme label {
 .c-mle,
 .c-ole,
 .c-qle,
-.c-ie {
+.c-ie,
+.c-hack {
 	border: none;
 	border-radius: 0.2rem;
 	height: 1.5rem;
@@ -80,6 +85,7 @@ div.onlyme label {
 	display: inline-flex;
 	align-items: center;
 	place-content: center;
+	color: white;
 }
 
 .detailResult {

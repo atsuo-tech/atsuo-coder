@@ -1,16 +1,18 @@
 import getUser from "@/lib/user";
-import { getEditableTasks } from "../../contests/[contest]/task";
+import { getEditableProblems } from "@/lib/problem";
 import Link from "next/link";
 import style from "./page.module.css";
 import { hasProblemMakerPermission } from "../permission";
 
 export default async function Page() {
 
-	const tasks = await getEditableTasks((await getUser())!!.getID()!!);
+	const tasks = await getEditableProblems((await getUser())!!.getID()!!);
 
 	const datas: { id: string, name: string, editors: string[], testers: string[] }[] = [];
 
 	for (const value of tasks) {
+
+		if (!value) continue;
 
 		datas.push({ id: await value.getID() as string, name: await value.name?.get() as string, editors: await value.editors!!.get() as string[], testers: await value.testers!!.get() as string[] });
 
