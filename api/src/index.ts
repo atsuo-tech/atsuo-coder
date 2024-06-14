@@ -138,10 +138,12 @@ front.prepare().then(async () => {
 	app.use(cookieParser());
 
 	app.use(async (req, res, next) => {
-		const status = await fetch("https://verify.w-pcp.net/verify?token=" + req.cookies.di_token).then((res) => res.status)
-		if (status != 200) {
-			res.redirect("https://discord.com/oauth2/authorize?client_id=1251095772288778251&response_type=code&redirect_uri=https%3A%2F%2Fverify.w-pcp.net&scope=guilds");
-			return;
+		if (process.env.NODE_ENV == "production") {
+			const status = await fetch("https://verify.w-pcp.net/verify?token=" + req.cookies.di_token).then((res) => res.status)
+			if (status != 200) {
+				res.redirect("https://discord.com/oauth2/authorize?client_id=1251095772288778251&response_type=code&redirect_uri=https%3A%2F%2Fverify.w-pcp.net&scope=guilds");
+				return;
+			}
 		}
 		if (req.path.endsWith("/") && req.path.length > 1) {
 			const query = req.url.slice(req.path.length)
