@@ -5,6 +5,7 @@ import getProblem from "@/lib/problem";
 import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
 import Markdown from "@/components/markdown";
+import { AceEditor } from "@/components/ace-editor";
 
 export default async function Page(params: { params: { [key: string]: string } }) {
 
@@ -76,7 +77,7 @@ export default async function Page(params: { params: { [key: string]: string } }
 			<br />
 			<div className={submissionsStyle.root}>
 				<h2>Code</h2>
-				<iframe src={`/frame/ace-editor?sourceCode=${encodeURIComponent(sourceCode)}&readonly=true`} id="ace-editor" className={submissionsStyle.reader}></iframe>
+				<AceEditor readonly={true}>{sourceCode}</AceEditor>
 				<br />
 				<div className={submissionsStyle.grid}>
 					<div>
