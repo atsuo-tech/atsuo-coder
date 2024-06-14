@@ -1,0 +1,5 @@
+.reader {
+	border: none;
+	width: var(--var-width);
+	height: 32rem;
+}
