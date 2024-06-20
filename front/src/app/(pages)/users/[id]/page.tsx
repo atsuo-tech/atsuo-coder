@@ -1,3 +1,4 @@
+import Language from "@/lib/language";
 import getUser from "@/lib/user";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -48,7 +49,7 @@ export default async function User({ params: { id } }: { params: { id: string } 
 
 			<h1>@{id} | AtsuoCoder</h1>
 
-			<h2>Details</h2>
+			<h2><Language>details</Language></h2>
 
 			<table>
 
@@ -56,12 +57,12 @@ export default async function User({ params: { id } }: { params: { id: string } 
 
 					<tr>
 
-						<th>ID</th>
-						<th>Name</th>
-						<th>Grade</th>
-						<th>Rating (Inner Rating)</th>
-						<th>Highest Rating</th>
-						<th>Highest Inner Performance</th>
+						<th><Language>id</Language></th>
+						<th><Language>name</Language></th>
+						<th><Language>grade</Language></th>
+						<th><Language>rating</Language></th>
+						<th><Language>highest_rating</Language></th>
+						<th><Language>highest_inner_performance</Language></th>
 
 					</tr>
 
@@ -84,57 +85,65 @@ export default async function User({ params: { id } }: { params: { id: string } 
 
 			</table>
 
-			<h2>Graph</h2>
+			<h2><Language>graph</Language></h2>
 
-			<svg width={950} height={500}>
+			{
 
-				<rect x={50} y={0} width={900} height={500} stroke="white" strokeWidth={2} fill="none"></rect>
+				performances.length == 0 ?
 
-				{
-					[0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800, 3000, 3200, 3400, 3600, 3800, 4000, 4200, 4400, 4600, 4800].map((rating, index) => {
+					<p><Language>no_history</Language></p> :
 
-						return (
-							<>
-								<rect x={50} y={25 + 450 - rating / (maxShow - minShow) * 450} width={900} height={(25 + 450 - rating / (maxShow - minShow) * 450) - (25 + 450 - (rating + 200) / (maxShow - minShow) * 450)} fill={getRatingColor(index * 200 - 200) + "80"}></rect>
-								<text x={0} y={25 + 450 - rating / (maxShow - minShow) * 450} key={index} fill="white">{rating}</text>
-								<line x1={50} x2={950} y1={25 + 450 - rating / (maxShow - minShow) * 450} y2={25 + 450 - rating / (maxShow - minShow) * 450} stroke="white" strokeWidth={1}></line>
-							</>
-						);
+					<svg width={950} height={500}>
 
-					})
-				}
+						<rect x={50} y={0} width={900} height={500} stroke="white" strokeWidth={2} fill="none"></rect>
 
-				{
-					performances.map((performance, index) => {
+						{
+							[0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800, 3000, 3200, 3400, 3600, 3800, 4000, 4200, 4400, 4600, 4800].map((rating, index) => {
 
-						return (
-							index == 0 ?
-								<></> :
-								<>
-									<line x1={(index) * 900 / (performances.length + 1) + 50} x2={(index + 1) * 900 / (performances.length + 1) + 50} y1={25 + 450 - performances[index - 1].rating / (maxShow - minShow) * 450} y2={25 + 450 - performance.rating / (maxShow - minShow) * 450} stroke="white" strokeWidth={1}></line>
-									<line x1={(index) * 900 / (performances.length + 1) + 50} x2={(index + 1) * 900 / (performances.length + 1) + 50} y1={25 + 450 - performances[index - 1].innerPerformance / (maxShow - minShow) * 450} y2={25 + 450 - performance.innerPerformance / (maxShow - minShow) * 450} stroke="white" strokeWidth={1}></line>
-								</>
-						);
+								return (
+									<>
+										<rect x={50} y={25 + 450 - rating / (maxShow - minShow) * 450} width={900} height={(25 + 450 - rating / (maxShow - minShow) * 450) - (25 + 450 - (rating + 200) / (maxShow - minShow) * 450)} fill={getRatingColor(index * 200 - 200) + "80"}></rect>
+										<text x={0} y={25 + 450 - rating / (maxShow - minShow) * 450} key={index} fill="white">{rating}</text>
+										<line x1={50} x2={950} y1={25 + 450 - rating / (maxShow - minShow) * 450} y2={25 + 450 - rating / (maxShow - minShow) * 450} stroke="white" strokeWidth={1}></line>
+									</>
+								);
 
-					})
-				}
+							})
+						}
 
-				{
-					performances.map((performance, index) => {
+						{
+							performances.map((performance, index) => {
 
-						return (
-							<>
-								<Link href={`#history${index}`}><circle cx={(index + 1) * 900 / (performances.length + 1) + 50} cy={25 + 450 - performance.rating / (maxShow - minShow) * 450} r={5} fill={getRatingColor(performance.rating)} stroke="black" strokeWidth={1} key={index * 2}></circle></Link>
-								<Link href={`#history${index}`}><circle cx={(index + 1) * 900 / (performances.length + 1) + 50} cy={25 + 450 - performance.innerPerformance / (maxShow - minShow) * 450} r={5} fill={getRatingColor(performance.innerPerformance)} stroke="black" strokeWidth={1} key={index * 2 + 1}></circle></Link>
-							</>
-						);
+								return (
+									index == 0 ?
+										<></> :
+										<>
+											<line x1={(index) * 900 / (performances.length + 1) + 50} x2={(index + 1) * 900 / (performances.length + 1) + 50} y1={25 + 450 - performances[index - 1].rating / (maxShow - minShow) * 450} y2={25 + 450 - performance.rating / (maxShow - minShow) * 450} stroke="white" strokeWidth={1}></line>
+											<line x1={(index) * 900 / (performances.length + 1) + 50} x2={(index + 1) * 900 / (performances.length + 1) + 50} y1={25 + 450 - performances[index - 1].innerPerformance / (maxShow - minShow) * 450} y2={25 + 450 - performance.innerPerformance / (maxShow - minShow) * 450} stroke="white" strokeWidth={1}></line>
+										</>
+								);
 
-					})
-				}
+							})
+						}
 
-			</svg>
+						{
+							performances.map((performance, index) => {
 
-			<h2>History</h2>
+								return (
+									<>
+										<Link href={`#history${index}`}><circle cx={(index + 1) * 900 / (performances.length + 1) + 50} cy={25 + 450 - performance.rating / (maxShow - minShow) * 450} r={5} fill={getRatingColor(performance.rating)} stroke="black" strokeWidth={1} key={index * 2}></circle></Link>
+										<Link href={`#history${index}`}><circle cx={(index + 1) * 900 / (performances.length + 1) + 50} cy={25 + 450 - performance.innerPerformance / (maxShow - minShow) * 450} r={5} fill={getRatingColor(performance.innerPerformance)} stroke="black" strokeWidth={1} key={index * 2 + 1}></circle></Link>
+									</>
+								);
+
+							})
+						}
+
+					</svg>
+
+			}
+
+			<h2><Language>history</Language></h2>
 
 			<table>
 
@@ -142,10 +151,10 @@ export default async function User({ params: { id } }: { params: { id: string } 
 
 					<tr>
 
-						<th>Contest</th>
-						<th>Performance</th>
-						<th>New Rating</th>
-						<th>Moving</th>
+						<th><Language>contest</Language></th>
+						<th><Language>performance</Language></th>
+						<th><Language>new_rating</Language></th>
+						<th><Language>moving</Language></th>
 
 					</tr>
 

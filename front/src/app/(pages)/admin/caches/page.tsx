@@ -150,6 +150,33 @@ export default function Caches() {
 
 		});
 
+		document.querySelector(".tasks .purge-all")!!.addEventListener("click", async () => {
+
+			const request = fetch("/admin/caches/post/tasks/all", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({})
+			});
+
+			alert("Purging all cache...");
+
+			const response = await request;
+
+			if (response.ok) {
+
+				alert("All cache purged.");
+
+			} else {
+
+				alert("Failed to purge all cache.");
+				alert("Status: " + response.status);
+
+			}
+
+		});
+
 	});
 
 	return (
@@ -189,6 +216,10 @@ export default function Caches() {
 
 						<input type="text" className="task-id" placeholder="aac001_a" />
 						<input type="button" className={`${style.white} purge`} value="Purge Cache" />
+
+						<br />
+
+						<input type="button" className={`${style.red} purge-all`} value="Purge All Cache" />
 
 					</div>
 

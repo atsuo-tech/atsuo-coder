@@ -1,4 +1,5 @@
 import getContest, { Contest, getPublicContests } from "@/lib/contest";
+import Language from "@/lib/language";
 import getUser from "@/lib/user";
 import { ReactNode } from "react";
 
@@ -50,16 +51,16 @@ export default async function Page(params: { searchParams: { [key: string]: stri
 			<h1>Contests</h1>
 			<p>コンテスト一覧です</p>
 
-			<h2>Permanent Contests</h2>
+			<h2><Language>permanent_contests</Language></h2>
 
 			<table id="inf-con">
 				<thead>
 					<tr>
-						<td width="20%">Start</td>
-						<td width="10%">Type</td>
-						<td width="50%">Contest Name</td>
-						<td width="10%">Rated</td>
-						<td width="10%">Period</td>
+						<td width="20%"><Language>start</Language></td>
+						<td width="10%"><Language>type</Language></td>
+						<td width="50%"><Language>contest_name</Language></td>
+						<td width="10%"><Language>rated</Language></td>
+						<td width="10%"><Language>period</Language></td>
 					</tr>
 				</thead>
 				<tbody>
@@ -105,16 +106,16 @@ export default async function Page(params: { searchParams: { [key: string]: stri
 				</tbody>
 			</table>
 
-			<h2>Active Contests</h2>
+			<h2><Language>active_contests</Language></h2>
 
 			<table id="now-con">
 				<thead>
 					<tr>
-						<td width="20%">Start</td>
-						<td width="10%">Type</td>
-						<td width="50%">Contest Name</td>
-						<td width="10%">Rated</td>
-						<td width="10%">Period</td>
+						<td width="20%"><Language>start</Language></td>
+						<td width="10%"><Language>type</Language></td>
+						<td width="50%"><Language>contest_name</Language></td>
+						<td width="10%"><Language>rated</Language></td>
+						<td width="10%"><Language>period</Language></td>
 					</tr>
 				</thead>
 				<tbody>
@@ -160,16 +161,16 @@ export default async function Page(params: { searchParams: { [key: string]: stri
 				</tbody>
 			</table>
 
-			<h2>Upcoming Contests</h2>
+			<h2><Language>upcoming_contests</Language></h2>
 
 			<table id="bef-con">
 				<thead>
 					<tr>
-						<td width="20%">Start</td>
-						<td width="10%">Type</td>
-						<td width="50%">Contest Name</td>
-						<td width="10%">Rated</td>
-						<td width="10%">Period</td>
+						<td width="20%"><Language>start</Language></td>
+						<td width="10%"><Language>type</Language></td>
+						<td width="50%"><Language>contest_name</Language></td>
+						<td width="10%"><Language>rated</Language></td>
+						<td width="10%"><Language>period</Language></td>
 					</tr>
 				</thead>
 				<tbody>
@@ -214,16 +215,16 @@ export default async function Page(params: { searchParams: { [key: string]: stri
 				</tbody>
 			</table>
 
-			<h2>Recent Contests</h2>
+			<h2><Language>recent_contests</Language></h2>
 
 			<table id="aft-con">
 				<thead>
 					<tr>
-						<td width="20%">Start</td>
-						<td width="10%">Type</td>
-						<td width="50%">Contest Name</td>
-						<td width="10%">Rated</td>
-						<td width="10%">Period</td>
+						<td width="20%"><Language>start</Language></td>
+						<td width="10%"><Language>type</Language></td>
+						<td width="50%"><Language>contest_name</Language></td>
+						<td width="10%"><Language>rated</Language></td>
+						<td width="10%"><Language>period</Language></td>
 					</tr>
 				</thead>
 				<tbody>

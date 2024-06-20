@@ -6,6 +6,7 @@ import React from 'react';
 import { Permissions } from '@/lib/user'
 import getUser from '@/lib/user'
 import { SiteHeader, SecondHeader, Header1Button, Header2Button, HeaderUserName, HeaderUserButton, ThirdHeader, Header3Button, FourthHeader, ContestTitle } from '../../components/styled-components';
+import Language from '@/lib/language';
 
 export const metadata: Metadata = {
 	title: 'Atsuo Coder',
@@ -36,8 +37,8 @@ export default async function RootLayout({
 							{
 								!user ?
 									<>
-										<Header1Button><a href="/login">LOGIN</a></Header1Button>
-										<Header1Button signup><a href="/signup">SIGN UP</a></Header1Button></> :
+										<Header1Button><a href="/login"><Language>login</Language></a></Header1Button>
+										<Header1Button signup><a href="/signup"><Language>register</Language></a></Header1Button></> :
 									<>
 
 										<HeaderUserName><a href={`/users/${user.getID()}`}>
@@ -47,26 +48,26 @@ export default async function RootLayout({
 										{Permissions.hasPermission(permission!!, Permissions.BasePermissions.Admin) ? <HeaderUserButton><a href="/admin">
 											<span className="material-icons">manage_accounts</span>
 											<br />
-											<p>Admin</p>
+											<p><Language>admin</Language></p>
 										</a></HeaderUserButton> : <></>}
 										<HeaderUserButton><a href="/account/settings">
 											<span className="material-icons">settings</span>
 											<br />
-											<p>Settings</p>
+											<p><Language>settings</Language></p>
 										</a></HeaderUserButton>
 										<HeaderUserButton logout><a href="/logout">
 											<span className="material-icons">logout</span>
 											<br />
-											<p>Logout</p>
+											<p><Language>logout</Language></p>
 										</a></HeaderUserButton>
 									</>
 							}
 						</div>
 					</SiteHeader>
 					<SecondHeader>
-						<Header2Button><a href="/">HOME</a></Header2Button>
-						<Header2Button><a href="/contests">CONTESTS</a></Header2Button>
-						<Header2Button><a href="/ranking">RANKING</a></Header2Button>
+						<Header2Button><a href="/"><Language>home</Language></a></Header2Button>
+						<Header2Button><a href="/contests"><Language>contests</Language></a></Header2Button>
+						<Header2Button><a href="/ranking"><Language>ranking</Language></a></Header2Button>
 					</SecondHeader>
 				</div>
 
