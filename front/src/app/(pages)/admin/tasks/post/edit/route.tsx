@@ -34,8 +34,6 @@ export async function POST(req: NextRequest) {
 
 	}
 
-	const parseFunc = (str: string) => JSON.stringify(str.split(',').map((value) => value.replace(/[\s\t]/g, "")).filter(Boolean));
-
 	if (typeof data.get("editors") != "string" || typeof data.get("testers") != "string" || typeof data.get("id") != "string") {
 
 		return BadRequest();
@@ -44,7 +42,7 @@ export async function POST(req: NextRequest) {
 
 	const task = await getProblem(data.get("id") as string);
 
-	if(!task) {
+	if (!task) {
 
 		notFound();
 
@@ -56,13 +54,12 @@ export async function POST(req: NextRequest) {
 
 	}
 
-	const [result] = await sql.query<ResultSetHeader>("UPDATE tasks SET name = ?, question = ?, editors = ?, testers = ? WHERE id = ?", [data.get("name"), data.get("question"), parseFunc(data.get("editors") as string), parseFunc(data.get("testers") as string), data.get("id")]);
-
-	if (result.affectedRows == 0) {
-
-		return new Response("Failed to update", { status: 500 });
-
-	}
+	await Promise.all([
+		task.name!!.set(data.get("name") as string),
+		task.question!!.set(data.get("question") as string),
+		task.editors!!.set((data.get("editors") as string).split(",").map((value) => value.replace(/[\s\t]/g, "")).filter(Boolean)),
+		task.testers!!.set((data.get("testers") as string).split(",").map((value) => value.replace(/[\s\t]/g, "")).filter(Boolean))
+	]);
 
 	return new Response("301", { status: 301, headers: { location: `/admin/tasks` } });
 
