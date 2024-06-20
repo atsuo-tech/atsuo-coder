@@ -8,6 +8,7 @@ import getContest from "@/lib/contest";
 import { notFound } from "next/navigation";
 
 import { SiteHeader, SecondHeader, Header1Button, Header2Button, HeaderUserName, HeaderUserButton, ThirdHeader, Header3Button, FourthHeader, ContestTitle } from '../../../../components/styled-components';
+import Language from "@/lib/language";
 
 export default async function RootLayout({
 	children,
@@ -67,11 +68,11 @@ export default async function RootLayout({
 	return (
 		<>
 			<ThirdHeader>
-				<h2>Menu</h2>
+				<h2><Language>menu</Language></h2>
 				<Header3Button>
 					<a href={`/contests/${params.contest}`}>
 						<span className={styles["material-icons"]}>home</span>
-						<p>TOP</p>
+						<p><Language>top</Language></p>
 					</a>
 				</Header3Button>
 				{
@@ -79,7 +80,7 @@ export default async function RootLayout({
 						<Header3Button>
 							<a href={`/contests/${params.contest}/tasks`}>
 								<span className={styles["material-icons"]}>task</span>
-								<p>TASKS</p>
+								<p><Language>tasks</Language></p>
 							</a>
 						</Header3Button> :
 						<></>
@@ -87,7 +88,7 @@ export default async function RootLayout({
 				<Header3Button>
 					<a href={`/contests/${params.contest}/standings`}>
 						<span className={styles["material-icons"]}>leaderboard</span>
-						<p>STANDINGS</p>
+						<p><Language>standings</Language></p>
 					</a>
 				</Header3Button>
 				{
@@ -95,7 +96,7 @@ export default async function RootLayout({
 						<Header3Button>
 							<a href={`/contests/${params.contest}/submissions`}>
 								<span className={styles["material-icons"]}>send</span>
-								<p>SUBMITTIONS</p>
+								<p><Language>submissions</Language></p>
 							</a>
 						</Header3Button> :
 						<></>

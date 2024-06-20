@@ -3,6 +3,7 @@ import getProblem from "@/lib/problem"
 import { notFound } from "next/navigation";
 import fs from "fs";
 import Markdown from "@/components/markdown";
+import Language from "@/lib/language";
 
 export default async function Editorial({
 	params: { task: task_id, id }
@@ -31,7 +32,7 @@ export default async function Editorial({
 
 	return (
 		<div className={styles.editorials}>
-			<h1>{await task.name!!.get()} Editorial</h1>
+			<h1>{await task.name!!.get()} <Language>editorial</Language></h1>
 			<p>By {data.author}</p>
 			<hr />
 			<div className={styles.text}>

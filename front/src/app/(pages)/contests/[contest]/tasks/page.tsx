@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getTasks } from "./@component/contests";
 import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
+import Language from "@/lib/language";
 
 export default async function Page(p: { params: { contest: string } }) {
 
@@ -28,13 +29,13 @@ export default async function Page(p: { params: { contest: string } }) {
 
 	return (
 		<>
-			<h1>Tasks | AtsuoCoder</h1>
+			<h1><Language>tasks</Language> | AtsuoCoder</h1>
 			<table>
 				<thead>
 					<tr>
-						<td>TaskName</td>
-						<td>Perfect Score</td>
-						<td>Editors</td>
+						<td><Language>task_name</Language></td>
+						<td><Language>perfect_score</Language></td>
+						<td><Language>editors</Language></td>
 					</tr>
 				</thead>
 				<tbody>

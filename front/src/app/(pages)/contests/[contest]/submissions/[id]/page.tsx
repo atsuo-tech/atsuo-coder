@@ -6,6 +6,7 @@ import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
 import Markdown from "@/components/markdown";
 import { AceEditor } from "@/components/ace-editor";
+import Language from "@/lib/language";
 
 export default async function Page(params: { params: { [key: string]: string } }) {
 
@@ -72,11 +73,11 @@ export default async function Page(params: { params: { [key: string]: string } }
 
 	return (
 		<>
-			<title>提出 | Atsuo Coder</title>
-			<h1>提出 | Atsuo Coder</h1>
+			<title><Language>submission</Language> | Atsuo Coder</title>
+			<h1><Language>submission</Language> | Atsuo Coder</h1>
 			<br />
 			<div className={submissionsStyle.root}>
-				<h2>Code</h2>
+				<h2><Language>code</Language></h2>
 				<AceEditor readonly={true}>{sourceCode}</AceEditor>
 				<br />
 				<div className={submissionsStyle.grid}>
@@ -85,7 +86,7 @@ export default async function Page(params: { params: { [key: string]: string } }
 						<a href={`/contests/${params.params.contest}/tasks/${task}`}>{await taskInfo.name!!.get()}</a>
 					</div>
 					<div>
-						<h2>Result</h2>
+						<h2><Language>result</Language></h2>
 						{
 							judge == "WJ" ?
 								<p>Waiting Judge</p> :
@@ -106,7 +107,7 @@ export default async function Page(params: { params: { [key: string]: string } }
 				</div>
 				<br />
 				<div className={submissionsStyle.code}>
-					<h2>Compile Error</h2>
+					<h2><Language>compile_error</Language></h2>
 					{
 						"message" in parsedJudge ?
 							<>
@@ -115,17 +116,17 @@ export default async function Page(params: { params: { [key: string]: string } }
 							<></>
 					}
 				</div>
-				<h2>Testcases</h2>
+				<h2><Language>testcases</Language></h2>
 				<br />
 				{
 					judge != "WJ" && parsedJudge.status != 3 ?
 						<table>
 							<thead>
 								<tr>
-									<td>Testcase ID</td>
-									<td>Result</td>
-									<td>Score</td>
-									<td>Detail</td>
+									<td><Language>testcase_id</Language></td>
+									<td><Language>result</Language></td>
+									<td><Language>score</Language></td>
+									<td><Language>detail</Language></td>
 								</tr>
 							</thead>
 							<tbody>

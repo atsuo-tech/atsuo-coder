@@ -3,6 +3,7 @@ import styles from "./page.module.css";
 import Markdown from "@/components/markdown";
 import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
+import Language from "@/lib/language";
 
 export default async function Page(p: { params: { contest: string } }) {
 
@@ -59,8 +60,8 @@ export default async function Page(p: { params: { contest: string } }) {
 				</ul>
 
 				<p>
-					Editors: {editors.join(' ')} | Testers: {testers.length != 0 ? testers.join(' ') : "None"}<br />
-					Rated: {rated || "無制限"} | Start: {start.toLocaleString("ja")} | End: {period == -1 ? "Infinity" : new Date(start.getTime() + period).toLocaleString("ja")} | Type: {isPublic ? "Public" : "Private"}
+					<Language>editors</Language>: {editors.join(' ')} | <Language>testers</Language>: {testers.length != 0 ? testers.join(' ') : "None"}<br />
+					<Language>rated</Language>: {rated || "無制限"} | <Language>start</Language>: {start.toLocaleString("ja")} | <Language>end</Language>: {period == -1 ? "Infinity" : new Date(start.getTime() + period).toLocaleString("ja")} | <Language>type</Language>: {isPublic ? "Public" : "Private"}
 				</p>
 
 			</div>

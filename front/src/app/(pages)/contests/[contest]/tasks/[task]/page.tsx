@@ -10,6 +10,7 @@ import Markdown from "@/components/markdown";
 import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
 import Link from "next/link";
+import Language from "@/lib/language";
 
 export default async function Page(p: { params: { contest: string, task: string } }) {
 
@@ -67,14 +68,14 @@ export default async function Page(p: { params: { contest: string, task: string 
 			<title>{data.name}</title>
 			<h1>{data.name}</h1>
 			<p>
-				Editors: {data.editors} Testers: {data.testers.length == 0 ? "なし" : data.testers}<br />
-				Score: {data.score.toString()}
+				<Language>editors</Language>: {data.editors} <Language>testers</Language>: {data.testers.length == 0 ? <Language>none</Language> : data.testers}<br />
+				<Language>scores</Language>: {data.score.toString()}
 			</p>
 			{
 				contestEnded || isManager ?
 					<>
-						<h2>解説</h2>
-						<Link href={`/contests/${p.params.contest}/tasks/${p.params.task}/editorial`}>解説を見る</Link>
+						<h2><Language>editorial</Language></h2>
+						<Link href={`/contests/${p.params.contest}/tasks/${p.params.task}/editorial`}><Language>show_editorial</Language></Link>
 					</> :
 					<></>
 			}

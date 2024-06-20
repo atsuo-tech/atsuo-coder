@@ -1,5 +1,6 @@
 import { sql } from "@/app/sql";
 import { User, getUsers } from "../contests/[contest]/tasks/@component/users";
+import Language from "@/lib/language";
 
 export default async function Page() {
 
@@ -17,15 +18,15 @@ export default async function Page() {
 
 	return (
 		<>
-			<h1>Ranking | Atsuo Coder</h1>
+			<h1><Language>ranking</Language> | Atsuo Coder</h1>
 			<table>
 				<thead>
 					<tr>
-						<td>Rank</td>
-						<td>ID</td>
-						<td>Rating</td>
-						<td>Name</td>
-						<td>Grade</td>
+						<td><Language>position</Language></td>
+						<td><Language>id</Language></td>
+						<td><Language>rating</Language></td>
+						<td><Language>name</Language></td>
+						<td><Language>grade</Language></td>
 					</tr>
 				</thead>
 				<tbody id="data">

@@ -1,3 +1,4 @@
+import Language from "@/lib/language";
 import { Form } from "./actions";
 import getUser from "@/lib/user";
 
@@ -27,14 +28,14 @@ export default async function Page() {
 
 		return (
 			<>
-				<h1>Login | Atsuo Coder</h1>
+				<h1><Language>login</Language> | Atsuo Coder</h1>
 				<p>You are already logged in as <code>{user.getID()}</code>.</p>
 
 				<ul>
-					<li><b>Links</b></li>
-					<li><a href="/logout">Logout</a></li>
-					<li><a href="/">Back to home</a></li>
-					<li><a href="/account/settings">Account settings</a></li>
+					<li><b><Language>links</Language></b></li>
+					<li><a href="/logout"><Language>logout</Language></a></li>
+					<li><a href="/"><Language>home</Language></a></li>
+					<li><a href="/account/settings"><Language>settings</Language></a></li>
 				</ul>
 			</>
 		);
@@ -43,12 +44,12 @@ export default async function Page() {
 
 	return (
 		<>
-			<h1>Login | Atsuo Coder</h1>
+			<h1><Language>login</Language> | Atsuo Coder</h1>
 
 			<form action={Form}>
-				<input type="text" name="id" placeholder="ID" required /><br />
-				<input type="password" name="password" placeholder="Password" required /><br />
-				<input type="submit" value="Login" />
+				<input type="text" name="id" placeholder={await Language({ children: "id" })} required /><br />
+				<input type="password" name="password" placeholder={await Language({ children: "password" })} required /><br />
+				<input type="submit" value={await Language({ children: "login" })} />
 			</form>
 		</>
 	);

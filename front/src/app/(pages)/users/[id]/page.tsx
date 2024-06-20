@@ -1,3 +1,4 @@
+import Language from "@/lib/language";
 import getUser from "@/lib/user";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -48,7 +49,7 @@ export default async function User({ params: { id } }: { params: { id: string } 
 
 			<h1>@{id} | AtsuoCoder</h1>
 
-			<h2>Details</h2>
+			<h2><Language>details</Language></h2>
 
 			<table>
 
@@ -56,12 +57,12 @@ export default async function User({ params: { id } }: { params: { id: string } 
 
 					<tr>
 
-						<th>ID</th>
-						<th>Name</th>
-						<th>Grade</th>
-						<th>Rating (Inner Rating)</th>
-						<th>Highest Rating</th>
-						<th>Highest Inner Performance</th>
+						<th><Language>id</Language></th>
+						<th><Language>name</Language></th>
+						<th><Language>grade</Language></th>
+						<th><Language>rating</Language></th>
+						<th><Language>highest_rating</Language></th>
+						<th><Language>highest_inner_performance</Language></th>
 
 					</tr>
 
@@ -84,13 +85,13 @@ export default async function User({ params: { id } }: { params: { id: string } 
 
 			</table>
 
-			<h2>Graph</h2>
+			<h2><Language>graph</Language></h2>
 
 			{
 
 				performances.length == 0 ?
 
-					<p>No history</p> :
+					<p><Language>no_history</Language></p> :
 
 					<svg width={950} height={500}>
 
@@ -142,7 +143,7 @@ export default async function User({ params: { id } }: { params: { id: string } 
 
 			}
 
-			<h2>History</h2>
+			<h2><Language>history</Language></h2>
 
 			<table>
 
@@ -150,10 +151,10 @@ export default async function User({ params: { id } }: { params: { id: string } 
 
 					<tr>
 
-						<th>Contest</th>
-						<th>Performance</th>
-						<th>New Rating</th>
-						<th>Moving</th>
+						<th><Language>contest</Language></th>
+						<th><Language>performance</Language></th>
+						<th><Language>new_rating</Language></th>
+						<th><Language>moving</Language></th>
 
 					</tr>
 

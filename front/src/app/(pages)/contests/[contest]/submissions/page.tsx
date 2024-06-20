@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import getUser, { Permissions } from "@/lib/user";
 import getContest, { Contest } from "@/lib/contest";
 import { hasContestAdminPermission } from "@/app/(pages)/admin/permission";
+import Language from "@/lib/language";
 
 export default async function Page({ params }: { params: { [key: string]: string } }) {
 
@@ -54,16 +55,16 @@ export default async function Page({ params }: { params: { [key: string]: string
 	return (
 		<>
 			<h1>提出一覧 | AtsuoCoder</h1>
-			<h2>Submissions</h2>
+			<h2><Language>submissions</Language></h2>
 			<table>
 				<thead>
 					<tr>
-						<td width="5%">#</td>
-						<td width="20%">Time</td>
-						<td width="20%">User</td>
-						<td width="35%">Task</td>
-						<td width="10%">Judge</td>
-						<td width="10%">Detail</td>
+						<td width="5%"><Language>index</Language></td>
+						<td width="20%"><Language>time</Language></td>
+						<td width="20%"><Language>user</Language></td>
+						<td width="35%"><Language>task</Language></td>
+						<td width="10%"><Language>judge</Language></td>
+						<td width="10%"><Language>detail</Language></td>
 					</tr>
 				</thead>
 				<tbody id="submissions">
@@ -76,7 +77,7 @@ export default async function Page({ params }: { params: { [key: string]: string
 								<td>{submission.user}</td>
 								<td><a href={`/contests/${params.contest}/tasks/${submission.task}`}>{submission.task}</a></td>
 								<td><p className={styles[`c-${result.toLowerCase()}`]}>{result}</p></td>
-								<td><a href={`/contests/${params.contest}/submissions/${submission.id}`}>Detail</a></td>
+								<td><a href={`/contests/${params.contest}/submissions/${submission.id}`}><Language>detail</Language></a></td>
 							</tr>
 						})
 					}

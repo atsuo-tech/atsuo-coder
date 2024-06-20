@@ -3,8 +3,8 @@ import getProblem from "@/lib/problem"
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import fs from "fs";
-import getContest from "@/lib/contest";
 import getUser from "@/lib/user";
+import Language from "@/lib/language";
 
 export default async function Editorial({
 	params: { contest: contest_id, task: id }
@@ -36,10 +36,10 @@ export default async function Editorial({
 
 	return (
 		<div className={styles.editorials}>
-			<h1>{await task.name!!.get()} Editorial</h1>
+			<h1>{await task.name!!.get()} <Language>editorial</Language></h1>
 			{
 				await user.rating!!.get() >= 2000 || isEditor || isTester ?
-					<Link href={`/contests/${contest_id}/tasks/${id}/editorial/add`}>解説を追加する</Link> :
+					<Link href={`/contests/${contest_id}/tasks/${id}/editorial/add`}><Language>add_editorial</Language></Link> :
 					<></>
 			}
 			{
@@ -55,7 +55,7 @@ export default async function Editorial({
 						);
 
 					});
-					return d.length ? d : <div>解説はまだありません。</div>;
+					return d.length ? d : <div><Language>no_editorial</Language></div>;
 				})()
 			}
 		</div>
