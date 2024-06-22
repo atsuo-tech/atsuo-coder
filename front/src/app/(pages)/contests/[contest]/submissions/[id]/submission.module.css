@@ -86,13 +86,20 @@ div.onlyme label {
 	margin: 0 0.4rem;
 }
 
+.grid1 {
+	display: grid;
+	grid-template-columns: 1fr;
+	width: var(--var-width);
+}
+
 .grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	width: var(--var-width);
 }
 
-.grid>div {
+.grid>div,
+.grid1>div {
 	padding: 0.5rem;
 	text-align: center;
 	border: 1px solid white;
@@ -101,4 +108,13 @@ div.onlyme label {
 .code {
 	overflow: scroll;
 	width: var(--var-width);
+}
+
+.rejudge {
+	background: red;
+	color: white;
+	border-radius: 0.4rem;
+	padding: 0.2em;
+	margin: 0 1rem;
+	font-size: smaller;
 }

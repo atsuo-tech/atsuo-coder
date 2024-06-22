@@ -7,6 +7,7 @@ import getContest from "@/lib/contest";
 import Markdown from "@/components/markdown";
 import { AceEditor } from "@/components/ace-editor";
 import Language from "@/lib/language";
+import { RowDataPacket } from "mysql2";
 
 export default async function Page(params: { params: { [key: string]: string } }) {
 
@@ -49,7 +50,7 @@ export default async function Page(params: { params: { [key: string]: string } }
 
 	}
 
-	const result = await sql.query(`SELECT sourceCode, judge, task from submissions WHERE id = ? ${allowUser ? "" : "AND user = ?"}`, [params.params.id, user.getID() || undefined]);
+	const result = await sql.query<RowDataPacket[]>(`SELECT contest, sourceCode, judge, task, user from submissions WHERE id = ? ${allowUser ? "" : "AND user = ?"}`, [params.params.id, user.getID() || undefined]);
 
 	if (Array.from(result[0] as any).length == 0) {
 
@@ -57,7 +58,13 @@ export default async function Page(params: { params: { [key: string]: string } }
 
 	}
 
-	const { sourceCode, judge, task } = Array.from(result[0] as any)[0] as any;
+	const { contest: submittedContest, sourceCode, judge, task, user: submittedUser } = Array.from(result[0] as any)[0] as any;
+
+	if (submittedContest != params.params.contest) {
+
+		notFound();
+
+	}
 
 	const taskInfo = await getProblem(task);
 
@@ -77,9 +84,22 @@ export default async function Page(params: { params: { [key: string]: string } }
 			<h1><Language>submission</Language> | Atsuo Coder</h1>
 			<br />
 			<div className={submissionsStyle.root}>
-				<h2><Language>code</Language></h2>
+				<h2>
+					<Language>code</Language>
+					{
+						(await contest.editors!!.get()).includes(user.getID()!!) ?
+							<a href={`/contests/${params.params.contest}/submissions/${params.params.id}/rejudge`}><button className={submissionsStyle.rejudge}><Language>rejudge</Language></button></a> :
+							<></>
+					}
+				</h2>
 				<AceEditor readonly={true}>{sourceCode}</AceEditor>
 				<br />
+				<div className={submissionsStyle.grid1}>
+					<div>
+						<h2><Language>user</Language></h2>
+						<a href={`/users/${submittedUser}`}>{submittedUser}</a>
+					</div>
+				</div>
 				<div className={submissionsStyle.grid}>
 					<div>
 						<h2>Task</h2>

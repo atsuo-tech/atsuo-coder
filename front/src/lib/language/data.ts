@@ -62,6 +62,7 @@ const data: language_data = {
     testcases: "テストケース",
     testcase_id: "テストケースID",
     score: "得点",
+    rejudge: "再ジャッジ",
     // Editorial
     editorial: "解説",
     show_editorial: "解説を表示",
