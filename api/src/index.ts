@@ -4,7 +4,7 @@ import { config } from "dotenv";
 import fs from "fs";
 import path from "path";
 import mysql, { RowDataPacket } from "mysql2/promise";
-import JudgeServer from "./judge/judge";
+import Server, { Result } from "./judge/protocol";
 import http from "http";
 import https from "https";
 import getInnerAPI from "./innerAPI";
@@ -53,45 +53,12 @@ front.prepare().then(async () => {
 	});
 
 	const tasks = (await sql.query("SELECT id, judge_type FROM tasks;"))[0] as RowDataPacket[];
-	const judgeServer = new JudgeServer({});
+	const judgeServer = new Server();
 
 	function loadTestcases(id: string) {
 
-		const testcaseDirs = fs.readdirSync(path.join("./static/testcases", id));
+		judgeServer.loadTask(id);
 
-		judgeServer.problems[id] = { testcases: [], options: {} };
-
-		testcaseDirs.forEach(testcase => {
-
-			const tests = fs.readdirSync(path.join("./static/testcases", id, testcase));
-
-			const dependencies = JSON.parse(fs.readFileSync(path.join("./static/testcases", id, testcase, "dependencies.json"), 'utf-8'));
-
-			judgeServer.problems[id].testcases.push({ id: testcase, tests: [], dependencies });
-
-			tests.forEach(test => {
-
-				if (!fs.statSync(path.join("./static/testcases", id, testcase, test)).isDirectory()) return;
-
-				const { type, score, outcheck, interactive } = JSON.parse(fs.readFileSync(path.join("./static/testcases", id, testcase, test, "config.json"), 'utf-8'));
-
-				if (type == "plane") {
-
-					judgeServer.problems[id].testcases[judgeServer.problems[id].testcases.length - 1].tests.push({ id: test, input: path.join("./static/testcases", id, testcase, test, "in.txt"), output: path.join("./static/testcases", id, testcase, test, "out.txt"), score });
-
-				} else if (type == "outcheck") {
-
-					judgeServer.problems[id].testcases[judgeServer.problems[id].testcases.length - 1].tests.push({ id: test, input: path.join("./static/testcases", id, testcase, test, "in.txt"), check: path.join("./static/testcases", id, testcase, test, outcheck), score });
-
-				} else if (type == "interactive") {
-
-					judgeServer.problems[id].testcases[judgeServer.problems[id].testcases.length - 1].tests.push({ id: test, interactive: path.join("./static/testcases", id, testcase, test, interactive) });
-
-				}
-
-			});
-
-		});
 	}
 
 	tasks.forEach((task) => {
@@ -102,32 +69,39 @@ front.prepare().then(async () => {
 
 	});
 
-	sql.query<RowDataPacket[]>("SELECT * FROM submissions WHERE judge = 'WJ';").then((data) => {
+	judgeServer.server.listen(6431, "localhost");
 
-		data[0].forEach((submission) => {
-
-			const { id, task } = submission as { id: string, task: string };
-
-			judgeServer.addQueue(sql, id);
-
-		});
-
-	});
+	const judging: { [key: string]: boolean } = {};
 
 	// judgeServer.addQueue(sql, "test");
 	setInterval(() => {
-
-		judgeServer.updateQueue(sql);
 
 		sql.query<RowDataPacket[]>("SELECT * FROM submissions WHERE judge = 'WJ';").then((datas) => {
 
 			for (const data of datas[0]) {
 
-				if (!(data.id in judgeServer.judging) && judgeServer.queue.indexOf(data.id) == -1) {
+				if (judging[data.id]) continue;
+				judging[data.id] = true;
 
-					judgeServer.addQueue(sql, data.id);
+				judgeServer.addSubmission(data.id, data.task, data.sourceCode).then((result) => {
 
-				}
+					if (!result) {
+
+						sql.query("UPDATE submissions SET judge = '[[8, 0], [], []]' WHERE id = ?;", [data.id]);
+
+					} else if (result.message != "") {
+
+						sql.query("UPDATE submissions SET judge = ? WHERE id = ?;", [JSON.stringify({ status: result.result[0][0], message: result.message }), data.id]);
+
+					} else {
+
+						sql.query("UPDATE submissions SET judge = ? WHERE id = ?;", [JSON.stringify(result.result), data.id]);
+
+					}
+
+					delete judging[data.id];
+
+				});
 
 			}
 
