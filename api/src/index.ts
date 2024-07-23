@@ -69,7 +69,7 @@ front.prepare().then(async () => {
 
 	});
 
-	judgeServer.server.listen(6431, "localhost");
+	judgeServer.server.listen(6431, "0.0.0.0");
 
 	const judging: { [key: string]: boolean } = {};
 

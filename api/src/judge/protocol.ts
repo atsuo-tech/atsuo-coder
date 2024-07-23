@@ -41,6 +41,15 @@ export type RequestMethod = SimpleTestcaseRequest | OutputCheckTestcaseRequest |
 
 type StatusType = [[Result, number], [Result, number][], [Result, number][][]];
 
+enum SocketStatus {
+
+	BeforeVerify = 0,
+	Verifying = 1,
+	AfterVerify = 2,
+	Cleaning = 3
+
+}
+
 export default class Server {
 
 	constructor() {
@@ -142,11 +151,14 @@ export default class Server {
 
 							}
 
+							socket.write("complete;");
+							state = SocketStatus.Cleaning;
+
 							resolve({ result, message: "" });
 
 						});
 
-					}).finally(() => this.stats[verify_uuid].judging = false);
+					});
 
 				}
 			}
@@ -159,6 +171,8 @@ export default class Server {
 
 			}, 100);
 
+			let state = SocketStatus.BeforeVerify;
+
 			socket.addListener("data", (input: string) => {
 
 				const args = input.toString().split(";")[0].split(":");
@@ -170,9 +184,26 @@ export default class Server {
 
 				if (method == 'helo') {
 
+					if (state != SocketStatus.BeforeVerify) {
+
+						socket.end();
+						socket.destroy();
+						return;
+
+					}
+
 					socket.write("verify:" + Buffer.from(verify_uuid).toString("base64") + ";");
+					state = SocketStatus.Verifying;
 
 				} else if (method == 'verifying') {
+
+					if (state != SocketStatus.Verifying) {
+
+						socket.end();
+						socket.destroy();
+						return;
+
+					}
 
 					const pub_key = fs.readFileSync("../certs/verified_keys", "utf-8").split("\n").filter(Boolean);
 
@@ -180,6 +211,7 @@ export default class Server {
 
 						socket.write("greets;");
 						this.stats[verify_uuid].ready = true;
+						state = SocketStatus.AfterVerify;
 
 					} else {
 
@@ -189,6 +221,14 @@ export default class Server {
 					}
 
 				} else if (method == 'end') {
+
+					if (state != SocketStatus.AfterVerify) {
+
+						socket.end();
+						socket.destroy();
+						return;
+
+					}
 
 					const dataJSON = JSON.parse(data);
 
@@ -254,12 +294,32 @@ export default class Server {
 
 					}
 
-
 				} else if (method == "built") {
+
+					if (state != SocketStatus.AfterVerify) {
+
+						socket.end();
+						socket.destroy();
+						return;
+
+					}
 
 					const dataJSON = JSON.parse(data);
 
 					buildFunc({ result: dataJSON.result == "OK" ? "OK" : dataJSON.result == "RE" ? "RE" : dataJSON.result == "TLE" ? "TLE" : "IE", message: dataJSON.message });
+
+				} else if (method == "completed") {
+
+					if (state != SocketStatus.Cleaning) {
+
+						socket.end();
+						socket.destroy();
+						return;
+
+					}
+
+					state = SocketStatus.AfterVerify;
+					this.stats[verify_uuid].judging = false;
 
 				}
 
