@@ -131,7 +131,7 @@ export default async function Page(params: { params: { [key: string]: string } }
 					{
 						"message" in parsedJudge ?
 							<>
-								<Markdown md={"```" + (parsedJudge.message as string).replace("`", "\\`") + "```"} />
+								<Markdown md={"```\n" + (parsedJudge.message as string).replace("`", "\\`") + "\n```"} />
 							</> :
 							<></>
 					}

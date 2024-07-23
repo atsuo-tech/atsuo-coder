@@ -5,11 +5,11 @@ import { getContest } from "../../component/contests";
 import { getUserByToken } from "../../component/users";
 import crypto from "crypto";
 import express from "express";
-import JudgeServer from "../../judge/judge";
+import Server from "../../judge/protocol";
 
 const languages = ["cpp23", "cpp20"];
 
-export default function Route(sql: Connection, judgeServer: JudgeServer) {
+export default function Route(sql: Connection, judgeServer: Server) {
 	const router = Router();
 	router.use(cookieParser());
 	router.use(express.urlencoded({ extended: false }));
@@ -63,8 +63,6 @@ export default function Route(sql: Connection, judgeServer: JudgeServer) {
 		const uuid = crypto.randomUUID();
 
 		await sql.query("INSERT into submissions (id, sourceCode, contest, task, user, created_at, judge, language) VALUES (?, ?, ?, ?, ?, now(), 'WJ', ?);", [uuid, req.body.sourceCode, paths[0], paths[1], user.id, req.body.language]);
-
-		judgeServer.addQueue(sql, uuid).then(() => { });
 
 		res.redirect(`/contests/${paths[0]}/submissions/${uuid}`);
 
