@@ -33,7 +33,11 @@ export default async function RootLayout({
 
 	if (!contestStarted) {
 
-		redirect(`/contests/${params.contest}/wait`);
+		if (!user || (!editors.includes(user.getID()!!) && !testers.includes(user.getID()!!))) {
+
+			redirect(`/contests/${params.contest}/wait`);
+
+		}
 
 	} else if (!contestEnded) {
 

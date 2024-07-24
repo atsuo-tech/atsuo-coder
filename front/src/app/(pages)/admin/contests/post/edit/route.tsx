@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
 
 	}
 
-	if (!await hasContestAdminPermission() && (await contest.editors!!.get()).includes(user.getID()!!)) {
+	if (!await hasContestAdminPermission() && !(await contest.editors!!.get()).includes(user.getID()!!)) {
 
 		return Unauthorized();
 

@@ -264,3 +264,8 @@ ol li {
 .rating7 {
 	color: #FF0000;
 }
+
+.katex * {
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+}

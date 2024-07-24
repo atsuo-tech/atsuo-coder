@@ -10,7 +10,11 @@
   "author": "",
   "license": "ISC",
   "description": "",
+  "dependencies": {
+    "fs-extra": "^11.2.0"
+  },
   "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.14.11",
     "typescript": "^5.5.4"
   }
