@@ -1,9 +1,11 @@
 import tls from "tls";
-import fs from "fs";
+import fs from "fs-extra";
 import { execSync, spawn } from "child_process";
 import { createHash } from "crypto";
 
 (async () => {
+
+	const normalize = (str: string) => str.replace(/[\r\n]+/g, " ").replace(/[\s]+/g, " ").replace(/^\s/, "").replace(/\s$/, "");
 
 	const connection = tls.connect(Number(process.argv[3]), process.argv[2], {
 		rejectUnauthorized: false
@@ -37,7 +39,7 @@ import { createHash } from "crypto";
 			if (json.language == 'cpp23') {
 
 				fs.writeFileSync("/home/judge/Main.cpp", json.code);
-				const proc = spawn("sudo -u judge g++ -std=c++23 -O2 -o /home/judge/a.out /home/judge/Main.cpp", { shell: "bash" });
+				const proc = spawn("sudo g++ -std=c++23 -O2 -o ./a.out ./Main.cpp", { shell: "bash", cwd: "/home/judge" });
 
 				let stderr = "", sent = false;
 
@@ -79,7 +81,7 @@ import { createHash } from "crypto";
 
 			const json = JSON.parse(data);
 
-			if (json == 'simple') {
+			if (json.type == 'simple') {
 
 				const proc = spawn("sudo -u judge /home/judge/a.out", { shell: "bash" });
 
@@ -92,7 +94,7 @@ import { createHash } from "crypto";
 
 					proc.kill();
 
-					connection.write("end:" + Buffer.from(JSON.stringify({ status: "TLE" })) + ";");
+					connection.write("end:" + Buffer.from(JSON.stringify({ status: "TLE" })).toString("base64") + ";");
 
 				}, json.time_limit);
 
@@ -109,7 +111,7 @@ import { createHash } from "crypto";
 
 					if (code == 0) {
 
-						connection.write("end:" + Buffer.from(JSON.stringify({ status: "OK", output: createHash("sha512").update(stdout).digest("hex") })).toString("base64") + ";");
+						connection.write("end:" + Buffer.from(JSON.stringify({ status: "OK", output: createHash("sha512").update(normalize(stdout)).digest("hex") })).toString("base64") + ";");
 
 					} else {
 

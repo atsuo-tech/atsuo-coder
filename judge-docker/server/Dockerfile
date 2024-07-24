@@ -1,7 +1,5 @@
 FROM ubuntu:24.04
 
-COPY ./app /root/app
-
 WORKDIR /root/app
 
 # Change Permissions
@@ -28,13 +26,15 @@ RUN echo npm -v
 
 RUN apt install -y sudo
 
-# Install app
-
-RUN npm -D install
-RUN npm run build
-
 # Install Needed Compilers
 
 RUN apt install -y gcc g++ openjdk-17-jdk
+
+# Install app
+
+COPY ./app /root/app
+
+RUN npm -D install
+RUN npm run build
 
 CMD ["npm", "start", "localhost", "6431"]

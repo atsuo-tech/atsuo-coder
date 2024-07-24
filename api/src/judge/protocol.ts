@@ -64,6 +64,8 @@ export default class Server {
 			let buildFunc: (data: { result: "OK" | "RE" | "TLE" | "IE", message: string }) => void = () => { };
 			let testFunc: (result: Result) => void = () => { };
 
+			let nowJudge: { task: string, testcase: string, test: string };
+
 			this.stats[verify_uuid] = {
 				queue: [],
 				ready: false,
@@ -113,6 +115,10 @@ export default class Server {
 
 								for (const test in taskData[testcase]) {
 
+									nowJudge = { task, testcase, test };
+
+									console.log(testcase, test);
+
 									const testData = taskData[testcase][test];
 
 									const waitFunc = new Promise<Result>((resolve) => {
@@ -146,11 +152,12 @@ export default class Server {
 
 								}
 
-								result[1].push([currentResult, score]);
+								result[1].push([currentResult, currentResult == Result.AC ? score : 0]);
 								if (result[1][result[1].length - 1][0] == Result.AC) result[0][1] += score;
 
 							}
 
+							console.log("JUDGE END");
 							socket.write("complete;");
 							state = SocketStatus.Cleaning;
 
@@ -262,35 +269,19 @@ export default class Server {
 
 					}
 
-					const judging = this.submissionID[verify_uuid];
+					const test = this.task[nowJudge.task][nowJudge.testcase][nowJudge.test];
 
-					if (judging.type == 'simple') {
+					if (test.type != 'simple') {
 
-						const test = this.task[judging.task][judging.testcase][judging.test];
+						console.error("Invalid test type: ", test.type);
 
-						if (test.type != 'simple') {
+					} else if (test.output == dataJSON.output) {
 
-							console.error("Invalid test type: ", test.type);
+						testFunc(Result.AC);
 
-						} else if (test.output == dataJSON.output) {
+					} else {
 
-							testFunc(Result.AC);
-
-						} else {
-
-							testFunc(Result.WA);
-
-						}
-
-					} else if (judging.type == 'outcheck') {
-
-						console.error("Not implemented");
-						testFunc(Result.IE);
-
-					} else if (judging.type == 'interactive') {
-
-						console.error("Not implemented");
-						testFunc(Result.IE);
+						testFunc(Result.WA);
 
 					}
 
@@ -331,6 +322,8 @@ export default class Server {
 
 	loadTask(id: string) {
 
+		const normalize = (str: string) => str.replace(/[\r\n]+/g, " ").replace(/[\s]+/g, " ").replace(/^\s/, "").replace(/\s$/, "");
+
 		const dir = fs.readdirSync(path.join(__dirname, "../../static/testcases", id));
 
 		this.task[id] = {};
@@ -343,18 +336,22 @@ export default class Server {
 
 			for (const test of testcase_dir) {
 
+				if (!fs.statSync(path.join(__dirname, "../../static/testcases", id, testcase, test)).isDirectory()) continue;
+
 				const config = JSON.parse(fs.readFileSync(path.join(__dirname, "../../static/testcases", id, testcase, test, "config.json"), "utf-8"));
 
 				if (!('version' in config) || config.version == "0.0") {
 
 					if (config.type == 'plane') {
 
+						console.log("Loaded testcase: ", id, testcase, test);
+
 						const hash = crypto.createHash('sha512');
-						hash.write(fs.readFileSync(path.join(__dirname, "../../static/testcases", id, testcase, test, "output.txt")));
+						hash.update(normalize(fs.readFileSync(path.join(__dirname, "../../static/testcases", id, testcase, test, "out.txt"), "utf-8")));
 
 						this.task[id][testcase][test] = {
 							type: 'simple',
-							input_path: path.join(__dirname, "../../static/testcases", id, testcase, test, "input.txt"),
+							input_path: path.join(__dirname, "../../static/testcases", id, testcase, test, "in.txt"),
 							output: hash.digest('hex'),
 							score: config.score,
 							time_limit: 2000
@@ -393,6 +390,8 @@ export default class Server {
 		}
 
 		sums.sort((a, b) => a[0] - b[0]);
+
+		console.log(sums);
 
 		for (const [_, client] of sums) {
 
