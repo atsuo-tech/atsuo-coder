@@ -25,7 +25,7 @@ export default async function Add({
 
 		const user = await getUser();
 
-		if(!user) {
+		if (!user) {
 
 			notFound();
 
@@ -70,14 +70,20 @@ export default async function Add({
 	}
 
 	return (
-		<Form action={action}>
+		<>
 
-			<input type="text" name="name" placeholder="Name" required />
-			<textarea name="description" placeholder="Description" required></textarea>
+			<h1>解説の追加</h1>
 
-			<input type="submit" value="Submit" />
+			<Form action={action}>
 
-		</Form>
+				<input type="text" name="name" placeholder="Name" required />
+				<textarea name="description" placeholder="Description" required></textarea>
+
+				<input type="submit" value="Submit" />
+
+			</Form>
+
+		</>
 	);
 
 }
