@@ -180,7 +180,23 @@ export default class Server {
 
 			let state = SocketStatus.BeforeVerify;
 
+			let remaining: string = "";
+
 			socket.addListener("data", (input: string) => {
+
+				if (!input.includes(";")) {
+
+					remaining += input;
+					return;
+
+				}
+
+				const splitPos = input.indexOf(";");
+
+				let newRemaining = input.slice(splitPos + 1);
+
+				input = remaining + input.slice(0, splitPos);
+				remaining = newRemaining;
 
 				const args = input.toString().split(";")[0].split(":");
 

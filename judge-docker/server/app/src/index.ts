@@ -19,7 +19,21 @@ import { createHash } from "crypto";
 
 	})
 
+	let remaining = "";
+
 	connection.on("data", (input) => {
+
+		if (!input.toString().includes(";")) {
+
+			remaining += input.toString();
+			return;
+
+		}
+
+		let newRemaining = input.toString().split(";")[1];
+
+		input = remaining + input.toString().split(";")[0];
+		remaining = newRemaining;
 
 		const args = input.toString().split(";")[0].split(":");
 
@@ -87,22 +101,27 @@ import { createHash } from "crypto";
 
 				let sent = false;
 
-				setTimeout(() => {
-
-					if (sent) return;
-					sent = true;
-
-					proc.kill();
-
-					connection.write("end:" + Buffer.from(JSON.stringify({ status: "TLE" })).toString("base64") + ";");
-
-				}, json.time_limit);
-
 				let stdout = "";
+
+				proc.stdin.on("finish", () => {
+
+					setTimeout(() => {
+
+						if (sent) return;
+						sent = true;
+
+						proc.kill();
+
+						connection.write("end:" + Buffer.from(JSON.stringify({ status: "TLE" })).toString("base64") + ";");
+
+					}, json.time_limit);
+
+				});
 
 				proc.stdout.on("data", (data) => stdout += data);
 				proc.stderr.on("data", () => { });
 				proc.stdin.write(json.input);
+				proc.stdin.end();
 
 				proc.on("exit", (code) => {
 
