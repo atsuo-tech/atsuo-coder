@@ -56,33 +56,39 @@ export default async function Page({ params }: { params: { [key: string]: string
 		<>
 			<h1>提出一覧 | AtsuoCoder</h1>
 			<h2><Language>submissions</Language></h2>
-			<table>
-				<thead>
-					<tr>
-						<td width="5%"><Language>index</Language></td>
-						<td width="20%"><Language>time</Language></td>
-						<td width="20%"><Language>user</Language></td>
-						<td width="35%"><Language>task</Language></td>
-						<td width="10%"><Language>judge</Language></td>
-						<td width="10%"><Language>detail</Language></td>
-					</tr>
-				</thead>
-				<tbody id="submissions">
-					{
-						submissions.map((submission, i) => {
-							const result = submission.judge == "WJ" ? "WJ" : JSON.parse(submission.judge).status == 3 ? "CE" : resultStrings[JSON.parse(submission.judge)[0][0]];
-							return <tr key={i}>
-								<td>{submissions.length - i}</td>
-								<td>{submission.created_at.toLocaleString("ja")}</td>
-								<td>{submission.user}</td>
-								<td><a href={`/contests/${params.contest}/tasks/${submission.task}`}>{submission.task}</a></td>
-								<td><p className={styles[`c-${result.toLowerCase()}`]}>{result}</p></td>
-								<td><a href={`/contests/${params.contest}/submissions/${submission.id}`}><Language>detail</Language></a></td>
-							</tr>
-						})
-					}
-				</tbody>
-			</table>
+
+			<div>
+
+				<table>
+					<thead>
+						<tr>
+							<td width="5%"><Language>index</Language></td>
+							<td width="20%"><Language>time</Language></td>
+							<td width="20%"><Language>user</Language></td>
+							<td width="35%"><Language>task</Language></td>
+							<td width="10%"><Language>judge</Language></td>
+							<td width="10%"><Language>detail</Language></td>
+						</tr>
+					</thead>
+					<tbody id="submissions">
+						{
+							submissions.map((submission, i) => {
+								const result = submission.judge == "WJ" ? "WJ" : JSON.parse(submission.judge).status == 3 ? "CE" : resultStrings[JSON.parse(submission.judge)[0][0]];
+								return <tr key={i}>
+									<td>{submissions.length - i}</td>
+									<td>{submission.created_at.toLocaleString("ja")}</td>
+									<td>{submission.user}</td>
+									<td><a href={`/contests/${params.contest}/tasks/${submission.task}`}>{submission.task}</a></td>
+									<td><p className={styles[`c-${result.toLowerCase()}`]}>{result}</p></td>
+									<td><a href={`/contests/${params.contest}/submissions/${submission.id}`}><Language>detail</Language></a></td>
+								</tr>
+							})
+						}
+					</tbody>
+				</table>
+
+			</div>
+
 		</>
 	);
 }

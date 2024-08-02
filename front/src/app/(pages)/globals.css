@@ -82,8 +82,10 @@
 
 .katex .katex-html {
 	margin: 0;
+
 	& .base {
 		margin: 0;
+
 		& .strut {
 			display: none;
 		}
@@ -111,7 +113,8 @@ a {
 	}
 }
 
-h1, h2{
+h1,
+h2 {
 	font-weight: bold;
 }
 
@@ -124,7 +127,8 @@ h2 {
 	font-size: 1.4rem;
 }
 
-table, thead {
+table,
+thead {
 	border: solid;
 	border-color: #d0e0f0 #ffffff;
 	border-width: 2px 0;
@@ -140,7 +144,37 @@ thead {
 
 tr {
 	border-width: 1px 0;
-    font-size: 14px;
+	font-size: 14px;
+}
+
+@media (max-width: 700px) {
+
+	div:has(>table) {
+
+		width: 100%;
+		overflow-x: scroll;
+		scrollbar-width: initial;
+		-ms-overflow-style: initial;
+
+	}
+
+	table {
+
+		border-collapse: collapse;
+		border-spacing: 0;
+		width: 100%;
+
+	}
+
+	th,
+	td {
+		vertical-align: middle;
+		padding: 24px;
+		font-size: 14px;
+		text-align: center;
+		white-space: nowrap;
+	}
+
 }
 
 .scroll {
@@ -207,8 +241,10 @@ li {
 }
 
 :root {
+
 	scrollbar-width: none;
 	-ms-overflow-style: none;
+
 }
 
 header {

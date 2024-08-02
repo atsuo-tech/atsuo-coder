@@ -32,7 +32,7 @@ export default async function RootLayout({
 			<body>
 				<div className={headerStyles.headers}>
 					<SiteHeader>
-						<img src="/AtsuoCoder_logo_2.svg" width={200} height={200}></img>
+						<img src="/AtsuoCoder_logo_2.svg" width={200} height={200} className={headerStyles.logo}></img>
 						<div>
 							{
 								!user ?
@@ -41,9 +41,9 @@ export default async function RootLayout({
 										<Header1Button signup><a href="/signup"><Language>register</Language></a></Header1Button></> :
 									<>
 
-										<HeaderUserName><a href={`/users/${user.getID()}`}>
+										<HeaderUserName className={headerStyles.userButton}><a href={`/users/${user.getID()}`}>
 											<img src="/AtsuoCoder_logo.svg" alt="UserIcon" width={48} height={48}></img>
-											<p>{user.getID()}</p>
+											<p className={headerStyles.logo}>{user.getID()}</p>
 										</a></HeaderUserName>
 										{Permissions.hasPermission(permission!!, Permissions.BasePermissions.Admin) ? <HeaderUserButton><a href="/admin">
 											<span className="material-icons">manage_accounts</span>
