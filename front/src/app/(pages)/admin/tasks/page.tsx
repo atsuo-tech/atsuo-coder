@@ -23,61 +23,65 @@ export default async function Page() {
 
 			<h1>Tasks | AtsuoCoder Admin</h1>
 
-			<table>
+			<div>
 
-				<thead>
+				<table>
 
-					<tr>
+					<thead>
 
-						<th>ID</th>
-						<th>Name</th>
-						<th>Editors</th>
-						<th>Testers</th>
-						<th>Delete</th>
+						<tr>
 
-					</tr>
+							<th>ID</th>
+							<th>Name</th>
+							<th>Editors</th>
+							<th>Testers</th>
+							<th>Delete</th>
 
-				</thead>
+						</tr>
 
-				<tbody>
+					</thead>
 
-					{
-						await hasProblemMakerPermission() ?
-							<tr>
+					<tbody>
 
-								<td colSpan={5}>
+						{
+							await hasProblemMakerPermission() ?
+								<tr>
 
-									<Link href="/admin/tasks/new">
+									<td colSpan={5}>
 
-										Add New
+										<Link href="/admin/tasks/new">
 
-									</Link>
+											Add New
 
-								</td>
+										</Link>
 
-							</tr> :
-							<></>
-					}
+									</td>
 
-					{
-						datas.map((task, index) => {
+								</tr> :
+								<></>
+						}
 
-							return (
-								<tr key={index}>
-									<td><Link href={`/admin/tasks/edit/${task.id}`}>{task.id}</Link></td>
-									<td>{task.name}</td>
-									<td>{task.editors.join(", ")}</td>
-									<td>{task.testers.join(", ")}</td>
-									<td><Link href={`/admin/tasks/delete/${task.id}`}><input type="button" value="Delete" style={{ background: "red", width: "fit-content" }} /></Link></td>
-								</tr>
-							)
+						{
+							datas.map((task, index) => {
 
-						})
-					}
+								return (
+									<tr key={index}>
+										<td><Link href={`/admin/tasks/edit/${task.id}`}>{task.id}</Link></td>
+										<td>{task.name}</td>
+										<td>{task.editors.join(", ")}</td>
+										<td>{task.testers.join(", ")}</td>
+										<td><Link href={`/admin/tasks/delete/${task.id}`}><input type="button" value="Delete" style={{ background: "red", width: "fit-content" }} /></Link></td>
+									</tr>
+								)
 
-				</tbody>
+							})
+						}
 
-			</table>
+					</tbody>
+
+				</table>
+
+			</div>
 
 		</>
 	)

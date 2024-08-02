@@ -30,33 +30,39 @@ export default async function Page(p: { params: { contest: string } }) {
 	return (
 		<>
 			<h1><Language>tasks</Language> | AtsuoCoder</h1>
-			<table>
-				<thead>
-					<tr>
-						<td><Language>task_name</Language></td>
-						<td><Language>perfect_score</Language></td>
-						<td><Language>editors</Language></td>
-					</tr>
-				</thead>
-				<tbody>
-					{problems.map((v, i) => {
-						const task = tasks.find((t) => t.id == v);
-						return <>
-							<tr>
-								<td>
-									<a href={`/contests/${p.params.contest}/tasks/${task!!.id}`}>{task!!.name}</a>
-								</td>
-								<td>
-									{task!!.score}
-								</td>
-								<td>
-									{task!!.editors.join(" ")}
-								</td>
-							</tr>
-						</>;
-					})}
-				</tbody>
-			</table>
+
+			<div>
+
+				<table>
+					<thead>
+						<tr>
+							<td><Language>task_name</Language></td>
+							<td><Language>perfect_score</Language></td>
+							<td><Language>editors</Language></td>
+						</tr>
+					</thead>
+					<tbody>
+						{problems.map((v, i) => {
+							const task = tasks.find((t) => t.id == v);
+							return <>
+								<tr>
+									<td>
+										<a href={`/contests/${p.params.contest}/tasks/${task!!.id}`}>{task!!.name}</a>
+									</td>
+									<td>
+										{task!!.score}
+									</td>
+									<td>
+										{task!!.editors.join(" ")}
+									</td>
+								</tr>
+							</>;
+						})}
+					</tbody>
+				</table>
+
+			</div>
+
 		</>
 	)
 

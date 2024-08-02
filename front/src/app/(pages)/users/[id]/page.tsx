@@ -51,39 +51,43 @@ export default async function User({ params: { id } }: { params: { id: string } 
 
 			<h2><Language>details</Language></h2>
 
-			<table>
+			<div>
 
-				<thead>
+				<table>
 
-					<tr>
+					<thead>
 
-						<th><Language>id</Language></th>
-						<th><Language>name</Language></th>
-						<th><Language>grade</Language></th>
-						<th><Language>rating</Language></th>
-						<th><Language>highest_rating</Language></th>
-						<th><Language>highest_inner_performance</Language></th>
+						<tr>
 
-					</tr>
+							<th><Language>id</Language></th>
+							<th><Language>name</Language></th>
+							<th><Language>grade</Language></th>
+							<th><Language>rating</Language></th>
+							<th><Language>highest_rating</Language></th>
+							<th><Language>highest_inner_performance</Language></th>
 
-				</thead>
+						</tr>
 
-				<tbody>
+					</thead>
 
-					<tr>
+					<tbody>
 
-						<td>{id}</td>
-						<td>{(await user.name?.get())?.join(" ")}</td>
-						<td>{await user.grade?.get()}</td>
-						<td>{await user.rating?.get()} ({await user.inner_rating?.get()})</td>
-						<td>{maxRating}</td>
-						<td>{maxInnerPerformance}</td>
+						<tr>
 
-					</tr>
+							<td>{id}</td>
+							<td>{(await user.name?.get())?.join(" ")}</td>
+							<td>{await user.grade?.get()}</td>
+							<td>{await user.rating?.get()} ({await user.inner_rating?.get()})</td>
+							<td>{maxRating}</td>
+							<td>{maxInnerPerformance}</td>
 
-				</tbody>
+						</tr>
 
-			</table>
+					</tbody>
+
+				</table>
+
+			</div>
 
 			<h2><Language>graph</Language></h2>
 
@@ -145,45 +149,49 @@ export default async function User({ params: { id } }: { params: { id: string } 
 
 			<h2><Language>history</Language></h2>
 
-			<table>
+			<div>
 
-				<thead>
+				<table>
 
-					<tr>
+					<thead>
 
-						<th><Language>contest</Language></th>
-						<th><Language>performance</Language></th>
-						<th><Language>new_rating</Language></th>
-						<th><Language>moving</Language></th>
+						<tr>
 
-					</tr>
+							<th><Language>contest</Language></th>
+							<th><Language>performance</Language></th>
+							<th><Language>new_rating</Language></th>
+							<th><Language>moving</Language></th>
 
-				</thead>
+						</tr>
 
-				<tbody>
+					</thead>
 
-					{
-						performances.map((performance, index) => {
+					<tbody>
 
-							const moving = performance.rating - (index == 0 ? 0 : performances[index - 1].rating);
+						{
+							performances.map((performance, index) => {
 
-							return (
-								<tr id={"history" + index} key={index}>
+								const moving = performance.rating - (index == 0 ? 0 : performances[index - 1].rating);
 
-									<td><Link href={"/contests/" + performance.contest}>{performance.contest}</Link></td>
-									<td>{performance.performance}</td>
-									<td>{performance.rating}</td>
-									<td>{(moving > 0 ? "+" : "") + moving}</td>
+								return (
+									<tr id={"history" + index} key={index}>
 
-								</tr>
-							);
+										<td><Link href={"/contests/" + performance.contest}>{performance.contest}</Link></td>
+										<td>{performance.performance}</td>
+										<td>{performance.rating}</td>
+										<td>{(moving > 0 ? "+" : "") + moving}</td>
 
-						})
-					}
+									</tr>
+								);
 
-				</tbody>
+							})
+						}
 
-			</table>
+					</tbody>
+
+				</table>
+
+			</div>
 
 		</>
 	);

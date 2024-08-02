@@ -172,7 +172,7 @@ export default class Server {
 
 			setInterval(() => {
 
-				if (this.stats[verify_uuid].judging || this.stats[verify_uuid].queue.length == 0) return;
+				if (this.stats[verify_uuid].judging || this.stats[verify_uuid].queue.length == 0 || state != SocketStatus.AfterVerify) return;
 				this.stats[verify_uuid].judging = true;
 				this.stats[verify_uuid].queue.shift()?.();
 
