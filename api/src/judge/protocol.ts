@@ -240,6 +240,7 @@ export default class Server {
 
 						socket.end();
 						socket.destroy();
+						return;
 
 					}
 
