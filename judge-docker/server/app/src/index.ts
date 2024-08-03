@@ -53,41 +53,50 @@ import { createHash } from "crypto";
 			if (json.language == 'cpp23') {
 
 				fs.writeFileSync("/home/judge/Main.cpp", json.code);
-				const proc = spawn("sudo g++ -std=c++23 -O2 -o ./a.out ./Main.cpp", { shell: "bash", cwd: "/home/judge" });
 
-				let stderr = "", sent = false;
+				try {
 
-				proc.stdout.on("data", () => { });
-				proc.stderr.on("data", (data) => {
-					stderr += data;
-				});
-				proc.on("exit", (code) => {
+					const proc = spawn("sudo g++ -std=c++23 -O2 -o ./a.out ./Main.cpp", { shell: "bash", cwd: "/home/judge" });
 
-					if (sent) return;
+					let stderr = "", sent = false;
 
-					if (code == 0) {
+					proc.stdout.on("data", () => { });
+					proc.stderr.on("data", (data) => {
+						stderr += data;
+					});
+					proc.on("exit", (code) => {
 
+						if (sent) return;
+
+						if (code == 0) {
+
+							sent = true;
+							connection.write("built:" + Buffer.from(JSON.stringify({ result: "OK", message: stderr })).toString("base64") + ";");
+
+						} else {
+
+							sent = true;
+							connection.write("built:" + Buffer.from(JSON.stringify({ result: "RE", message: stderr })).toString("base64") + ";");
+
+						}
+
+					});
+
+					setTimeout(() => {
+
+						if (sent) return;
 						sent = true;
-						connection.write("built:" + Buffer.from(JSON.stringify({ result: "OK", message: stderr })).toString("base64") + ";");
 
-					} else {
+						proc.kill();
+						connection.write("built:" + Buffer.from(JSON.stringify({ result: "TLE", message: stderr })).toString("base64") + ";");
 
-						sent = true;
-						connection.write("built:" + Buffer.from(JSON.stringify({ result: "RE", message: stderr })).toString("base64") + ";");
+					}, 30000);
 
-					}
+				} catch (err: any) {
 
-				});
+					console.error("Build error occured: ", err);
 
-				setTimeout(() => {
-
-					if (sent) return;
-					sent = true;
-
-					proc.kill();
-					connection.write("built:" + Buffer.from(JSON.stringify({ result: "TLE", message: stderr })).toString("base64") + ";");
-
-				}, 30000);
+				}
 
 			}
 
@@ -97,54 +106,63 @@ import { createHash } from "crypto";
 
 			if (json.type == 'simple') {
 
-				const proc = spawn("sudo -u judge /home/judge/a.out", { shell: "bash" });
+				try {
 
-				let sent = false;
+					const proc = spawn("sudo -u judge /home/judge/a.out", { shell: "bash" });
 
-				let stdout = "";
+					let sent = false;
 
-				proc.stdin.on("finish", () => {
+					let stdout = "";
 
-					setTimeout(() => {
+					proc.stdin.on("finish", () => {
+
+						setTimeout(() => {
+
+							if (sent) return;
+							sent = true;
+
+							proc.kill();
+
+							connection.write("end:" + Buffer.from(JSON.stringify({ status: "TLE" })).toString("base64") + ";");
+
+						}, json.time_limit);
+
+					});
+
+					proc.stdout.on("data", (data) => stdout += data);
+					proc.stderr.on("data", () => { });
+					proc.stdin.write(json.input);
+					proc.stdin.on("error", () => { });
+					proc.stdin.end();
+
+					proc.on("exit", (code) => {
 
 						if (sent) return;
 						sent = true;
 
-						proc.kill();
+						if (code == 0) {
 
-						connection.write("end:" + Buffer.from(JSON.stringify({ status: "TLE" })).toString("base64") + ";");
+							connection.write("end:" + Buffer.from(JSON.stringify({ status: "OK", output: createHash("sha512").update(normalize(stdout)).digest("hex") })).toString("base64") + ";");
 
-					}, json.time_limit);
+						} else {
 
-				});
+							connection.write("end:" + Buffer.from(JSON.stringify({ status: "RE" })).toString("base64") + ";");
 
-				proc.stdout.on("data", (data) => stdout += data);
-				proc.stderr.on("data", () => { });
-				proc.stdin.write(json.input);
-				proc.stdin.end();
+						}
 
-				proc.on("exit", (code) => {
+					});
 
-					if (sent) return;
-					sent = true;
+				} catch (err: any) {
 
-					if (code == 0) {
+					console.error("Execution error occured: ", err);
 
-						connection.write("end:" + Buffer.from(JSON.stringify({ status: "OK", output: createHash("sha512").update(normalize(stdout)).digest("hex") })).toString("base64") + ";");
-
-					} else {
-
-						connection.write("end:" + Buffer.from(JSON.stringify({ status: "RE" })).toString("base64") + ";");
-
-					}
-
-				});
+				}
 
 			}
 
 		} else if (method == 'complete') {
 
-			fs.rmdirSync("/home/judge", { recursive: true });
+			fs.rmSync("/home/judge", { recursive: true });
 			fs.mkdirSync("/home/judge");
 			execSync("sudo chown judge:judge /home/judge", { shell: "bash" });
 
@@ -153,7 +171,5 @@ import { createHash } from "crypto";
 		}
 
 	});
-
-	connection.on("error", console.error);
 
 })();
