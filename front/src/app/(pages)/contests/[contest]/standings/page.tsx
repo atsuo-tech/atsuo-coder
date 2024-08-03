@@ -19,6 +19,8 @@ export default async function Page({ params: { contest: contestId } }: { params:
 
 	for (let i = 0; i < submissions.length; i++) {
 
+		if (submissions[i].created_at.getTime() < (await contest.start!!.get()).getTime() || submissions[i].created_at.getTime() > (await contest.start!!.get()).getTime() + (await contest.period!!.get())) continue;
+
 		if (submissions[i].judge == "WJ" || JSON.parse(submissions[i].judge).status == 3) continue;
 		scores[submissions[i].user] = scores[submissions[i].user] || { score: 0, problems: {} };
 
@@ -182,9 +184,9 @@ export default async function Page({ params: { contest: contestId } }: { params:
 							})()
 						}
 					</tbody>
-				
+
 				</table>
-			
+
 			</div>
 
 		</>
