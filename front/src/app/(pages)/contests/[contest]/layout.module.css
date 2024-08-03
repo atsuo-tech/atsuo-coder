@@ -62,3 +62,13 @@ div.links a {
 .contest>.tab li:hover {
 	background: linear-gradient(90deg, #405060 5px, #10203000 5px);
 }
+
+@media (max-width: 700px) {
+
+	div.desktop {
+
+		display: none;
+
+	}
+
+}

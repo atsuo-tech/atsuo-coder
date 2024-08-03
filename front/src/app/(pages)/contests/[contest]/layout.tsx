@@ -9,6 +9,7 @@ import { notFound } from "next/navigation";
 
 import { SiteHeader, SecondHeader, Header1Button, Header2Button, HeaderUserName, HeaderUserButton, ThirdHeader, Header3Button, FourthHeader, ContestTitle } from '../../../../components/styled-components';
 import Language from "@/lib/language";
+import MobileMenu from "./menu";
 
 export default async function RootLayout({
 	children,
@@ -67,7 +68,7 @@ export default async function RootLayout({
 
 	return (
 		<>
-			<ThirdHeader>
+			<ThirdHeader className={styles.desktop}>
 				<h2><Language>menu</Language></h2>
 				<Header3Button>
 					<a href={`/contests/${params.contest}`}>
@@ -102,6 +103,9 @@ export default async function RootLayout({
 						<></>
 				}
 			</ThirdHeader>
+
+			<MobileMenu problems={permissionAllowedTask} standings={true} submissions={permissionAllowedTask} contestUrl={`/contests/${params.contest}`} />
+			
 			{children}
 		</>
 	)
