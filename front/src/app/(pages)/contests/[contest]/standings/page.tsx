@@ -60,7 +60,7 @@ export default async function Page({ params: { contest: contestId } }: { params:
 
 		}
 
-		users.push({ user, score: scores[user].score, contestTime: lastSubmitTime + (await contest.penalty!!.get()) * penalty, rating: await (await getUser(user))!!.rating!!.get()!! });
+		users.push({ user, score: scores[user].score, contestTime: lastSubmitTime + (await contest.penalty!!.get()) * 1000 * 60 * penalty, rating: await (await getUser(user))!!.rating!!.get()!! });
 
 	}
 
