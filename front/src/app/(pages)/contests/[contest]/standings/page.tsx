@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
 import { ReactNode } from "react";
+import getProblem from "@/lib/problem";
 
 export default async function Page({ params: { contest: contestId } }: { params: { contest: string } }) {
 
@@ -97,13 +98,15 @@ export default async function Page({ params: { contest: contestId } }: { params:
 							<td className={styles.score_column}>Total</td>
 							<td className={styles.score_column}>Penalty</td>
 							{
-								(await contest.problems!!.get()).map((problem, i) => {
+								await Promise.all((await contest.problems!!.get()).map(async (problem, i) => {
+
+									const task = await getProblem(problem);
 
 									return (
-										<td key={i} className={styles.score_column}><a href={`/contests/${contestId}/tasks/${problem}`}>{String.fromCharCode(65 + i)}</a></td>
+										<td key={i} className={styles.score_column}><a href={`/contests/${contestId}/tasks/${problem}`}>{((await task!!.name!!.get()).includes(".") && (await task!!.name!!.get()).split(".")?.[0]) || String.fromCharCode(65 + i)}</a></td>
 									)
 
-								})
+								}))
 							}
 						</tr>
 					</thead>

@@ -6,6 +6,7 @@ import getUser, { Permissions } from "@/lib/user";
 import getContest, { Contest } from "@/lib/contest";
 import { hasContestAdminPermission } from "@/app/(pages)/admin/permission";
 import Language from "@/lib/language";
+import getProblem from "@/lib/problem";
 
 export default async function Page({ params }: { params: { [key: string]: string } }) {
 
@@ -52,6 +53,8 @@ export default async function Page({ params }: { params: { [key: string]: string
 
 	})();
 
+	const names: { [id: string]: string } = {};
+
 	return (
 		<>
 			<h1>提出一覧 | AtsuoCoder</h1>
@@ -72,17 +75,30 @@ export default async function Page({ params }: { params: { [key: string]: string
 					</thead>
 					<tbody id="submissions">
 						{
-							submissions.map((submission, i) => {
+							await Promise.all(submissions.map(async (submission, i) => {
 								const result = submission.judge == "WJ" ? "WJ" : JSON.parse(submission.judge).status == 3 ? "CE" : resultStrings[JSON.parse(submission.judge)[0][0]];
 								return <tr key={i}>
 									<td>{submissions.length - i}</td>
 									<td>{submission.created_at.toLocaleString("ja")}</td>
 									<td>{submission.user}</td>
-									<td><a href={`/contests/${params.contest}/tasks/${submission.task}`}>{submission.task}</a></td>
+									<td><a href={`/contests/${params.contest}/tasks/${submission.task}`}>
+										{
+
+											await (async () => {
+
+												if (submission.task in names) return names[submission.task];
+
+												const task = await getProblem(submission.task);
+
+												return names[submission.task] = await task!!.name!!.get();
+
+											})()
+										}
+									</a></td>
 									<td><p className={styles[`c-${result.toLowerCase()}`]}>{result}</p></td>
 									<td><a href={`/contests/${params.contest}/submissions/${submission.id}`}><Language>detail</Language></a></td>
 								</tr>
-							})
+							}))
 						}
 					</tbody>
 				</table>
