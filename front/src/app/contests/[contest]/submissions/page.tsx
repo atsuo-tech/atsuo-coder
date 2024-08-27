@@ -41,7 +41,7 @@ export default async function Page({ params, searchParams }: { params: { [key: s
 
 	const notMeAllowed = editors.includes(user.getID()!!) || testers.includes(user.getID()!!) || start.getTime() + period < Date.now();
 
-	const notMe = searchParams.me == '' && notMeAllowed;
+	const notMe = searchParams.me != '' && notMeAllowed;
 
 	const submissions = await (async () => {
 
@@ -51,7 +51,7 @@ export default async function Page({ params, searchParams }: { params: { [key: s
 
 		} else {
 
-			if (searchParams.me == '') {
+			if (searchParams.me != '') {
 
 				redirect(`/contests/${params.contest}/submissions?me`);
 
