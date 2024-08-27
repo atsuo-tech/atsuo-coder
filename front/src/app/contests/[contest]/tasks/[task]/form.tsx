@@ -1,0 +1,75 @@
+"use client";
+
+import Editor from "@/components/ace-editor";
+import { Ace } from "ace-builds";
+import style from "./form.module.scss";
+
+export default function Form({ contest, task }: { contest: string, task: string }) {
+
+	let session: Ace.EditSession | undefined = undefined;
+
+	return (
+		<>
+
+			<form
+				id="task-form"
+				action="/api/submit"
+				method="post"
+				className={`${style.form}`}
+				onSubmit={
+					(form) => {
+
+						(form.target as HTMLFormElement).querySelector("input[name=code]")!!.setAttribute("value", session!!.getValue());
+
+					}
+				}
+			>
+
+				<select
+					defaultValue="cpp23"
+					id="task-form-language"
+					onChange={
+						(select) => {
+
+							const convert: { [key: string]: string } = {
+								"cpp23": "c_cpp",
+								"python2": "python",
+								"python3": "python"
+							}
+
+							session!!.setMode(`ace/mode/${convert[(document.querySelector("#task-form-language") as HTMLSelectElement).value]}`);
+
+						}
+					}
+					name="language"
+				>
+
+					<option value="cpp23">C++ 23 (g++)</option>
+					{/* <option value="python2">Python 2</option> */}
+					{/* <option value="python3">Python 3</option> */}
+
+				</select>
+
+				<Editor
+					language="c_cpp"
+					onLoad={
+						(editor) => {
+
+							session = editor.session;
+
+						}
+					}
+				/>
+
+				<input type="hidden" name="code" />
+				<input type="hidden" name="contest" value={contest} />
+				<input type="hidden" name="task" value={task} />
+
+				<input type="submit" value="提出" />
+
+			</form>
+
+		</>
+	);
+
+}

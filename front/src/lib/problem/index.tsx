@@ -1,7 +1,7 @@
 import { sql } from "@/app/sql";
 import Value from "../value";
 import { RowDataPacket } from "mysql2";
-import { hasAdminPremission, hasProblemAdminPermission } from "@/app/(pages)/admin/permission";
+import { hasAdminPremission, hasProblemAdminPermission } from "@/lib/accounts/permission";
 
 let cache: { [id: string]: Problem } = {};
 

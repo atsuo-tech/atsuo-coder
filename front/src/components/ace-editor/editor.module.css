@@ -1,0 +1,10 @@
+.ace-editor,
+.ace-editor * {
+
+	font-family: "Monaco", "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas", monospace;
+
+	letter-spacing: 0;
+
+	margin: 0;
+
+}

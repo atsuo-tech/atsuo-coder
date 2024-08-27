@@ -1,11 +1,40 @@
 "use client";
 
-import style from "./page.module.css";
+import AceEditor from "react-ace";
+import 'brace/mode/c_cpp';
+import 'brace/mode/java';
+import 'brace/mode/python';
+import 'brace/mode/javascript';
+import 'brace/theme/chrome';
+import React from 'react';
+import style from './editor.module.css';
+import { Ace } from "ace-builds";
 
-export function AceEditor({ children: sourceCode, readonly }: { children: string, readonly: boolean }) {
+export default function Editor(
+	{
+		language,
+		onLoad,
+		readonly,
+		value,
+	}
+		: {
+			language: "c_cpp" | "java" | "python" | "javascript",
+			onLoad?: ((editor: Ace.Editor) => void) | undefined,
+			readonly?: boolean | undefined,
+			value?: string | undefined,
+		}
+) {
 
-	const uuid = crypto.randomUUID();
-
-	return <iframe src={`/frame/ace-editor?readonly=${readonly ? "true" : "false"}`} id={uuid} className={style.reader} onLoad={(iframe) => iframe.currentTarget.contentWindow!!.postMessage({ type: "set", value: sourceCode }, "*")}></iframe>;
+	return (
+		<AceEditor
+			mode={language}
+			theme="chrome"
+			width="100%"
+			className={`ace-editor ${style["ace-editor"]}`}
+			onLoad={onLoad}
+			value={value}
+			readOnly={readonly}
+		/>
+	)
 
 }
