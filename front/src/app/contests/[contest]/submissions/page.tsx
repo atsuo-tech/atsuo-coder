@@ -8,8 +8,8 @@ import { hasContestAdminPermission } from "@/lib/accounts/permission";
 import Language from "@/lib/language";
 import getProblem from "@/lib/problem";
 
-export default async function Page({ params, searchParams }: { params: { [key: string]: string }, searchParams: { me?: boolean } }) {
-
+export default async function Page({ params, searchParams }: { params: { [key: string]: string }, searchParams: { me?: '' } }) {
+	
 	const user = await getUser();
 
 	if (!user) {
@@ -41,7 +41,7 @@ export default async function Page({ params, searchParams }: { params: { [key: s
 
 	const notMeAllowed = editors.includes(user.getID()!!) || testers.includes(user.getID()!!) || start.getTime() + period < Date.now();
 
-	const notMe = !searchParams.me && notMeAllowed;
+	const notMe = searchParams.me == '' && notMeAllowed;
 
 	const submissions = await (async () => {
 
@@ -51,7 +51,7 @@ export default async function Page({ params, searchParams }: { params: { [key: s
 
 		} else {
 
-			if (!searchParams.me) {
+			if (searchParams.me == '') {
 
 				redirect(`/contests/${params.contest}/submissions?me`);
 
@@ -72,10 +72,10 @@ export default async function Page({ params, searchParams }: { params: { [key: s
 
 			{
 				<>
-					<a href={`/contests/${params.contest}/submissions`}><Language>submissions_me</Language></a>
+					<a href={`/contests/${params.contest}/submissions?me`}><Language>submissions_me</Language></a>
 					{
 						notMeAllowed
-							? <a href={`/contests/${params.contest}/submissions?me`}><Language>submissions_all</Language></a>
+							? <a href={`/contests/${params.contest}/submissions`}><Language>submissions_all</Language></a>
 							: <></>
 					}
 				</>
