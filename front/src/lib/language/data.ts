@@ -55,6 +55,8 @@ const data: language_data = {
     task: "問題",
     judge: "結果",
     detail: "詳細",
+    submissions_me: "自分の提出",
+    submissions_all: "全ての提出",
     // Submission
     code: "コード",
     result: "結果",

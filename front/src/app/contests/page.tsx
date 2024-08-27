@@ -45,6 +45,7 @@ export default async function Page(params: { searchParams: { [key: string]: stri
 
 	}
 
+	recent_contests.reverse();
 
 	return (
 		<>

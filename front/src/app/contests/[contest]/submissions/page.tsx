@@ -1,14 +1,14 @@
 import { sql } from "@/app/sql";
 import styles from "./[id]/submission.module.css";
 import { FieldPacket } from "mysql2";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import getUser, { Permissions } from "@/lib/user";
 import getContest, { Contest } from "@/lib/contest";
 import { hasContestAdminPermission } from "@/lib/accounts/permission";
 import Language from "@/lib/language";
 import getProblem from "@/lib/problem";
 
-export default async function Page({ params }: { params: { [key: string]: string } }) {
+export default async function Page({ params, searchParams }: { params: { [key: string]: string }, searchParams: { me?: boolean } }) {
 
 	const user = await getUser();
 
@@ -39,13 +39,23 @@ export default async function Page({ params }: { params: { [key: string]: string
 
 	}
 
+	const notMeAllowed = editors.includes(user.getID()!!) || testers.includes(user.getID()!!) || start.getTime() + period < Date.now();
+
+	const notMe = !searchParams.me && notMeAllowed;
+
 	const submissions = await (async () => {
 
-		if (editors.includes(user.getID()!!) || testers.includes(user.getID()!!)) {
+		if (notMe) {
 
 			return (await sql.query("SELECT id, task, user, created_at, judge, language FROM submissions WHERE contest = ? ORDER BY created_at DESC", [params.contest]) as [{ id: string, task: string, created_at: Date, judge: string, language: string, user: string }[], FieldPacket[]])[0];
 
 		} else {
+
+			if (!searchParams.me) {
+
+				redirect(`/contests/${params.contest}/submissions?me`);
+
+			}
 
 			return (await sql.query("SELECT id, task, user, created_at, judge, language FROM submissions WHERE contest = ? AND user = ? ORDER BY created_at DESC", [params.contest, user.getID()!!]) as [{ id: string, task: string, created_at: Date, judge: string, language: string, user: string }[], FieldPacket[]])[0];
 
@@ -59,6 +69,17 @@ export default async function Page({ params }: { params: { [key: string]: string
 		<>
 			<h1>提出一覧 | AtsuoCoder</h1>
 			<h2><Language>submissions</Language></h2>
+
+			{
+				<>
+					<a href={`/contests/${params.contest}/submissions`}><Language>submissions_me</Language></a>
+					{
+						notMeAllowed
+							? <a href={`/contests/${params.contest}/submissions?me`}><Language>submissions_all</Language></a>
+							: <></>
+					}
+				</>
+			}
 
 			<div>
 
