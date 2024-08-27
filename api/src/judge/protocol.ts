@@ -70,7 +70,7 @@ export default class Server {
 				queue: [],
 				ready: false,
 				judging: false,
-				request: async (task: string, code: string) => {
+				request: async (task: string, language: string, code: string) => {
 
 					return new Promise<{ result: StatusType, message: string }>(async (resolve) => {
 
@@ -78,7 +78,7 @@ export default class Server {
 
 							const taskData = this.task[task];
 
-							socket.write("build:" + Buffer.from(JSON.stringify({ language: 'cpp23', code })).toString("base64") + ";");
+							socket.write("build:" + Buffer.from(JSON.stringify({ language, code })).toString("base64") + ";");
 
 							const { result: buildResult, message } = await new Promise<{ result: "OK" | "RE" | "TLE" | "IE", message: string }>((resolve) => {
 
@@ -392,7 +392,7 @@ export default class Server {
 
 	}
 
-	public async addSubmission(submissionID: string, task: string, code: string) {
+	public async addSubmission(submissionID: string, task: string, language: string, code: string) {
 
 		const sums: [number, string][] = [];
 
@@ -412,7 +412,7 @@ export default class Server {
 
 		for (const [_, client] of sums) {
 
-			if (this.stats[client].ready) return await this.stats[client].request(task, code);
+			if (this.stats[client].ready) return await this.stats[client].request(task, language, code);
 
 		}
 
@@ -423,7 +423,7 @@ export default class Server {
 	server: tls.Server;
 	submissionID: { [uuid: string]: { id: string, task: string, testcase: string, test: string, type: 'simple' | 'outcheck' | 'interactive' } } = {};
 	resolveFunction: { [submission: string]: { [testcase: string]: { [test: string]: (result: Result) => void } } } = {};
-	stats: { [verify_uuid: string]: { queue: (() => void)[], request: (task: string, code: string) => Promise<{ result: StatusType, message: string }>, ready: boolean, judging: boolean } } = {};
+	stats: { [verify_uuid: string]: { queue: (() => void)[], request: (task: string, language: string, code: string) => Promise<{ result: StatusType, message: string }>, ready: boolean, judging: boolean } } = {};
 
 	task: {
 		[key: string]:

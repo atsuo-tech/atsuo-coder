@@ -85,7 +85,7 @@ front.prepare().then(async () => {
 				if (judging[data.id]) continue;
 				judging[data.id] = true;
 
-				judgeServer.addSubmission(data.id, data.task, data.sourceCode).then((result) => {
+				judgeServer.addSubmission(data.id, data.task, data.language, data.sourceCode).then((result) => {
 
 					if (!result) {
 
