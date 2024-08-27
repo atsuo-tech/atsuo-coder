@@ -5,17 +5,16 @@ import { getContest } from "../../component/contests";
 import { getUserByToken } from "../../component/users";
 import crypto from "crypto";
 import express from "express";
-import Server from "../../judge/protocol";
 
-const languages = ["cpp23", "cpp20"];
+const languages = ["cpp23"];
 
-export default function Route(sql: Connection, judgeServer: Server) {
+export default function Route(sql: Connection) {
 	const router = Router();
 	router.use(cookieParser());
 	router.use(express.urlencoded({ extended: false }));
 	router.post('*', async (req, res) => {
 
-		if (!req.body.sourceCode || !req.body.language || !req.body.ct_token) {
+		if (typeof req.body.code != "string" || typeof req.body.language != "string" || typeof req.body.contest != "string" || typeof req.body.task != "string") {
 			res.sendStatus(400);
 			res.end();
 			return;
@@ -27,7 +26,6 @@ export default function Route(sql: Connection, judgeServer: Server) {
 			return;
 		}
 
-		const paths = req.url.split("/").filter(Boolean);
 		const user = await getUserByToken(sql, req.cookies.cc, req.cookies.ct);
 
 		if (!user) {
@@ -36,7 +34,7 @@ export default function Route(sql: Connection, judgeServer: Server) {
 			return;
 		}
 
-		const contest = await getContest(sql, paths[0], user.id);
+		const contest = await getContest(sql, req.body.contest, user.id);
 
 		if (contest.length == 0) {
 			res.sendStatus(404);
@@ -44,27 +42,17 @@ export default function Route(sql: Connection, judgeServer: Server) {
 			return;
 		}
 
-		if (contest[0].problems.indexOf(paths[1]) == -1) {
+		if (contest[0].problems.indexOf(req.body.task) == -1) {
 			res.sendStatus(404);
 			res.end();
 			return;
 		}
 
-		const tokenCheck = await sql.query("SELECT * FROM ct_token WHERE id = ? AND user_id = ? AND use_to = 'SUBMIT';", [req.body.ct_token, user.id]);
-
-		if (Array.from(tokenCheck[0] as any).length == 0) {
-			res.sendStatus(403);
-			res.end();
-			return;
-		}
-
-		await sql.query("DELETE FROM ct_token WHERE id = ?;", [req.body.ct_token]);
-
 		const uuid = crypto.randomUUID();
 
-		await sql.query("INSERT into submissions (id, sourceCode, contest, task, user, created_at, judge, language) VALUES (?, ?, ?, ?, ?, now(), 'WJ', ?);", [uuid, req.body.sourceCode, paths[0], paths[1], user.id, req.body.language]);
+		await sql.query("INSERT into submissions (id, sourceCode, contest, task, user, created_at, judge, language) VALUES (?, ?, ?, ?, ?, now(), 'WJ', ?);", [uuid, req.body.code, req.body.contest, req.body.task, user.id, req.body.language]);
 
-		res.redirect(`/contests/${paths[0]}/submissions/${uuid}`);
+		res.redirect(`/contests/${req.body.contest}/submissions/${uuid}`);
 
 	});
 

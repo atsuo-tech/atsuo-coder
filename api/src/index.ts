@@ -11,6 +11,8 @@ import getInnerAPI from "./innerAPI";
 import cookieParser from "cookie-parser";
 config({ path: path.join(__dirname, "./../../.env") });
 
+console.log("Application is running in:", process.env.NODE_ENV);
+
 async function sendDiscord(value: string) {
 
 	if ("discord_webhook_url" in process.env) {
@@ -39,7 +41,7 @@ async function sendDiscord(value: string) {
 
 }
 
-const front = next({ dir: "../front", dev: process.argv.indexOf("--dev") != -1 });
+const front = next({ dir: "../front", dev: process.env.NODE_ENV == "development" });
 
 front.prepare().then(async () => {
 
@@ -112,13 +114,6 @@ front.prepare().then(async () => {
 	app.use(cookieParser());
 
 	app.use(async (req, res, next) => {
-		if (process.env.NODE_ENV == "production") {
-			const status = await fetch("https://verify.w-pcp.net/verify?token=" + req.cookies.di_token).then((res) => res.status)
-			if (status != 200) {
-				res.redirect("https://discord.com/oauth2/authorize?client_id=1251095772288778251&response_type=code&redirect_uri=https%3A%2F%2Fverify.w-pcp.net&scope=guilds");
-				return;
-			}
-		}
 		if (req.path.endsWith("/") && req.path.length > 1) {
 			const query = req.url.slice(req.path.length)
 			res.redirect(301, req.path.slice(0, -1) + query)
@@ -127,24 +122,59 @@ front.prepare().then(async () => {
 		}
 	})
 
+	app.use("/signup", async (req, res, next) => {
+
+		if (process.env.NODE_ENV == "production") {
+			const status = await fetch("https://verify.w-pcp.net/verify?token=" + req.cookies.di_token).then((res) => res.status)
+			if (status != 200) {
+				res.redirect("https://discord.com/oauth2/authorize?client_id=1251095772288778251&response_type=code&redirect_uri=https%3A%2F%2Fverify.w-pcp.net&scope=guilds");
+				return;
+			}
+		}
+
+		next();
+
+	})
+
 	const files = fs.readdirSync(path.join(__dirname, "routes"));
 
 	for (let i = 0; i < files.length; i++) {
 		const p = path.parse(files[i]);
+
 		if (p.name.startsWith('@')) continue;
+
 		if (fs.statSync(path.join(__dirname, "./routes", files[i])).isFile()) {
+
 			if (files[i] == 'index.js' || files[i].endsWith('/index.js')) {
+
 				const input = (await import(path.join(__dirname, "./routes", files[i])));
-				app.use(path.join("/", files[i], '../'), input.default(sql, judgeServer));
+
+				let func = input.default(sql, judgeServer);
+
+				app.use(path.join("/api", files[i], '../'), (req, res, next) => {
+
+					return func(req, res, next);
+
+				});
+
 				console.log(`Loaded ${path.join(__dirname, "./routes", files[i])} as ${path.join("/", files[i], '../')}`);
+
 			} else {
+
 				const input = (await import(path.join(__dirname, "./routes", files[i])));
-				app.use(path.join("/", files[i].replace(/\.js$/, "")), input.default(sql, judgeServer));
+
+				app.use(path.join("/api", files[i].replace(/\.js$/, "")), input.default(sql, judgeServer));
+
 				console.log(`Loaded ${path.join(__dirname, "./routes", files[i])} as ${path.join("/", files[i].replace(/\.js$/, ""))}`);
+
 			}
+
 		} else {
+
 			files.push(...fs.readdirSync(path.join(__dirname, "./routes", files[i])).map((file) => path.join(files[i], file)));
+
 		}
+
 	}
 
 	console.log("All files loaded");
