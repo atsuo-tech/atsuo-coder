@@ -6,7 +6,7 @@ import { getUserByToken } from "../../component/users";
 import crypto from "crypto";
 import express from "express";
 
-const languages = ["cpp23"];
+const languages = ["cpp23", "nasm"];
 
 export default function Route(sql: Connection) {
 	const router = Router();

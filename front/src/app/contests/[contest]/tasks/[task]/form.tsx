@@ -34,7 +34,8 @@ export default function Form({ contest, task }: { contest: string, task: string 
 							const convert: { [key: string]: string } = {
 								"cpp23": "c_cpp",
 								"python2": "python",
-								"python3": "python"
+								"python3": "python",
+								"nasm": "assembly_x86"
 							}
 
 							session!!.setMode(`ace/mode/${convert[(document.querySelector("#task-form-language") as HTMLSelectElement).value]}`);
@@ -45,6 +46,7 @@ export default function Form({ contest, task }: { contest: string, task: string 
 				>
 
 					<option value="cpp23">C++ 23 (g++)</option>
+					<option value="nasm">Assembly x64 (NASM)</option>
 					{/* <option value="python2">Python 2</option> */}
 					{/* <option value="python3">Python 3</option> */}
 
