@@ -2,6 +2,7 @@ import tls from "tls";
 import fs from "fs-extra";
 import { execSync, spawn } from "child_process";
 import { createHash } from "crypto";
+import { cpSync } from "fs";
 
 (async () => {
 
@@ -52,11 +53,60 @@ import { createHash } from "crypto";
 
 			if (json.language == 'cpp23') {
 
+				cpSync("./include", "/home/judge/include", { recursive: true });
 				fs.writeFileSync("/home/judge/Main.cpp", json.code);
 
 				try {
 
-					const proc = spawn("sudo g++ -std=c++23 -O2 -o ./a.out ./Main.cpp", { shell: "bash", cwd: "/home/judge" });
+					const proc = spawn("sudo -u judge g++ -std=c++23 -O2 -I /home/judge/include -o ./a.out ./Main.cpp", { shell: "bash", cwd: "/home/judge" });
+
+					let stderr = "", sent = false;
+
+					proc.stdout.on("data", () => { });
+					proc.stderr.on("data", (data) => {
+						stderr += data;
+					});
+					proc.on("exit", (code) => {
+
+						if (sent) return;
+
+						if (code == 0) {
+
+							sent = true;
+							connection.write("built:" + Buffer.from(JSON.stringify({ result: "OK", message: stderr })).toString("base64") + ";");
+
+						} else {
+
+							sent = true;
+							connection.write("built:" + Buffer.from(JSON.stringify({ result: "RE", message: stderr })).toString("base64") + ";");
+
+						}
+
+					});
+
+					setTimeout(() => {
+
+						if (sent) return;
+						sent = true;
+
+						proc.kill();
+						connection.write("built:" + Buffer.from(JSON.stringify({ result: "TLE", message: stderr })).toString("base64") + ";");
+
+					}, 30000);
+
+				} catch (err: any) {
+
+					console.error("Build error occured: ", err);
+
+				}
+
+			} else if (json.language == 'nasm') {
+
+				fs.writeFileSync("/home/judge/Main.asm", json.code);
+
+				try {
+
+					const proc = spawn("sudo -u judge nasm -f elf64 Main.asm && sudo -u judge gcc -o a.out Main.o -lm", { shell: "bash", cwd: "/home/judge" });
 
 					let stderr = "", sent = false;
 
