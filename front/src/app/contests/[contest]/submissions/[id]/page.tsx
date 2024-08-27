@@ -97,8 +97,9 @@ export default async function Page(params: { params: { [key: string]: string } }
 						{
 							"cpp23": "c_cpp",
 							"python2": "python",
-							"python3": "python"
-						}[language as "cpp23" | "python2" | "python3"] as "c_cpp" | "python"
+							"python3": "python",
+							"nasm": "assembly_x86"
+						}[language as "cpp23" | "python2" | "python3" | "nasm"] as "c_cpp" | "python" | "assembly_x86"
 					}
 					readonly
 					value={sourceCode}

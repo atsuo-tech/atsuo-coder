@@ -28,7 +28,7 @@ RUN apt install -y sudo
 
 # Install Needed Compilers
 
-RUN apt install -y gcc g++ openjdk-17-jdk
+RUN apt install -y gcc g++ openjdk-17-jdk nasm
 
 # Install app
 
