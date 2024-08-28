@@ -1,6 +1,6 @@
 "use client";
 
-import Editor from "@/components/ace-editor";
+import Editor, { languages } from "@/components/ace-editor";
 import { Ace } from "ace-builds";
 import style from "./form.module.scss";
 
@@ -31,14 +31,7 @@ export default function Form({ contest, task }: { contest: string, task: string 
 					onChange={
 						(select) => {
 
-							const convert: { [key: string]: string } = {
-								"cpp23": "c_cpp",
-								"python2": "python",
-								"python3": "python",
-								"nasm": "assembly_x86"
-							}
-
-							session!!.setMode(`ace/mode/${convert[(document.querySelector("#task-form-language") as HTMLSelectElement).value]}`);
+							session!!.setMode(`ace/mode/${languages[(document.querySelector("#task-form-language") as HTMLSelectElement).value]}`);
 
 						}
 					}
