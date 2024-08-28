@@ -1,6 +1,7 @@
 import { sql } from "@/app/sql";
 import { RowDataPacket } from "mysql2";
 import Value from "@/lib/value";
+import { makeRawSQLValue, makeObjectSQLValue, makeDateSQLValue } from "../value/mysql";
 
 const cache: { [id: string]: Contest } = {};
 
@@ -27,6 +28,8 @@ export class Contest {
 
 	public description: Value<string, string> | null = null;
 
+	public tasks: Value<string[], string> | null = null;
+
 	private loader: Promise<void> | null = null;
 
 	private valid: boolean = false;
@@ -43,179 +46,24 @@ export class Contest {
 
 	private async load(id: string) {
 
-		return sql.query("SELECT * FROM contests WHERE id = ?", [id]).then((data) => {
-
-			if ((data[0] as any[]).length != 0) {
-
-				const row = (data[0] as any[])[0];
-
-				this.id = id;
-
-				this.owner = new Value(id, row.owner, 1000 * 60 * 60, async (id) => {
-
-					const [data] = await sql.query<RowDataPacket[]>("SELECT owner FROM contests WHERE id = ?", [id]);
-
-					return data[0].owner;
-
-				}, async (value, id) => {
-
-					await sql.query("UPDATE contests SET owner = ? WHERE id = ?;", [value, id]);
-
-				});
-
-				this.editors = new Value(id, JSON.parse(row.editors || "[]"), 1000 * 60 * 60, async (id) => {
-
-					const [data] = await sql.query<RowDataPacket[]>("SELECT editors FROM contests WHERE id = ?", [id]);
-
-					return JSON.parse(data[0].editors);
-
-				}, async (value, id) => {
-
-					await sql.query("UPDATE contests SET editors = ? WHERE id = ?;", [JSON.stringify(value), id]);
-
-				});
-
-				this.testers = new Value(id, JSON.parse(row.testers || "[]"), 1000 * 60 * 60, async (id) => {
-
-					const [data] = await sql.query<RowDataPacket[]>("SELECT testers FROM contests WHERE id = ?", [id]);
-
-					return JSON.parse(data[0].testers);
-
-				}, async (value, id) => {
-
-					await sql.query("UPDATE contests SET testers = ? WHERE id = ?;", [JSON.stringify(value), id]);
-
-				});
-
-				this.problems = new Value(id, JSON.parse(row.problems), 1000 * 60 * 60, async (id) => {
-
-					const [data] = await sql.query<RowDataPacket[]>("SELECT problems FROM contests WHERE id = ?", [id]);
-
-					return JSON.parse(data[0].problems);
-
-				}, async (value, id) => {
-
-					await sql.query("UPDATE contests SET problems = ? WHERE id = ?;", [JSON.stringify(value), id]);
-
-				});
-
-				this.name = new Value(id, row.name, 1000 * 60 * 60, async (id) => {
-
-					const [data] = await sql.query<RowDataPacket[]>("SELECT name FROM contests WHERE id = ?", [id]);
-
-					return data[0].name;
-
-				}, async (value, id) => {
-
-					await sql.query("UPDATE contests SET name = ? WHERE id = ?;", [value, id]);
-
-				});
-
-				this.start = new Value(id, new Date(row.start), 1000 * 60 * 60, async (id) => {
-
-					const [data] = await sql.query<RowDataPacket[]>("SELECT start FROM contests WHERE id = ?", [id]);
-
-					return new Date(data[0].start);
-
-				}, async (value, id) => {
-
-					await sql.query("UPDATE contests SET start = ? WHERE id = ?;", [value, id]);
-
-				});
-
-				this.period = new Value(id, row.period, 1000 * 60 * 60, async (id) => {
-
-					const [data] = await sql.query<RowDataPacket[]>("SELECT period FROM contests WHERE id = ?", [id]);
-
-					return data[0].period;
-
-				}, async (value, id) => {
-
-					await sql.query("UPDATE contests SET period = ? WHERE id = ?;", [value, id]);
-
-				});
-
-				this.penalty = new Value(id, row.penalty, 1000 * 60 * 60, async (id) => {
-
-					const [data] = await sql.query<RowDataPacket[]>("SELECT penalty FROM contests WHERE id = ?", [id]);
-
-					return data[0].penalty;
-
-				}, async (value, id) => {
-
-					await sql.query("UPDATE contests SET penalty = ? WHERE id = ?;", [value, id]);
-
-				});
-
-				this.public = new Value(id, row.isPublic, 1000 * 60 * 60, async (id) => {
-
-					const [data] = await sql.query<RowDataPacket[]>("SELECT public FROM contests WHERE id = ?", [id]);
-
-					return data[0].public;
-
-				}, async (value, id) => {
-
-					await sql.query("UPDATE contests SET public = ? WHERE id = ?;", [value, id]);
-
-				});
-
-				this.rated = new Value(id, row.rated, 1000 * 60 * 60, async (id) => {
-
-					const [data] = await sql.query<RowDataPacket[]>("SELECT rated FROM contests WHERE id = ?", [id]);
-
-					return data[0].rated;
-
-				}, async (value, id) => {
-
-					await sql.query("UPDATE contests SET rated = ? WHERE id = ?;", [value, id]);
-
-				});
-
-				this.rated_users = new Value(id, JSON.parse(row.rated_users), 0, async (id) => {
-
-					const [data] = await sql.query<RowDataPacket[]>("SELECT rated_users FROM contests WHERE id = ?", [id]);
-
-					return JSON.parse(data[0].rated_users);
-
-				}, async (value, id) => {
-
-					await sql.query("UPDATE contests SET rated_users = ? WHERE id = ?;", [JSON.stringify(value), id]);
-
-				});
-
-				this.unrated_users = new Value(id, JSON.parse(row.unrated_users), 0, async (id) => {
-
-					const [data] = await sql.query<RowDataPacket[]>("SELECT unrated_users FROM contests WHERE id = ?", [id]);
-
-					return JSON.parse(data[0].unrated_users);
-
-				}, async (value, id) => {
-
-					await sql.query("UPDATE contests SET unrated_users = ? WHERE id = ?;", [JSON.stringify(value), id]);
-
-				});
-
-				this.description = new Value(id, row.description, 1000 * 60 * 60, async (id) => {
-
-					const [data] = await sql.query<RowDataPacket[]>("SELECT description FROM contests WHERE id = ?", [id]);
-
-					return data[0].description;
-
-				}, async (value, id) => {
-
-					await sql.query("UPDATE contests SET description = ? WHERE id = ?;", [value, id]);
-
-				});
-
-				this.valid = true;
-
-			} else {
-
-				this.valid = false;
-
-			}
-
-		});
+		this.id = id;
+
+		this.owner = await makeRawSQLValue(id, "contests", "owner");
+		this.editors = await makeObjectSQLValue(id, "contests", "editors");
+		this.testers = await makeObjectSQLValue(id, "contests", "testers");
+		this.problems = await makeObjectSQLValue(id, "contests", "problems");
+		this.name = await makeRawSQLValue(id, "contests", "name");
+		this.start = await makeDateSQLValue(id, "contests", "start");
+		this.period = await makeRawSQLValue(id, "contests", "period");
+		this.penalty = await makeRawSQLValue(id, "contests", "penalty");
+		this.public = await makeRawSQLValue(id, "contests", "public");
+		this.rated = await makeRawSQLValue(id, "contests", "rated");
+		this.rated_users = await makeObjectSQLValue(id, "contests", "rated_users");
+		this.unrated_users = await makeObjectSQLValue(id, "contests", "unrated_users");
+		this.description = await makeRawSQLValue(id, "contests", "description");
+		this.tasks = await makeObjectSQLValue(id, "contests", "problems");
+
+		this.valid = true;
 
 	};
 
@@ -291,5 +139,25 @@ export async function getPublicContests() {
 export async function deleteCache(id: string) {
 
 	delete cache[id];
+
+}
+
+export async function getAllContests() {
+
+	return sql.query("SELECT id FROM contests;").then((data) => {
+
+		return (data[0] as RowDataPacket[]).map((row) => row.id);
+
+	});
+
+}
+
+export async function getManagaedContests(id: string) {
+
+	return sql.query("SELECT id FROM contests WHERE public = 1 OR LOCATE(?, editors) > 0 OR LOCATE(?, testers) > 0;", [`"${id}"`, `"${id}"`]).then((data) => {
+
+		return Promise.all((data[0] as RowDataPacket[]).map((row) => getContest(row.id)));
+
+	});
 
 }
