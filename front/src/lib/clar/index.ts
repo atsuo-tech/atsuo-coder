@@ -1,7 +1,7 @@
 import { sql } from "@/app/sql";
 import { RowDataPacket } from "mysql2";
 import Value from "@/lib/value";
-import makeSQLValue from "../value/mysql";
+import { makeDateSQLValue, makeRawSQLValue } from "../value/mysql";
 
 const cache: { [id: string]: Clar } = {};
 
@@ -16,6 +16,7 @@ export class Clar {
 	public question: Value<string, string> | null = null;
 	public answer: Value<string | null, string> | null = null;
 	public written_by: Value<string | null, string> | null = null;
+	public public: Value<boolean, string> | null = null;
 
 	private loader: Promise<void> | null = null;
 
@@ -33,13 +34,16 @@ export class Clar {
 
 	private async load(id: string) {
 
-		this.contest = await makeSQLValue(id, "clar", "contest");
-		this.task = await makeSQLValue(id, "clar", "task");
-		this.user = await makeSQLValue(id, "clar", "user");
-		this.created_at = await makeSQLValue(id, "clar", "created_at");
-		this.question = await makeSQLValue(id, "clar", "question");
-		this.answer = await makeSQLValue(id, "clar", "answer");
-		this.written_by = await makeSQLValue(id, "clar", "written_by");
+		this.id = id;
+
+		this.contest = await makeRawSQLValue(id, "clar", "contest");
+		this.task = await makeRawSQLValue(id, "clar", "task");
+		this.user = await makeRawSQLValue(id, "clar", "user");
+		this.created_at = await makeDateSQLValue(id, "clar", "created_at");
+		this.question = await makeRawSQLValue(id, "clar", "question");
+		this.answer = await makeRawSQLValue(id, "clar", "answer");
+		this.written_by = await makeRawSQLValue(id, "clar", "written_by");
+		this.public = await makeRawSQLValue(id, "clar", "public");
 
 		this.valid = true;
 
@@ -114,6 +118,6 @@ export async function getContestClars(contest: string) {
 
 	const [data] = await sql.query<RowDataPacket[]>("SELECT id FROM clar WHERE contest = ?", [contest]);
 
-	return Promise.all(data.map((row) => getClar(row.id)));
+	return Promise.all(data.map((row) => getClar(row.id) as Promise<Clar>));
 
 }

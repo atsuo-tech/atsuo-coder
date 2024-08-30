@@ -6,7 +6,7 @@ import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
 import Markdown from "@/components/markdown";
 import Editor, { languages } from "@/components/ace-editor";
-import Language from "@/lib/language";
+import Language from "@/lib/languages";
 import { RowDataPacket } from "mysql2";
 
 export default async function Page(params: { params: { [key: string]: string } }) {

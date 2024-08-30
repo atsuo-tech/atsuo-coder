@@ -1,5 +1,5 @@
 import getContest, { Contest, getPublicContests } from "@/lib/contest";
-import Language from "@/lib/language";
+import Language from "@/lib/languages";
 import getUser from "@/lib/user";
 import { ReactNode } from "react";
 

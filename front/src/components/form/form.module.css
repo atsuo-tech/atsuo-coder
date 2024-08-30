@@ -37,3 +37,7 @@
 .body1 form * {
 	width: calc(100% - 1rem);
 }
+
+.body1 form input[type="checkbox"] {
+	width: initial;
+}

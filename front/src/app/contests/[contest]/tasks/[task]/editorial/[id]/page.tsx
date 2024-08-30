@@ -3,7 +3,7 @@ import getProblem from "@/lib/problem"
 import { notFound } from "next/navigation";
 import fs from "fs";
 import Markdown from "@/components/markdown";
-import Language from "@/lib/language";
+import Language from "@/lib/languages";
 import getUser from "@/lib/user";
 
 export default async function Editorial({

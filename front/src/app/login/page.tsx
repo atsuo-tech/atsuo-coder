@@ -1,4 +1,4 @@
-import Language from "@/lib/language";
+import Language from "@/lib/languages";
 import { Form } from "./actions";
 import getUser from "@/lib/user";
 

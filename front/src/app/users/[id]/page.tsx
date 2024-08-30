@@ -1,4 +1,4 @@
-import Language from "@/lib/language";
+import Language from "@/lib/languages";
 import getUser from "@/lib/user";
 import Link from "next/link";
 import { notFound } from "next/navigation";

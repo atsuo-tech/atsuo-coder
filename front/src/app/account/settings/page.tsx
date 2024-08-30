@@ -2,7 +2,7 @@ import styles from "../form.module.css";
 import { notFound } from "next/navigation";
 import getUser from "@/lib/user";
 import Form from "@/components/form";
-import Language from "@/lib/language";
+import Language from "@/lib/languages";
 
 export default async function Page({ searchParams }: { searchParams: { error: string } }) {
 

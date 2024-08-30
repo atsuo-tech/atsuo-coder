@@ -18,8 +18,6 @@ export class SQLValue<T> extends Value<T, string> {
 
 				if (typeof defaultValue == "object") {
 
-					console.log(defaultValue);
-
 					return JSON.parse(rows[0][0][col]);
 
 				}
@@ -30,11 +28,27 @@ export class SQLValue<T> extends Value<T, string> {
 
 		}, async (value, id) => {
 
-			await sql.query(`UPDATE ${table} SET ${col} = ? WHERE id = ?`, [JSON.stringify(value), id]);
+			await sql.query(`UPDATE ${table} SET ${col} = ? WHERE id = ?`, [this.type == "raw" ? value : this.type == "date" ? (value as Date).getTime() : JSON.stringify(value), id]);
 
 		});
 
+		if (typeof defaultValue == "object") {
+
+			this.type = "object";
+
+		} else if (defaultValue instanceof Date) {
+
+			this.type = "date";
+
+		} else {
+
+			this.type = "raw";
+
+		}
+
 	}
+
+	private type: "raw" | "object" | "date";
 
 }
 

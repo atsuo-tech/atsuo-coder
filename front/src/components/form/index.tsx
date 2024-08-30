@@ -8,7 +8,7 @@ export default function Form(
 		method
 	}: {
 		children: React.ReactNode,
-		action: any,
+		action: string | ((formData: FormData) => void) | undefined,
 		method?: "get" | "post"
 	}) {
 

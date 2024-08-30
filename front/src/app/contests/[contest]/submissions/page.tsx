@@ -5,7 +5,7 @@ import { notFound, redirect } from "next/navigation";
 import getUser, { Permissions } from "@/lib/user";
 import getContest, { Contest } from "@/lib/contest";
 import { hasContestAdminPermission } from "@/lib/accounts/permission";
-import Language from "@/lib/language";
+import Language from "@/lib/languages";
 import getProblem from "@/lib/problem";
 
 export default async function Page({ params, searchParams }: { params: { [key: string]: string }, searchParams: { me?: '' } }) {
