@@ -1,6 +1,6 @@
 import styles from "./signup.module.css"
 import { Form } from "./actions";
-import Language from "@/lib/language";
+import Language from "@/lib/languages";
 
 export default async function Signup() {
 	

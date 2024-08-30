@@ -1,6 +1,6 @@
 import { sql } from "@/app/sql";
 import { User, getUsers } from "../contests/[contest]/tasks/@component/users";
-import Language from "@/lib/language";
+import Language from "@/lib/languages";
 
 export default async function Page() {
 

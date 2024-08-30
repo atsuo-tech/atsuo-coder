@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getTasks } from "./@component/contests";
 import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
-import Language from "@/lib/language";
+import Language from "@/lib/languages";
 
 export default async function Page(p: { params: { contest: string } }) {
 

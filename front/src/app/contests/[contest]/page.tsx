@@ -3,7 +3,7 @@ import styles from "./page.module.css";
 import Markdown from "@/components/markdown";
 import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
-import Language from "@/lib/language";
+import Language from "@/lib/languages";
 
 export default async function Page(p: { params: { contest: string } }) {
 

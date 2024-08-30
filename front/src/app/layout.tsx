@@ -6,7 +6,7 @@ import React from 'react';
 import { Permissions } from '@/lib/user'
 import getUser from '@/lib/user'
 import { SiteHeader, SecondHeader, Header1Button, Header2Button, HeaderUserName, HeaderUserButton, ThirdHeader, Header3Button, FourthHeader, ContestTitle } from '../components/styled-components';
-import Language from '@/lib/language';
+import Language from '@/lib/languages';
 import Image from 'next/image';
 
 export const metadata: Metadata = {

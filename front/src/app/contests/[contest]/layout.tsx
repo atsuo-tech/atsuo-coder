@@ -8,7 +8,7 @@ import getContest from "@/lib/contest";
 import { notFound } from "next/navigation";
 
 import { SiteHeader, SecondHeader, Header1Button, Header2Button, HeaderUserName, HeaderUserButton, ThirdHeader, Header3Button, FourthHeader, ContestTitle } from '../../../components/styled-components';
-import Language from "@/lib/language";
+import Language from "@/lib/languages";
 import MobileMenu from "./menu";
 
 export default async function RootLayout({
@@ -102,6 +102,12 @@ export default async function RootLayout({
 						</Header3Button> :
 						<></>
 				}
+				<Header3Button>
+					<a href={`/contests/${params.contest}/clar`}>
+						<span className={styles["material-icons"]}>forum</span>
+						<p><Language>clar</Language></p>
+					</a>
+				</Header3Button>
 			</ThirdHeader>
 
 			<MobileMenu problems={permissionAllowedTask} standings={true} submissions={permissionAllowedTask} contestUrl={`/contests/${params.contest}`} />

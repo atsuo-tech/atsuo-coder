@@ -19,7 +19,7 @@ export default function Editor(
 		value,
 	}
 		: {
-			language: "c_cpp" | "java" | "python" | "javascript" | "assembly_x86",
+			language: (typeof ace_languages)[keyof typeof ace_languages],
 			onLoad?: ((editor: Ace.Editor) => void) | undefined,
 			readonly?: boolean | undefined,
 			value?: string | undefined,
@@ -39,3 +39,14 @@ export default function Editor(
 	)
 
 }
+
+const ace_languages = {
+
+	"cpp23": "c_cpp",
+	"python2": "python",
+	"python3": "python",
+	"nasm": "assembly_x86",
+
+} as const;
+
+export const languages = ace_languages as { [key: string]: (typeof ace_languages)[keyof typeof ace_languages] };

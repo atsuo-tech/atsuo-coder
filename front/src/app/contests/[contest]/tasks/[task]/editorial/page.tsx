@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import fs from "fs";
 import getUser from "@/lib/user";
-import Language from "@/lib/language";
+import Language from "@/lib/languages";
 
 export default async function Editorial({
 	params: { contest: contest_id, task: id }

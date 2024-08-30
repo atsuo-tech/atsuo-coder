@@ -5,8 +5,8 @@ import getProblem from "@/lib/problem";
 import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
 import Markdown from "@/components/markdown";
-import Editor from "@/components/ace-editor";
-import Language from "@/lib/language";
+import Editor, { languages } from "@/components/ace-editor";
+import Language from "@/lib/languages";
 import { RowDataPacket } from "mysql2";
 
 export default async function Page(params: { params: { [key: string]: string } }) {
@@ -93,13 +93,7 @@ export default async function Page(params: { params: { [key: string]: string } }
 					}
 				</h2>
 				<Editor
-					language={
-						{
-							"cpp23": "c_cpp",
-							"python2": "python",
-							"python3": "python"
-						}[language as "cpp23" | "python2" | "python3"] as "c_cpp" | "python"
-					}
+					language={languages[language]}
 					readonly
 					value={sourceCode}
 				/>

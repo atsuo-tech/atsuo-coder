@@ -10,7 +10,7 @@ import Markdown from "@/components/markdown";
 import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
 import Link from "next/link";
-import Language from "@/lib/language";
+import Language from "@/lib/languages";
 import Form from "./form";
 
 export default async function Page(p: { params: { contest: string, task: string } }) {
