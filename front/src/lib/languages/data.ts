@@ -41,6 +41,7 @@ const data: language_data = {
 		standings: "順位表",
 		submissions: "提出",
 		submission: "提出",
+		clar: "質問",
 		// Tasks
 		task_name: "問題名",
 		perfect_score: "最大得点",

@@ -27,6 +27,7 @@ export default async function Answer({ params: { contest: contest_id, id } }: { 
 
 		clar!!.answer!!.set(data.get("answer") as string);
 		clar!!.written_by!!.set(user!!);
+		clar!!.public!!.set(data.get("public") == "true");
 
 		redirect(`/contests/${contest_id}/clar`);
 
@@ -44,6 +45,13 @@ export default async function Answer({ params: { contest: contest_id, id } }: { 
 				<textarea readOnly>{await clar.question?.get()}</textarea>
 
 				<textarea name="answer" defaultValue={await clar.answer!!.get() || ""} placeholder="回答"></textarea>
+
+				<select name="public" defaultValue={await clar.public!!.get() ? "true" : "false"}>
+
+					<option value="true" disabled={!(await clar.public!!.get())}>公開</option>
+					<option value="false">非公開</option>
+
+				</select>
 
 				<input type="submit" value="送信" />
 

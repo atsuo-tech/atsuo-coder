@@ -5,7 +5,8 @@ import getProblem from "@/lib/problem";
 import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
 import Markdown from "@/components/markdown";
-import Editor, { languages } from "@/components/ace-editor";
+import Editor from "@/components/ace-editor";
+import languages from "@/components/ace-editor/languages";
 import Language from "@/lib/languages";
 import { RowDataPacket } from "mysql2";
 

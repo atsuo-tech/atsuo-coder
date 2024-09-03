@@ -1,6 +1,7 @@
 "use client";
 
-import Editor, { languages } from "@/components/ace-editor";
+import Editor from "@/components/ace-editor";
+import languages from "@/components/ace-editor/languages";
 import { Ace } from "ace-builds";
 import style from "./form.module.scss";
 
