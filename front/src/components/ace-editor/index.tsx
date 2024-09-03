@@ -10,6 +10,7 @@ import 'brace/theme/chrome';
 import React from 'react';
 import style from './editor.module.css';
 import { Ace } from "ace-builds";
+import languages from "./languages";
 
 export default function Editor(
 	{
@@ -19,7 +20,7 @@ export default function Editor(
 		value,
 	}
 		: {
-			language: (typeof ace_languages)[keyof typeof ace_languages],
+			language: (typeof languages)[keyof typeof languages],
 			onLoad?: ((editor: Ace.Editor) => void) | undefined,
 			readonly?: boolean | undefined,
 			value?: string | undefined,
@@ -39,14 +40,3 @@ export default function Editor(
 	)
 
 }
-
-const ace_languages = {
-
-	"cpp23": "c_cpp",
-	"python2": "python",
-	"python3": "python",
-	"nasm": "assembly_x86",
-
-} as const;
-
-export const languages = ace_languages as { [key: string]: (typeof ace_languages)[keyof typeof ace_languages] };
