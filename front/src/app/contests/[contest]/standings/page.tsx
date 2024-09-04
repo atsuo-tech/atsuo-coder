@@ -6,6 +6,7 @@ import getUser from "@/lib/user";
 import getContest from "@/lib/contest";
 import { ReactNode } from "react";
 import getProblem from "@/lib/problem";
+import User from "@/components/user";
 
 export default async function Page({ params: { contest: contestId } }: { params: { contest: string } }) {
 
@@ -142,7 +143,7 @@ export default async function Page({ params: { contest: contestId } }: { params:
 									nodes.push(
 										<tr key={i} className={styles.tabler}>
 											<td>{i + 1}</td>
-											<td className={styles.user}><p className={!user.rating || user.rating == 0 ? undefined : `rating${Math.min(7, Math.floor(user.rating / 400))}`}>{user.user}</p></td>
+											<td className={styles.user}><User>{user.user}</User></td>
 											<td className={styles.score_column}>
 												{(scores[user.user]?.score == 0) ?
 													<p className={styles.passage}> - </p> :
