@@ -125,9 +125,9 @@ front.prepare().then(async () => {
 	app.use("/signup", async (req, res, next) => {
 
 		if (process.env.NODE_ENV == "production") {
-			const status = await fetch("https://verify.w-pcp.net/verify?token=" + req.cookies.di_token).then((res) => res.status)
+			const status = await fetch("https://verify.w-pcp.dev/verify?token=" + req.cookies.di_token).then((res) => res.status)
 			if (status != 200) {
-				res.redirect("https://discord.com/oauth2/authorize?client_id=1251095772288778251&response_type=code&redirect_uri=https%3A%2F%2Fverify.w-pcp.net&scope=guilds");
+				res.redirect("https://discord.com/oauth2/authorize?client_id=1251095772288778251&response_type=code&redirect_uri=https%3A%2F%2Fverify.w-pcp.dev&scope=guilds");
 				return;
 			}
 		}

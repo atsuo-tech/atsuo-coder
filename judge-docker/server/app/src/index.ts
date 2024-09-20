@@ -148,6 +148,10 @@ import { cpSync } from "fs";
 
 				}
 
+			} else if (json.language == "python2") {
+
+				
+
 			}
 
 		} else if (method == 'request') {
