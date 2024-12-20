@@ -7,7 +7,7 @@ export default async function Page() {
 
 	const user = await getUser();
 
-	const contests = await getManagaedContests(user?.getID()!!);
+	const contests = await getManagaedContests(user?.getID()!!, false);
 
 	return (
 		<>

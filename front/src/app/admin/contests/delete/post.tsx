@@ -2,12 +2,14 @@ import Form from "@/components/form";
 import styles from "../form.module.css";
 import getContest from "@/lib/contest";
 import { notFound } from "next/navigation";
+import getUser from "@/lib/user";
 
 export default async function PostDeleteContest(id: string) {
 
+	const user = await getUser();
 	const contest = await getContest(id);
 
-	if (!contest) {
+	if (!contest || !user || !(await contest.editors!!.get()).includes(user.getID()!!)) {
 
 		notFound();
 

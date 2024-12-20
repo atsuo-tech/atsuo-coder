@@ -3,12 +3,14 @@ import styles from "../form.module.css";
 import getContest from "@/lib/contest";
 import { notFound } from "next/navigation";
 import Warning from "@/components/form/warnings";
+import getUser from "@/lib/user";
 
 export default async function PostEditContest(id: string) {
 
+	const user = await getUser();
 	const contest = await getContest(id);
 
-	if (!contest) {
+	if (!contest || !user || !(await contest.editors!!.get()).includes(user.getID()!!)) {
 
 		notFound();
 

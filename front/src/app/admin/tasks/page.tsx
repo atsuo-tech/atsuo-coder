@@ -38,66 +38,68 @@ export default async function Page() {
 				}
 
 				{
-					contests.map(async (contest_id, i) => {
-						const contest = await getContest(contest_id) as Contest;
-						const tasks = await contest.tasks!!.get()!!;
-						let found = false;
-						const tasksHTML = (
-							<table>
+					await Promise.all(
+						contests.map(async (contest_id, i) => {
+							const contest = await getContest(contest_id) as Contest;
+							const tasks = await contest.tasks!!.get()!!;
+							let found = false;
+							const tasksHTML = (
+								<table>
 
-								<thead>
+									<thead>
 
-									<tr>
+										<tr>
 
-										<th>ID</th>
-										<th>名前</th>
-										<th>編集者</th>
-										<th>テスター</th>
-										<th>操作</th>
+											<th>ID</th>
+											<th>名前</th>
+											<th>編集者</th>
+											<th>テスター</th>
+											<th>操作</th>
 
-									</tr>
+										</tr>
 
-								</thead>
+									</thead>
 
-								<tbody>
-									{
-										await Promise.all(
-											tasks.map((id, i) => {
-												const task = datas[id];
-												if (!task) return <></>;
-												found = true;
-												return (
-													<tr key={i}>
-														<td>{task.id}</td>
-														<td>{task.name}</td>
-														<td>{task.editors.join(", ")}</td>
-														<td>{task.testers.join(", ")}</td>
-														<td>
-															<Link href={`/admin/tasks/edit/${task.id}`}>
-																<span className="material-icons">edit</span>
-															</Link>
-															<Link href={`/admin/tasks/delete/${task.id}`}>
-																<span className="material-icons">delete</span>
-															</Link>
-														</td>
-													</tr>
-												)
-											})
-										)
-									}
-								</tbody>
-							</table>
+									<tbody>
+										{
+											await Promise.all(
+												tasks.map((id, i) => {
+													const task = datas[id];
+													if (!task) return <></>;
+													found = true;
+													return (
+														<tr key={i}>
+															<td>{task.id}</td>
+															<td>{task.name}</td>
+															<td>{task.editors.join(", ")}</td>
+															<td>{task.testers.join(", ")}</td>
+															<td>
+																<Link href={`/admin/tasks/edit/${task.id}`}>
+																	<span className="material-icons">edit</span>
+																</Link>
+																<Link href={`/admin/tasks/delete/${task.id}`}>
+																	<span className="material-icons">delete</span>
+																</Link>
+															</td>
+														</tr>
+													)
+												})
+											)
+										}
+									</tbody>
+								</table>
 
-						);
+							);
 
-						if (!found) return <></>;
-						return (
-							<div key={i}>
-								<h2>{await contest.name?.get()} ({contest_id})</h2>
-								{tasksHTML}
-							</div>
-						)
-					})
+							if (!found) return <></>;
+							return (
+								<div key={i}>
+									<h2>{await contest.name?.get()} ({contest_id})</h2>
+									{tasksHTML}
+								</div>
+							)
+						})
+					)
 				}
 
 			</div>
