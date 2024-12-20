@@ -92,6 +92,8 @@ div.headers {
 		text-align: center;
 		position: fixed;
 		display: block;
+		width: initial;
+		height: initial;
 
 	}
 
