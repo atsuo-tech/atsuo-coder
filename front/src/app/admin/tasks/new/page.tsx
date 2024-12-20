@@ -17,9 +17,7 @@ export default async function Page() {
 				<input name="id" id="id" type="text" autoComplete="on" placeholder="aac001_a" required />
 				<br />
 				<Warning>
-					<ul>
-						<li> Warning: Do not include <a href="/reserved.json"><u>reserved strings</u></a>.</li>
-					</ul>
+					警告：<a href="/reserved.json"><u>予約語</u></a>は含めないでください。
 				</Warning>
 				<label htmlFor="editors">Editors</label>
 				<br />

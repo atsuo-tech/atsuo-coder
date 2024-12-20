@@ -44,14 +44,14 @@ export default async function PostEditTask({ params: { id }, searchParams: { don
 				<input name="editors" id="editors" type="text" required placeholder="yama_can, abn48" defaultValue={(await task.editors!!.get()).join(', ')} />
 				<br />
 				<Warning>
-					Warning: we will not warn if this field includes invalid username.
+					注意：無効なユーザ名が含まれていても、このフィールドに警告は表示されません。
 				</Warning>
 				<label htmlFor="testers">Testers</label>
 				<br />
 				<input name="testers" id="testers" type="text" required placeholder="yama_can, abn48" defaultValue={(await task.testers!!.get()).join(', ')} />
 				<br />
 				<Warning>
-					Warning: we will not warn if this field includes invalid username.
+					注意：無効なユーザ名が含まれていても、このフィールドに警告は表示されません。
 				</Warning>
 				<label htmlFor="question">Question</label>
 				<br />

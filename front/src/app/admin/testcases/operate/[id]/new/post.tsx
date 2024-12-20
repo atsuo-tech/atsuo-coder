@@ -40,9 +40,7 @@ export default async function PostNewTestcase(id: string) {
 				<input name="id" id="id" type="text" autoComplete="on" placeholder="test_a" required />
 				<br />
 				<Warning>
-					<ul>
-						<li> Warning: Do not include <a href="/reserved.json"><u>reserved strings</u></a>.</li>
-					</ul>
+					警告：<a href="/reserved.json"><u>予約語</u></a>は含めないでください。
 				</Warning>
 				<br />
 				<label htmlFor="score">Score</label>
