@@ -55,9 +55,7 @@ export default async function PostEditContest(id: string) {
 				<input name="problems" id="problems" type="text" required placeholder="aac001_a, aac001_b, aac001_c ... , aac001_f" defaultValue={(await contest.problems!!.get()).join(', ')} />
 				<br />
 				<Warning>
-					<ul>
-						<li> Warning: we will not warn if this field includes invalid problem ID.</li>
-					</ul>
+					注意：無効な問題IDが含まれていても、このフィールドに警告は表示されません。
 				</Warning>
 				<br />
 				<label htmlFor="editors">Editors</label>
@@ -65,9 +63,7 @@ export default async function PostEditContest(id: string) {
 				<input name="editors" id="editors" type="text" required placeholder="yama_can, abn48" defaultValue={(await contest.editors!!.get()).join(', ')} />
 				<br />
 				<Warning>
-					<ul>
-						<li> Warning: we will not warn if this field includes invalid username.</li>
-					</ul>
+					注意：無効なユーザ名が含まれていても、このフィールドに警告は表示されません。
 				</Warning>
 				<br />
 				<label htmlFor="testers">Testers</label>
@@ -75,9 +71,7 @@ export default async function PostEditContest(id: string) {
 				<input name="testers" id="testers" type="text" required placeholder="yama_can, abn48" defaultValue={(await contest.testers!!.get()).join(', ')} />
 				<br />
 				<Warning>
-					<ul>
-						<li> Warning: we will not warn if this field includes invalid username.</li>
-					</ul>
+					注意：無効なユーザ名が含まれていても、このフィールドに警告は表示されません。
 				</Warning>
 				<br />
 				<label htmlFor="description">Description</label>
