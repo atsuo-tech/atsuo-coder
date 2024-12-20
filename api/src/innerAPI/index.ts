@@ -11,6 +11,8 @@ export default async function getInnerAPI(judgeServer: Server, loadTestcases: (i
 
 		judgeServer.loadTask(req.params.task);
 
+		res.end("OK");
+
 	});
 
 	return innerAPI;

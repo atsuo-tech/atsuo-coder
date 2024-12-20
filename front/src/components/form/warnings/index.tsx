@@ -12,7 +12,9 @@ export default function Warning(
 
 		<label className={style.warning}>
 
-			{children}
+			<div className={style.display}>
+				{children}
+			</div>
 
 		</label>
 

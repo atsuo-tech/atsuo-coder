@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import fs from "fs";
 import { hasProblemAdminPermission } from "../../../../../lib/accounts/permission";
 import getProblem from "@/lib/problem";
-import { sql } from "@/app/sql";
+import http from "http";
 import getUser from "@/lib/user";
 import { notFound } from "next/navigation";
 
@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
 	const user = await getUser();
 
-	if(!user) {
+	if (!user) {
 
 		notFound();
 
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
 
 	const task = await getProblem(data.get("task_id") as string);
 
-	if(!task) {
+	if (!task) {
 
 		notFound();
 
@@ -44,6 +44,8 @@ export async function POST(req: NextRequest) {
 
 	fs.rmSync(`./static/testcases/${data.get("task_id")}/${data.get("id")}`, { recursive: true });
 
-	return new Response("301", { status: 301, headers: { location: `/admin/testcases` } });
+	await new Promise<void>(resolve => http.get(`http://localhost:9834/testcases/${data.get("task_id")}/reload`, (res) => { resolve() }));
+
+	return new Response("301", { status: 301, headers: { location: `/admin/testcases/operate/${data.get("task_id")}` } });
 
 }

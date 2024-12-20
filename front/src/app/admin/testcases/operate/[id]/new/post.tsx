@@ -2,10 +2,10 @@ import styles from "../form.module.css";
 import getProblem from "@/lib/problem";
 import { sql } from "@/app/sql";
 import { notFound } from "next/navigation";
-import { hasProblemAdminPermission } from "../../../../lib/accounts/permission";
 import getUser from "@/lib/user";
 import Form from "@/components/form";
 import Warning from "@/components/form/warnings";
+import { hasProblemAdminPermission } from "@/lib/accounts/permission";
 
 export default async function PostNewTestcase(id: string) {
 

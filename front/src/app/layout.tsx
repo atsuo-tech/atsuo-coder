@@ -1,5 +1,5 @@
 import './globals.css'
-import styles from './page.module.css'
+import styles from './layout.module.scss'
 import headerStyles from "./header.module.css"
 import type { Metadata } from 'next'
 import React from 'react';

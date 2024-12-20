@@ -1,19 +1,24 @@
 .warning {
-	color: white;
-	background-color: orangered;
-	margin: 0;
-	display: block;
-	height: 0;
-	transition: all 0.6s ease;
+  color: white;
+  background-color: orangered;
+  margin: 0;
+  display: block;
+  transition: all 0.6s ease;
+  padding: 1em;
+  border-radius: 1em;
 }
 
 .warning ul {
-	list-style: none;
+  list-style: none;
 }
 
 .warning.show {
-	border-radius: 5px;
-	padding: 5px 0;
-	padding-left: 10px;
-	height: initial;
+  border-radius: 5px;
+  padding: 5px 0;
+  padding-left: 10px;
+  height: initial;
+}
+
+.warning .display * {
+  display: inline;
 }
