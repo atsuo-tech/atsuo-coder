@@ -152,9 +152,9 @@ export async function getAllContests() {
 
 }
 
-export async function getManagaedContests(id: string) {
+export async function getManagaedContests(id: string, includePublic: boolean = true) {
 
-	return sql.query("SELECT id FROM contests WHERE public = 1 OR LOCATE(?, editors) > 0 OR LOCATE(?, testers) > 0;", [`"${id}"`, `"${id}"`]).then((data) => {
+	return sql.query(`SELECT id FROM contests WHERE ${includePublic ? "public = 1 OR" : ""} LOCATE(?, editors) > 0 OR LOCATE(?, testers) > 0;`, [`"${id}"`, `"${id}"`]).then((data) => {
 
 		return Promise.all((data[0] as RowDataPacket[]).map((row) => getContest(row.id)));
 

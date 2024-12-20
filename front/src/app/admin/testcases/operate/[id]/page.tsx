@@ -9,7 +9,7 @@ export default async function Operate({ params: { id } }: { params: { id: string
 	const user = await getUser()!!;
 	const task = await getProblem(id);
 
-	if (!task || !user || (!hasAdminPremission() && !hasProblemAdminPermission() && !(await task.editors!!.get()).includes(user.getID()!!))) {
+	if (!task || !user || (!await hasAdminPremission() && !await hasProblemAdminPermission() && !(await task.editors!!.get()).includes(user.getID()!!))) {
 
 		notFound();
 

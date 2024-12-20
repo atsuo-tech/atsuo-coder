@@ -1,8 +1,16 @@
 import Form from "@/components/form";
 import styles from "../form.module.css";
 import Warning from "@/components/form/warnings";
+import { hasProblemMakerPermission } from "@/lib/accounts/permission";
+import { notFound } from "next/navigation";
 
 export default async function Page() {
+
+	if(!await hasProblemMakerPermission()) {
+		
+		notFound();
+
+	}
 
 	return (
 		<>
