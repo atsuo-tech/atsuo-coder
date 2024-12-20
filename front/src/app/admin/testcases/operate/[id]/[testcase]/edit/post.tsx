@@ -1,13 +1,11 @@
-import styles from "../form.module.css";
 import getProblems from "@/lib/problem";
-import { sql } from "@/app/sql";
 import fs from "fs";
 import { notFound } from "next/navigation";
-import { hasProblemAdminPermission } from "../../../../lib/accounts/permission";
 import getUser from "@/lib/user";
 import Form from "@/components/form";
+import { hasProblemAdminPermission } from "@/lib/accounts/permission";
 
-export default async function PostEditTestcase(id: string, task_id: string) {
+export default async function PostEditTestcase(task_id: string, id: string) {
 
 	const task = await getProblems(task_id);
 

@@ -50,6 +50,6 @@ export async function POST(req: NextRequest) {
 
 	await new Promise<void>(resolve => http.get(`http://localhost:9834/testcases/${data.get("task_id")}/reload`, (res) => { resolve() }));
 
-	return new Response("301", { status: 301, headers: { location: `/admin/testcases` } });
+	return new Response("301", { status: 301, headers: { location: `/admin/testcases/operate/${data.get("task_id")}` } });
 
 }
