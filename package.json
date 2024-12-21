@@ -14,7 +14,7 @@
 		"install:develop": "npm run install:typescript && npm run install:mysql && npm run install:redis",
 		"init:mysql": "chmod 777 ./sql/init.sh && ./sql/init.sh"
 	},
-	"author": "Yama.can<yama.can95@gmail.com>",
+	"author": "Waseda PC Programming Club",
 	"license": "ISC",
 	"dependencies": {
 		"react-router-dom": "^6.22.3",
