@@ -304,3 +304,69 @@ ol li {
   margin-top: 0 !important;
   margin-bottom: 0 !important;
 }
+
+pre.hljs {
+
+  border-radius: .8rem;
+  background: #f8f8f8;
+  border: 1px solid #aaa;
+  padding: .3rem;
+  font-size: .9rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  width: 100%;
+
+  * {
+
+    font-family: var(--font-consola);
+
+  }
+
+  &:hover {
+
+    border: 1px solid blue;
+
+  }
+
+  .hljs-comment {
+
+    font-style: normal;
+
+  }
+
+}
+
+pre.show-row {
+
+  counter-reset: rowNumber;
+
+  span.row-number {
+    counter-increment: rowNumber;
+    margin-right: .5rem;
+  }
+
+  span.row-number::before {
+    text-align: right;
+    content: counter(rowNumber);
+    width: 2rem;
+    font-weight: 400;
+    display: inline-block;
+    color: #aaa;
+    border-right: 1px solid blue;
+    padding-right: .5rem;
+    margin-right: 1rem;
+  }
+
+}
+
+span.katex {
+
+  color: #000;
+
+}
+
+svg.auto-width {
+
+  width: 100%;
+
+}

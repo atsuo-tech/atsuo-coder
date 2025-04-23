@@ -14,6 +14,41 @@ export const metadata: Metadata = {
 	description: 'Judge System for W-PCP',
 }
 
+import { Source_Code_Pro, Readex_Pro, Inter } from "next/font/google";
+import localFont from 'next/font/local'
+
+const sourceCodePro = Source_Code_Pro({
+	subsets: ["latin"],
+	variable: "--font-source-code-pro",
+	display: "swap",
+	weight: ["400", "500", "600", "700"],
+});
+
+const readexPro = Readex_Pro({
+	subsets: ["latin"],
+	variable: "--font-readex-pro",
+	display: "swap",
+	weight: ["400", "500", "600", "700"],
+});
+
+const inter = Inter({
+	subsets: ["latin"],
+	variable: "--font-inter",
+	display: "swap",
+	weight: ["400", "500", "600", "700"],
+});
+
+const consola = localFont({
+	src: [
+		{
+			path: "./fonts/consola.ttf",
+			weight: "400",
+			style: "normal",
+		}
+	],
+	variable: "--font-consola",
+})
+
 export default async function RootLayout({
 	children,
 }: {
@@ -30,8 +65,8 @@ export default async function RootLayout({
 				<link rel="icon" href="/logo.png" />
 				<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 			</head>
-			<body>
-				<div className={headerStyles.headers}>
+			<body className={readexPro.variable + " " + sourceCodePro.variable + " " + inter.className + " " + inter.variable + " " + consola.variable}>
+				<div className={headerStyles.headers + " " + styles.container}>
 					<SiteHeader>
 						<Image alt="AtsuoCoder" src="/AtsuoCoder_logo_2.svg" width={200} height={200} className={headerStyles.logo}></Image>
 						<div>
