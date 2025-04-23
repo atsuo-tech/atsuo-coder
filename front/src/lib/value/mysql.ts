@@ -32,13 +32,13 @@ export class SQLValue<T> extends Value<T, string> {
 
 		});
 
-		if (typeof defaultValue == "object") {
-
-			this.type = "object";
-
-		} else if (defaultValue instanceof Date) {
+		if (defaultValue instanceof Date) {
 
 			this.type = "date";
+
+		} else if(typeof defaultValue == "object") {
+
+			this.type = "object";
 
 		} else {
 
