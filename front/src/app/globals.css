@@ -254,6 +254,8 @@ textarea {
 
 ol li {
   list-style-type: decimal;
+  list-style-position: inside;
+  list-style: initial;
 }
 
 /* 1-400 */
