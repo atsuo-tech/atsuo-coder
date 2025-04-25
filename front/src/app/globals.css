@@ -235,10 +235,6 @@ input[type="submit"]:disabled {
   color: rgba(255, 255, 255, 0.3);
 }
 
-li {
-  list-style: none;
-}
-
 ::-webkit-scrollbar {
   display: none;
 }
