@@ -73,3 +73,16 @@ div.links a {
 	}
 
 }
+
+div.contest-time {
+
+	position: fixed;
+	bottom: 0;
+	right: 10px;
+	width: 200px;
+	height: 100px;
+	background-color: white;
+	border-radius: 10px;
+	padding: 1em;
+
+}

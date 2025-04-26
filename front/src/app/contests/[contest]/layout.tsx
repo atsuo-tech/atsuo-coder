@@ -45,11 +45,13 @@ export default async function RootLayout({
 		(await contestInfo.unrated_users!!.get()).includes(user.getID()!!)
 	);
 
+	const isPermanentContest = await contestInfo.period!!.get() == -1;
+
 	// コンテストが開始前か
 	const contestNotStarted = (await contestInfo.start!!.get()).getTime() > Date.now();
 
 	// コンテストが終了後か
-	const contestEnded = (await contestInfo.start!!.get()).getTime() + await contestInfo.period!!.get() < Date.now();
+	const contestEnded = !isPermanentContest && (await contestInfo.start!!.get()).getTime() + await contestInfo.period!!.get() < Date.now();
 
 	// コンテストが公開されているか
 	const contestPublic = await contestInfo.public!!.get();
@@ -111,8 +113,28 @@ export default async function RootLayout({
 			</ThirdHeader>
 
 			<MobileMenu problems={permissionAllowedTask} standings={true} submissions={permissionAllowedTask} contestUrl={`/contests/${params.contest}`} />
-			
+
 			{children}
+
+			{
+				contestRunning &&
+				<div className={styles["contest-time"]}>
+					{
+						!isPermanentContest ?
+							<div>
+								コンテスト終了まで
+								<span style={{ textAlign: "center" }}>
+									{Math.floor(((await contestInfo.start!!.get()).getTime() + await contestInfo.period!!.get() - Date.now()) / 1000 / 60 / 60)} 時間
+									{Math.floor((await contestInfo.start!!.get()).getTime() + await contestInfo.period!!.get() - Date.now()) / 1000 / 60 % 60}分
+									{Math.floor((await contestInfo.start!!.get()).getTime() + await contestInfo.period!!.get() - Date.now()) / 1000 % 60}秒
+								</span>
+							</div> :
+							<div>
+								常設コンテスト
+							</div>
+					}
+				</div>
+			}
 		</>
 	)
 }

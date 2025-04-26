@@ -28,7 +28,15 @@ export class SQLValue<T> extends Value<T, string> {
 
 		}, async (value, id) => {
 
-			await sql.query(`UPDATE ${table} SET ${col} = ? WHERE id = ?`, [this.type == "raw" ? value : this.type == "date" ? (value as Date).getTime() : JSON.stringify(value), id]);
+			if (this.type == "date") {
+
+				await sql.query(`UPDATE ${table} SET ${col} = FROM_UNIXTIME(?) WHERE id = ?`, [Math.floor((value as Date).getTime() / 1000), id]);
+
+			} else {
+
+				await sql.query(`UPDATE ${table} SET ${col} = ? WHERE id = ?`, [this.type == "raw" ? value : JSON.stringify(value), id]);
+
+			}
 
 		});
 
@@ -36,7 +44,7 @@ export class SQLValue<T> extends Value<T, string> {
 
 			this.type = "date";
 
-		} else if(typeof defaultValue == "object") {
+		} else if (typeof defaultValue == "object") {
 
 			this.type = "object";
 
